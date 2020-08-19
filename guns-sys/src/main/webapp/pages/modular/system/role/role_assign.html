@@ -1,0 +1,59 @@
+@layout("/common/_container.html",{plugins:["ztree"]}){
+
+<div id="deptForm" class="layui-fluid">
+    <div class="layui-row" style="margin-top:15px;background: #f2f7f8;padding: 20px;">
+        <ul id="zTree" class="ztree"></ul>
+    </div>
+    <div class="layui-row" style="background: #CFD4D5;padding: 10px;">
+        <div style="text-align: center;">
+            <button class="layui-btn layui-btn-sm" id="saveButton">保存</button>
+            <button class="layui-btn layui-btn-sm layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    layui.use(['ztree','ax'], function () {
+        var $ZTree = layui.ztree;
+        var $ax = layui.ax;
+
+        var ZTreeDlg = {
+            index: parent.layer.getFrameIndex(window.name)
+        };
+
+        $("#saveButton").bind("click", function () {
+            var ids = Feng.zTreeCheckedNodes("zTree");
+            var ajax = new $ax(Feng.ctxPath + "/role/setAuthority", function (data) {
+                Feng.success("分配角色成功!");
+                parent.layer.close(ZTreeDlg.index);
+            }, function (data) {
+                Feng.error("分配角色失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("ids", ids);
+            ajax.set("roleId", "${roleId}");
+            ajax.start();
+        });
+
+        var setting = {
+            check: {
+                enable: true,
+                chkboxType: {
+                    "Y": "ps",
+                    "N": "ps"
+                }
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+
+        var ztree = new $ZTree("zTree", "/menu/menuTreeListByRoleId/${roleId}");
+        ztree.setSettings(setting);
+        ztree.init();
+    });
+
+</script>
+@}

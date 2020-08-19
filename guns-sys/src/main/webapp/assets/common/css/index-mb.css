@@ -1,0 +1,128 @@
+
+
+.l-bottom-menu{
+    margin: 0;
+}
+.l-bottom-menu>li{
+    height: 50px;
+    width: 18%;
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    list-style: none;
+    cursor: pointer;
+    color: #505050;
+}
+.l-bottom-menu>li:active{
+    color: #DE4A39;
+}
+.l-bottom-menu i {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    height: 6px;
+    line-height: 6px;
+    text-align: center;
+    border-radius: 2px;
+    font-size: 25px;
+    color: #C4C0BF;
+    pointer-events: none;
+}
+
+/*.l-bottom-menu .l-check{*/
+/*    color: #FFB800;*/
+/*}*/
+.l-bottom-menu .l-check>i{
+    color: #DE4A39;
+}
+
+.l-bottom-menu p{
+    margin-top: 12px;
+    font-size: 12px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.l-bottom-menu .l-scan-btn{
+    position: relative;
+    margin-top: -35px;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background-image: url("../images/l-scan-btn.png");
+    background-size: 100% 100%;
+}
+@media screen and (min-width: 300px) and (max-width: 320px){
+    .l-bottom-menu .l-scan-btn{
+        width: 45px;
+        height: 45px;
+        margin-top: -30px;
+    }
+}
+
+::-webkit-scrollbar{display: none;}
+
+.bottom-child-menu{
+    position: absolute;width: 100px;min-height: 40px;background: #FF5722;left: 0;bottom: 55px;text-align: center;color: #FFFFFF;display: none;
+}
+.bottom-child-menu>div{
+    height: 40px;line-height: 40px;border-bottom: 1px solid #FFFFFF;font-size: 16px;
+}
+
+@media screen and (max-width: 375px) {
+    .l-bottom-menu p{
+        font-size: 10px;
+        overflow: hidden;
+    }
+}
+
+/*@media screen and (min-width: 1366px) and (max-width: 1599px) {*/
+/*    body {*/
+/*        font-size: 12px;*/
+/*    }*/
+/*}*/
+
+.layui-layout-admin .layui-body {
+    -webkit-overflow-scrolling: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .layui-fluid {
+        padding: 0;
+    }
+    ::-webkit-scrollbar{display: none;}
+}
+body{
+    overflow-x: hidden;
+}
+
+.l-full-view{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.l-header-bar{
+
+}
+
+.l-header-bar .back-btn{
+    font-size: 24px; color: #FFFFFF;margin-left: 10px;
+}
+.l-header-bar .back-btn:active{
+    color: #FFB800;
+}
+.l-header-bar .l-title-name{
+    width: 90px;height: 30px;vertical-align: middle;
+}
+.l-header-bar .l-title-score-icon{
+    width: 15px;height: 22px;vertical-align: middle;margin-right: -5px;
+}
+.l-header-bar .l-title-score{
+    color: #FFFFFF;font-weight: 900;font-size: 26px;font-family: 仿宋;vertical-align: middle;margin-right: 15px;
+}
+.l-title-pagename{color: #FFFFFF;font-size: 16px;letter-spacing: 2px;display: none;}

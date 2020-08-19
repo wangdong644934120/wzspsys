@@ -1,0 +1,104 @@
+@layout("/common/_container.html",{js:[""]}){
+
+<script src="/assets/mine/mine_branch.js"></script>
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card branch_theme">
+
+                <div class="layui-text branch-info-row">
+                    <div class="user-branch-small-left">
+                        <div class="branch-name">
+                            <p id="branch_name"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">党组成员信息 （<b class="red_color" id="list_count">0</b>）
+                    </div>
+
+                </div>
+                <div class="layui-card-body branch-member-info-list" >
+
+                    <dd class="layuiadmin-card-status" id="dd_data">
+
+                    </dd>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+        var branchId = IndexGlobal.getUrlParam("branchId");
+
+
+
+
+        function toHref(url) {
+            window.top.openTabView(url, true);
+        }
+
+        // window.top.stepAdd(function(){
+        //     var url = "/ref/mine/mine.html"
+        //     toHref(url);
+        // });
+
+
+        $(function(){
+            initBranchMember();
+        })
+
+        function initBranchMember(){
+              $.post(
+                Feng.ctxPath + "/mine/get/branch_member",
+                {r:Math.random(), branchId: branchId},
+                function(rs){
+                    if (rs.code == 200){
+
+                        setBranchMember(rs.data.list);
+                    }
+                },
+                "json"
+            )
+        }
+        function setBranchMember(list){
+            var html = "";
+            if (null != list) {
+                $("#list_count").html(list.length)
+                var imgUrl = "";
+                $.each(list, function(i, n){
+
+
+                    imgUrl = Feng.ctxPath +"mine/getAvatar?avatar="+n.avatar;
+
+                    html += '<dl >'; //onclick="toHref(\'mine/account?id='+n.userId+'\')"
+                    html += '    <div class="user-list-div user-list-empty-5">&nbsp;</div>';
+                    // html += '    <div class="user-list-div user-list-logo">&nbsp;<img src="'+imgUrl+'" class="member-avatar"></div>';
+
+                    html += '    <div class="user-list-div user-list-logo">&nbsp;<i class="layui-icon layui-icon-user red_2_color"></i></div>';
+                    html += '    <div class="user-list-div user-list-name">'+n.userName+'&nbsp;</div>';
+                    html += '    <div class="user-list-div user-list-score">'+n.score+'&nbsp;</div>';
+                    html += '    <div class="user-list-div user-list-empty-10">'+n.phone+'&nbsp;</div>';
+                    html += '    <div class="clear"></div>';
+                    html += '</dl>';
+
+                })
+            }
+
+            $("#dd_data").html(html)
+        }
+
+</script>
+
+
+@}

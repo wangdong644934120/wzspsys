@@ -1,0 +1,78 @@
+package ${package.ServiceImpl};
+
+import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
+import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.EntitySpecParams}.${entity}Param;
+import ${package.EntitySpecResult}.${entity}Result;
+import cn.stylefeng.roses.core.util.ToolUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+#if(${kotlin})
+open class ${table.serviceName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>() {
+
+}
+#else
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> {
+
+    //新增
+    public void add(${entity}Param param){
+        this.save(param);
+    }
+    //删除
+    public void delete(${entity}Param param){
+        this.removeById(getKey(param));
+    }
+    //更新
+    public void update(${entity}Param param){
+        this.updateById(param);
+    }
+    //查询单条数据，Specification模式
+    public ${entity}Result findBySpec(${entity}Param param){
+        List<${entity}Result> list=this.findListBySpec(param);
+        if(list==null||list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+    }
+    //查询列表，Specification模式
+    public List<${entity}Result> findListBySpec(${entity}Param param){
+        return this.baseMapper.customList(param);
+    }
+    //查询分页数据，Specification模式
+    public LayuiPageInfo findPageBySpec(${entity}Param param){
+        Page pageContext = LayuiPageFactory.defaultPage();
+        IPage page = this.baseMapper.customPageList(pageContext, param);
+        return LayuiPageFactory.createPageInfo(page);
+    }
+
+    private Serializable getKey(${entity}Param param){
+        #set( $haveNoKey = true )
+        #foreach($field in ${table.fields})
+        #if(${field.keyFlag})
+        #set( $haveNoKey = false )
+        return param.get${field.capitalName}();
+        #end
+        #end
+        #if(${haveNoKey})
+        return null;
+        #end
+    }
+
+}
+#end

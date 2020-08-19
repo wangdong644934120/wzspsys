@@ -1,0 +1,929 @@
+.red_theme {
+    background: url("../../images/user_top_bg.jpg") no-repeat;
+    background-size: cover;
+    /*background: #FF5722;*/
+}
+
+.committee_theme {
+    background: url("../../images/branch-bg-1.png") no-repeat;
+    background-size: cover;
+}
+
+.branch_theme {
+    background: url("../../images/branch-bg-2.png") no-repeat;
+    background-size: cover;
+}
+
+.branch_big_theme {
+    height: 188px;
+    background: url("../../images/branch-bg-3.png") no-repeat;
+    background-size: cover;
+}
+
+.red_color {
+    color:#FF5544;
+}
+
+.red_2_color {
+
+    color: #ff0000;
+}
+
+.red_3_color {
+
+    color: #c5252d;
+}
+.red_4_color {
+
+    color: #e67a77;
+}
+
+.blue_1_color {
+
+    color: #4aa9e6;
+}
+
+.user-info-left {
+    float:left
+}
+
+.user-name-left {
+    display:block;
+    width:60%;
+    height:100%;
+    float:left
+}
+
+
+.user-name-left .info-name {
+    padding : 26px 18px;
+    text-align: center;
+
+}
+
+.user-name-left .info-name p {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Tahoma, Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.4em;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow:0 0 0.2em #ffd303,
+    -0 -0 0.2em #ffd303;
+}
+
+.group_logo {
+    display: block;
+    width: 30%;
+    height:100%;
+    float:left;
+}
+
+.group_logo .layui-icon {
+    font-size: 28px;
+}
+
+.group_info {
+    display: block;
+    width: 60%;
+    height:100%;
+    float: left;
+}
+
+.group_info p {
+    font-size: 14px;
+}
+
+
+.user-info-head {
+    width:70px;
+    height:70px;
+    margin: 20px;
+    float: left;
+    border-radius: 50% ;
+
+}
+
+.main-user-info-row {
+    display: block;
+    height: 98px;
+    opacity: 0.95;
+}
+
+.main-user-item-row {
+    display: block;
+    width: 92%;
+    height: 58px;
+    border-radius: 12px;
+    background: #fefefe;
+    margin: 2px auto;
+    padding: 2px auto;
+    text-align:center;
+    z-index: 999;
+    position: relative;
+    top: 20px;
+}
+
+
+.main-user-item-row .user-item-logo {
+    width:40px;
+    height: 50px;
+    float:left;
+    padding-left: 8px;
+}
+
+.main-user-item-row .user-item-logo img {
+    width:30px;
+    height: 30px;
+    float:left;
+    margin-top:2px;
+
+}
+
+.main-user-item-row .user-item-info-text {
+    float:left;
+    font-style: normal;
+    color: #0d1a26;
+    text-align: left;
+    margin-left: 3px;
+}
+
+
+.main-user-item-row .user-item-info-text {
+    float:left;
+    font-style: normal;
+    color: #0d1a26;
+    text-align: left;
+    margin-left: 3px;
+}
+
+.main-user-item-row .user-item-info-text p {
+    font-weight: bold;
+}
+.main-user-item-row .user-item-info-text p cite {
+    line-height: 2.6em;
+    font-size: 18px;
+    color: #ff8f05;
+}
+.main-user-item-row .user-item-info-text i {
+    font-weight: bold;
+    font-style: normal;
+    font-size: 12px;
+}
+
+.user-info-row {
+    display: block;
+    height: 118px;
+    opacity: 0.95;
+}
+
+.user-item-row {
+    display: block;
+    width: 92%;
+    /*height: 72px;*/
+    border-radius: 12px;
+    background: #fefefe;
+    margin: 2px auto;
+    padding: 2px auto;
+    text-align:center;
+    z-index: 999;
+    position: relative;
+    top: 20px;
+}
+
+
+
+
+.user-info-item {
+    margin-top: 30px;
+    margin-left: 8px;
+}
+
+.user-info-item p {
+    color:#ffeeff;
+    font-size: 16px;
+}
+
+.user-info-head img {
+    width:70px;
+    height:70px;
+    border-radius: 50% ;
+}
+
+/*.user-item-info {*/
+/*    display: block;*/
+/*    background: #eeeeee;*/
+/*    width:88%;*/
+/*    height:120px;*/
+/*    border-radius: 10px;*/
+/*}*/
+
+.user-item-info ul li {
+    text-align: center;
+}
+
+.user-item-info p cite {
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.user-item-info i {
+    font-style: normal;
+    font-size: 8px;
+    color: #ffffff;
+    text-align: center;
+
+}
+
+.new-border-left {
+    border-left: 1px solid #dfdfdf;
+}
+
+
+.new-border-right {
+    border-right: 1px solid #dfdfdf;
+}
+
+
+.user-item-row .user-item-logo {
+    width:40px;
+    height: 50px;
+    float:left;
+    padding-left: 8px;
+}
+
+.user-item-row .user-item-logo img {
+    width:32px;
+    height: 32px;
+    float:left;
+    margin-top:5px;
+
+}
+
+.user-item-row .user-item-info-text {
+    float:left;
+    font-style: normal;
+    color: #0d1a26;
+    text-align: left;
+    margin-left: 3px;
+}
+
+
+.user-item-row .user-item-info-text {
+    float:left;
+    font-style: normal;
+    color: #0d1a26;
+    text-align: left;
+    margin-left: 3px;
+}
+
+.user-item-row .user-item-info-text p {
+    font-weight: bold;
+}
+.user-item-row .user-item-info-text p cite {
+    display:block;
+    font-size: 14px;
+    color: #ff8f05;
+}
+.user-item-row .user-item-info-text i {
+    display:block;
+    font-style: normal;
+    font-size: 10px;
+}
+
+.layuiadmin-card-status dd {
+    padding: 15px 12px;
+    border-bottom: 1px solid #EEE;
+    display: -webkit-flex;
+    display: flex;
+    line-height: 15px;
+}
+.layuiadmin-card-status dd div {
+    width:100%;
+}
+.layuiadmin-card-status dd i {
+    margin-right:8px;
+    font-weight: normal;
+    color: #232323;
+    margin-top:2px
+}
+
+.layuiadmin-card-status dd .user-item-icon {
+   font-size: 18px;
+    color :#FF5722;
+}
+
+.line-space-10 {
+    clear:both;
+    display:block;
+    width: 100%;
+    height: 10px;
+}
+
+.line-space {
+    clear:both;
+    display:block;
+    width: 100%;
+    height: 20px;
+}
+.line-right {
+    float:right;
+}
+
+/*.user-item-icon {*/
+/*    width: 18px;*/
+/*    height: 18px;*/
+/*    float: left;*/
+/*}*/
+.user-item-icon-text {
+    font-size: 14px;
+    margin-left: 5px;
+    line-height: 20px;
+}
+
+
+.user-item-tips {
+    margin-right: 3px;
+    font-size: 8px;
+    border-radius: 8px;
+}
+
+.user-census-row {
+
+}
+.user-census-row ul {
+
+}
+
+.user-census-row ul li {
+
+}
+
+.user-census-row-title  {
+    font-size: 14px;
+    line-height: 28px;
+    font-weight: bold;
+    padding-top: 8px;
+
+}
+
+.user-census-row ul li p {
+    text-align: center;
+}
+
+.user-census-row ul li .user-item-time {
+    color: #CDCDCD;
+    font-weight: bold;
+}
+
+.user-census-row ul .month-li {
+    color: #FF5722;
+}
+
+.user-census-row ul .year-li {
+    color: #f4ad00;
+}
+
+.user-census-row ul .total-li {
+    color: #1E9FFF;
+}
+
+
+.user-census-row ul li .user-item-score {
+    font-size: 14px;
+}
+
+.user-census-row ul li  b{
+    font-size: 15px;
+    margin: 0px 3px;
+}
+
+.user-census-row ul li .user-item-counts {
+    font-size: 12px;
+}
+
+.user-census-row ul li .user-item-icon {
+    font-size: 12px;
+    color: #454545;
+}
+
+.info-row {
+    display: block;
+    width: 92%;
+    height: 80px;
+    border-radius: 12px;
+    background: #fefefe;
+    margin: 2px auto;
+    padding: 2px auto;
+    text-align:center;
+    z-index: 999;
+    position: relative;
+    top: 20px;
+}
+
+.info-row .info-logo {
+    width:60px;
+    float:left;
+}
+.info-row .info-logo img {
+    width:55px;
+    height:55px;
+    border-radius: 50% ;
+}
+.info-row .info-text {
+    width: 150px;
+    float:left;
+    height: 100%;
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size:14px;
+    font-weight: bold;
+}
+
+.chart_row {
+    height : 340px;
+}
+
+/****
+支部
+ */
+
+.branch-info-row {
+    display: block;
+    height: 138px;
+    opacity: 0.95;
+}
+
+.user-branch-left {
+    display:block;
+    width:80%;
+    float:left;
+    padding: 26px 18px;
+    text-align: center;
+}
+
+
+
+
+.user-branch-left .branch_name p {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Tahoma, Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.4em;
+    font-weight: bold;
+    color: #FF5722;
+    text-shadow:0 0 0.2em #ffd303,
+    -0 -0 0.2em #ffd303;
+}
+
+.user-branch-small-left {
+    display:block;
+    width:60%;
+    float:left;
+    text-align:center;
+    padding: 26px 18px;
+    margin-left: 18%;
+}
+
+.user-branch-small-left .branch-name p {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Tahoma, Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.4em;
+    font-weight: bold;
+    color: #fcfff2;
+    text-shadow:0 0 0.2em #ff3300,
+    -0 -0 0.2em #ff3300;
+}
+
+.branch-info-list {
+
+}
+.branch-info-list dd dl{
+    padding: 8px;
+}
+
+.branch-item-logo-div {
+    display: block;
+    width: 9%;
+    height: 100%;
+    margin: auto 12px;
+    float:left;
+}
+
+.branch-item-logo {
+    width: 28px;
+    height: 28px;
+    background: url("../../images/cpc-logo-2.png");
+    background-size: cover;
+
+}
+
+.branch-item-oth {
+    width: 9%;
+    height: 100%;
+    margin: auto 12px;
+    float:right;
+}
+
+
+.branch-item-info {
+    display: block;
+    width: 65%;
+    height: 100%;
+    float:left;
+}
+
+.branch-item-name {
+    color: #0d1a26;
+    font-size: 14px;
+}
+
+.branch-item-person {
+    font-size: 10px;
+}
+
+.branch-item-person b {
+    margin: 0px 2px
+}
+
+.branch-item-contact {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Tahoma, Arial, sans-serif;
+    font-size: 10px;
+}
+
+
+.branch-item-mobile {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Tahoma, Arial, sans-serif;
+    font-size: 10px;
+}
+
+
+.clear {
+    clear: both;
+    display: block;
+    width: 100%;
+    height : 2px;
+}
+
+.clear_dash {
+    clear: both;
+    display: block;
+    width: 100%;
+    height : 2px;
+    border-top: 1px dashed #efefef;
+}
+.clear_line {
+    clear: both;
+    display: block;
+    width: 100%;
+    height : 2px;
+    border-top: 1px solid #efefef;
+}
+/**支部 **
+
+ */
+
+.user-committee-left {
+    display:block;
+    width:60%;
+    float:left;
+    padding: 26px 18px;
+    text-align: center;
+    margin-left: 28%;
+}
+
+.user-committee-left  .committee-name {
+
+
+}
+
+.user-committee-left  .committee-name p {
+
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Tahoma, Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.4em;
+    font-weight: bold;
+    color: #FF5722;
+    text-shadow:0 0 0.2em #ffd303,
+    -0 -0 0.2em #ffd303;
+}
+
+.branch-member-info-list dd dl  {
+    border-bottom: 1px #dedede dashed;
+}
+
+.branch-member-info-list dd dl .user-list-div {
+    float: left;
+    padding : 4px;
+}
+
+.user-list-index {
+    display:block;
+    width: 15%
+}
+.user-list-empty-5 {
+    display:block;
+    width: 5%
+}
+
+.user-list-empty-8 {
+    display:block;
+    width: 8%
+}
+
+.user-list-empty-10 {
+    display:block;
+    width: 10%
+}
+.user-list-empty-15 {
+    display:block;
+    width: 15%
+}
+.user-list-logo {
+    display:block;
+    width: 15%
+}
+.member-avatar{
+    width: 20px
+}
+
+.user-list-name {
+    display:block;
+
+    width: 30%
+}
+
+.user-list-score {
+    display:block;
+    width: 15%
+}
+.user-list-phone {
+    display:block;
+
+    width: 25%
+}
+
+
+.user-list-delete {
+    float: right;
+    padding: 4px;
+    /*color:#FFFFFF;*/
+    /*background: #FF8900;*/
+}
+
+.icon-white {
+    color: #97c7fe;
+    font-size: 12px;
+}
+
+.double-branch-info-list {
+
+}
+.double-branch-info-list dd dl{
+    padding: 8px;
+}
+
+.double-branch-item-logo-div {
+    display: block;
+    width: 16px;
+    height: 100%;
+    margin: auto 3px;
+    float:left;
+}
+
+.double-branch-item-logo {
+    width: 28px;
+    height: 28px;
+    background: url("../../images/cpc-logo-2.png");
+    background-size: cover;
+
+}
+
+.double-branch-item-oth {
+    width: 16px;
+    height: 100%;
+    margin: auto 4px;
+    float:right;
+}
+
+
+.double-branch-item-info {
+    display: block;
+    width: 90%;
+    height: 100%;
+    float:left;
+}
+
+.double-branch-item-name {
+    font-weight: bold;
+}
+
+.double-branch-item-contact {
+    display: block;
+    width: 100%;
+    border-top: 1px dotted #efefef;
+
+}
+
+.double-branch-item-person {
+    display: inline-block;
+    padding: 8px;
+}
+
+.double-branch-item-person-info {
+    display: inline-block;
+    padding: 8px;
+}
+
+.double-branch-item-person-info b {
+    font-weight: normal;
+    font-style: normal;
+    padding-right : 12px
+}
+.double-branch-item-person-info  i {
+    font-weight: bold;
+    padding-right : 6px;
+    font-style: normal;
+    color: #090916;
+}
+.double-branch-item-person-info  cite {
+
+    padding-right : 12px;
+    font-style: normal;
+    color: #090916;
+}
+
+.double-branch-item-person p .double-extend-icon {
+    margin-left:12px
+}
+
+.double-branch-item-child {
+    display: block;
+    padding : 4px;
+    border-top: 1px dashed #cdcdcd;
+}
+
+.double-branch-item-child .double-branch-item-person {
+    margin-left: 20px;
+}
+
+.double-community-logo  {
+    color: #ff0000;
+    float: left;
+    margin: 4px;
+}
+
+.double-community-name {
+    font-weight: bold;
+    margin: 4px;
+}
+
+.clear_dash_red {
+    clear: both;
+    border-bottom: 1px dashed #ff0000;
+}
+
+
+/******
+建议反馈 样式
+*****/
+.uploaded-pics {
+
+    text-align: center;
+}
+.uploaded-pics .upload-img {
+    display: inline-block;
+    float:left;
+    margin: 6px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #cfdade;
+
+}
+
+
+.upload-btn {
+    display: inline-block;
+    float:left;
+    margin: 6px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #cfdade;
+
+}
+
+.upload-img img {
+    width: 100px;
+    float: left;
+
+    position: relative;
+    top: -35px;
+}
+
+.upload-img .upload-img-delete-btn {
+    display: inline-block;
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    color: #FFFFEE;
+    background: #FF5722;
+    opacity: 0.6;
+    -moz-opacity: 0.6;
+    position: relative;
+    top: 65px;
+    z-index: 999;
+}
+
+
+.suggestion-item-info {
+    display: block;
+    width: 89%;
+    height: 100%;
+    float:left;
+}
+
+.suggestion-item-img {
+    margin-left: 6px;
+    color: #3e84ec;
+}
+.suggestion-item-date {
+    font-size:10px;
+    color: #b3d4fc;
+    float:right;
+}
+
+.manual-content img {
+    width: 100%;
+}
+
+
+/**
+双报到 新样式
+ */
+
+.double-branch-info-item {
+    background: #FFFFFF;
+    width: 98%;
+    height: auto;
+}
+
+.double-branch-item-logo-div-new{
+    display: block;
+    width: 16px;
+    height: 100%;
+    margin: 10px 4px 4px 10px;
+    float:left;
+
+}
+.double-branch-item-info-new {
+    display: block;
+    width: 90%;
+    height: 100%;
+    float:left;
+}
+.double-branch-item-contact-new {
+    display: block;
+    margin-left: 30px;
+}
+
+.double-branch-item-person-info-new{
+    float:left;
+    background: #f1f1f1;
+    padding: 3px;
+    font-size:12px;
+    font-style: normal;
+    margin:2px;
+    color: #949292;
+}
+
+.double-branch-item-person-info-new a{
+
+    color: #949292;
+}
+
+.double-branch-item-info-new .double-branch-item-name-new{
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.double-branch-item-person-new {
+    padding:4px;
+}
+
+.double-branch-item-info-new .double-branch-community-item-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 8px
+}
+
+.double-branch-item-person-info-new b {
+    font-style: normal;
+
+}
+.double-branch-item-person-info-new cite {
+
+    font-style: normal;
+}
+
+.double-branch-community-info {
+    display: block;
+}

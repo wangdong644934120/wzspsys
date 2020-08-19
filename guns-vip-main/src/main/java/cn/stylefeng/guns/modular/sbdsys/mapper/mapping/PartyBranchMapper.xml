@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.PartyBranchMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.PartyBranch">
+        <id column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="part_committee" property="partCommittee" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", code AS "code", name AS "name", phone AS "phone", create_time AS "createTime", create_user AS "createUser", update_time AS "updateTime", update_user AS "updateUser", part_committee AS "partCommittee"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.PartyBranchResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.PartyBranchParam">
+        select branch.id AS "id", branch.code AS "code", branch.name AS "name",
+        branch.phone AS "phone", branch.create_time AS "createTime",
+        branch.create_user AS "createUser", branch.update_time AS "updateTime",
+        branch.update_user AS "updateUser", branch.part_committee AS "partCommittee" ,
+        community.name as communityName
+        from sbd_party_branch branch
+        left join sbd_branch_community sbc
+        on branch.id = sbc.branch
+        left join sbd_community community
+        on community.id = sbc.community
+        where 1 = 1
+        <if test="paramCondition.partCommittee != null ">
+            and part_committee  =#{paramCondition.partCommittee}
+        </if>
+        <if test="paramCondition.name != null ">
+            and branch.name  like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+        order by branch.code
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.PartyBranchResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.PartyBranchParam">
+        select branch.id AS "id", branch.code AS "code", branch.name AS "name",
+        branch.phone AS "phone", branch.create_time AS "createTime",
+        branch.create_user AS "createUser", branch.update_time AS "updateTime",
+        branch.update_user AS "updateUser", branch.part_committee AS "partCommittee" ,
+        community.name as communityName
+        from sbd_party_branch branch
+        left join sbd_branch_community sbc
+        on branch.id = sbc.branch
+        left join sbd_community community
+        on community.id = sbc.community
+        where 1 = 1
+        <if test="paramCondition.partCommittee != null ">
+            and part_committee  =#{paramCondition.partCommittee}
+        </if>
+        <if test="paramCondition.name != null ">
+            and branch.name  like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+        order by branch.code
+    </select>
+
+    <select id="communityTreeListByBranch" resultType="cn.stylefeng.guns.base.pojo.node.ZTreeNode" parameterType="String">
+        select com.id as id , 0 as pId , com.`name` as `name`, 'false' as open ,
+        (CASE WHEN (branch.id is not null) then 'true' else 'false' end) as checked
+         from sbd_community com
+        left join sbd_branch_community sbc
+        on com.id = sbc.community
+        and sbc.branch = #{branch}
+        left join sbd_party_branch branch
+        on sbc.branch = branch.id
+        and branch.id = #{branch}
+        order by com.code
+    </select>
+</mapper>

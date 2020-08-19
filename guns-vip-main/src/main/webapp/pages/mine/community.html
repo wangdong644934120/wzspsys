@@ -1,0 +1,156 @@
+@layout("/common/_container.html",{js:["/assets//mine/mine_census.js"]}){
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card red_theme ">
+
+                    <div class="layui-text user-info-row">
+                        <div class="user-name-left">
+                            <div class="info-name">
+                                <p id="community_name">中共威海经济技术开发区国有资产经营管理公司支部委员会</p>
+                            </div>
+
+                        </div>
+<!--                        <div class="user-info-left user-info-item">-->
+<!--                            <p> 15666266456 </p>-->
+<!--                            <p> 蒿泊汇成社区党总支</p>-->
+<!--                        </div>-->
+                    </div>
+                    <div class="layui-text info-row ">
+
+                        <div class="">
+                            <ul class="layui-row layui-col-space10 layui-this">
+                                <li class="layui-col-xs8">
+
+                                    <div class="info-logo">
+                                        <img id="avatarPreview" src="/system/previewAvatar" >
+                                    </div>
+                                    <div class="info-text">
+                                        蒿泊汇成社区党总支蒿泊汇成社区党总支
+                                    </div>
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="line-space" >
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">活动数据汇总</div>
+                </div>
+                <div class="layui-card-body user-census-row" >
+                    <ul class="layui-row layui-col-space10 layui-this">
+                        <li class="layui-col-xs4">
+                            <p class="user-item-score"><b id="activity_month_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="activity_month_count">14</b>项</p>
+                            <p class="time">本月</p>
+                        </li>
+                        <li class="layui-col-xs4">
+                            <p class="user-item-score"><b id="activity_year_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="activity_year_count">14</b>项</p>
+                            <p class="time">本年</p>
+                        </li>
+                        <li class="layui-col-xs4">
+                            <p class="user-item-score"><b id="activity_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="activity_count">160</b>项</p>
+                            <p class="user-item-time">历史</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">微心愿数据汇总</div>
+                </div>
+                <div class="layui-card-body user-census-row" >
+                    <ul class="layui-row layui-col-space10 layui-this">
+                        <li class="layui-col-xs4">
+                            <p class="user-item-score"><b id="wish_month_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="wish_month_count">160</b>项</p>
+                            <p class="time">本月</p>
+                        </li>
+                        <li class="layui-col-xs4">
+                            <p class="user-item-score"><b id="wish_year_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="wish_year_count">160</b>项</p>
+                            <p class="time">本年</p>
+                        </li>
+                        <li class="layui-col-xs4">
+                            <p class="user-item-score"><b id="wish_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="wish_count">160</b>项</p>
+                            <p class="user-item-time">历史</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  onclick="toHref('mine/myCommodity')">
+                            <div>
+                                <!--                                <i class="layui-icon layui-icon-app"></i>-->
+                                <img src="/images/user-item-goods-car.png" class="user-item-icon"/>
+                                <span class="user-item-icon-text">数据图表</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <span class="layui-badge line-right user-item-tips">6121</span>
+                            </div>
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+    var base_url = "http://172.16.1.23:8000/";
+    function toHref(url) {
+        window.location.href= base_url + url;
+    }
+
+    function toHrefAlert(url) {
+        alert(url)
+    }
+
+    var date =new Date();
+    var rdm =
+
+    wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: 'wx629ce6fd9aef12f8', // 必填，公众号的唯一标识
+        timestamp: date.getTime(), // 必填，生成签名的时间戳
+        nonceStr: '', // 必填，生成签名的随机串
+        signature: '',// 必填，签名
+        jsApiList: [] // 必填，需要使用的JS接口列表
+    });
+
+    function toScan(){
+        alert("hello world")
+        wx.openLocation({
+            latitude: 22.545538, // 纬度，浮点数，范围为90 ~ -90。如果是动态获取的数据，使用parseFloat()处理数据
+            longitude: 114.054565, // 经度，浮点数，范围为180 ~ -180。如果是动态获取的数据，使用parseFloat()处理数据；
+            name: '这里填写位置名', // 位置名
+            address: '位置名的详情说明', // 地址详情说明
+            scale: 10, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        });
+    }
+</script>
+
+
+@}

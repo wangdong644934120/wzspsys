@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.ExchangeRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.ExchangeRecord">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="cost_coin" property="costCoin"/>
+        <result column="commodity_id" property="commodityId"/>
+        <result column="isExchange" property="isExchange"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="exchange_time" property="exchangeTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        r.id AS "id", r.user_id AS "userId", r.cost_coin AS "costCoin", r.commodity_id AS "commodityId",
+        r.isExchange AS "isExchange", r.order_time AS "orderTime", r.exchange_time AS "exchangeTime",
+        r.create_time AS "createTime", r.update_time AS "updateTime",u.name as exchanger,u.phone as exchangerPhone,
+        c.name as commodityName,c.pics as pics ,s.name as storeName
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ExchangeRecordResult"
+            parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.ExchangeRecordParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_exchange_record r,sys_user u,sbd_commodity c,sbd_store s
+        where r.user_id = u.user_id and r.commodity_id = c.id and c.store_id= s.id
+        <if test="paramCondition.commodityId != null and paramCondition.commodityId != ''">
+            and r.commodity_id = #{paramCondition.commodityId}
+        </if>
+        <if test="paramCondition.isExchange != null and paramCondition.isExchange != ''">
+            and r.isExchange = #{paramCondition.isExchange}
+        </if>
+        order by r.order_time desc
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ExchangeRecordResult"
+            parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.ExchangeRecordParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_exchange_record r,sys_user u,sbd_commodity c,sbd_store s
+        where r.user_id = u.user_id and r.commodity_id = c.id and c.store_id= s.id
+        <if test="paramCondition.userId != null and paramCondition.userId != ''">
+            and r.user_id = #{paramCondition.userId}
+        </if>
+        <if test="paramCondition.commodityId != null and paramCondition.commodityId != ''">
+            and r.commodity_id = #{paramCondition.commodityId}
+        </if>
+        <if test="paramCondition.isExchange != null and paramCondition.isExchange != ''
+        or paramCondition.isExchange==1 or paramCondition.isExchange==0">
+            and r.isExchange = #{paramCondition.isExchange}
+        </if>
+        order by r.exchange_time desc, r.order_time desc
+    </select>
+
+    <select id="getAccountWithTransaction" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Account">
+        select * from sbd_account
+        where id=#{userId} for update
+    </select>
+    <select id="getCommodityWithTransaction" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Commodity">
+        select * from sbd_commodity
+        where id=#{commodityId} for update
+    </select>
+
+    <update id="updateCommodity" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.Commodity">
+        update sbd_commodity
+        set surplus = surplus-#{commodity.surplus},update_user=#{commodity.updateUser}
+        where id = #{commodity.id}
+    </update>
+
+    <update id="updateAccount" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.Account">
+        update sbd_account
+        set coin = coin-#{account.coin}
+        where id = #{account.id}
+    </update>
+
+    <insert id="insertExchangeRecord" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.ExchangeRecord">
+        insert into sbd_exchange_record(
+        id,user_id,cost_coin,commodity_id,
+        isExchange,order_time,create_time
+        )values (
+        #{exchangeRecord.id},#{exchangeRecord.userId},#{exchangeRecord.costCoin},#{exchangeRecord.commodityId},
+        #{exchangeRecord.isExchange},#{exchangeRecord.orderTime},#{exchangeRecord.createTime}
+        )
+    </insert>
+    <insert id="insertCoinRecord" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.CoinRecord">
+        insert into sbd_coin_record(
+        id,user_id,change_type,change_desc,create_time
+        )values (
+        #{coinRecord.id},#{coinRecord.userId},#{coinRecord.changeType},#{coinRecord.changeDesc},#{coinRecord.createTime}
+        )
+    </insert>
+
+    <select id="getCommodityByUserId" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Commodity">
+        select c.*
+        from sbd_commodity c ,sbd_store s,sbd_user_ext u
+        where c.store_id = s.id
+        and s.id = u.store
+        and u.user_id = #{userId}
+        and c.id = #{commodityId}
+    </select>
+</mapper>

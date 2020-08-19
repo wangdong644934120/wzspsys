@@ -1,0 +1,143 @@
+@layout("/common/_container.html",{js:[]}){
+
+<link rel="stylesheet" href="/assets/activity/activity.css"/>
+
+<div class="layui-body-header">
+	<span class="layui-body-header-title">微心愿</span>
+</div>
+
+
+<div class="layui-fluid">
+	<div class="layui-col-md12">
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="mainTab">
+						<ul class="layui-tab-title l-activity-tab-title">
+							<li lay-id="0" class="layui-this">可领取</li>
+							<li lay-id="1">已领取</li>
+							<li lay-id="2">待核实</li>
+							<li lay-id="3">已核实</li>
+						</ul>
+						<div id="listView" class="layui-tab-content">
+							<div d-state="1" class="layui-tab-item layui-show">
+							</div>
+							<div d-state="2" class="layui-tab-item">
+							</div>
+							<div d-state="3" class="layui-tab-item">
+							</div>
+							<div d-state="4" class="layui-tab-item">
+							</div>
+						</div>
+						<!--						活动详情-->
+						<div id="detialView" class="l-pop-view layui-card-body">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script id="activityItemTmp" type="text/html">
+	<div id="{{ d.id }}" class="layui-row l-activity-item">
+		<div class="layui-col-xs5 layui-col-sm5 layui-col-md5 text-center">
+			<img src="/file/{{ d.icon }}" alt="" class="l-activity-icon">
+		</div>
+		<div class="layui-col-xs7 layui-col-sm7 layui-col-md7" style="padding: 8px 10px;">
+			<div style="font-size: 16px;height: 70px;">
+				<div class="l-title-tp">
+					<i class="extend-icon extend-icon-jifen" style="font-size: 13px;">{{ d.score }}</i>
+				</div>
+				{{ d.title }}
+			</div>
+			<p style="color: #B6BEC2;font-size: 14px;"><i class="extend-icon extend-icon-shequ" style="margin-right: 3px;"></i>{{ d.communityName }}</p>
+		</div>
+	</div>
+</script>
+
+<script>
+
+	//这是流加载的BUG，必须要指定高度，且over-flow auto
+	$("#listView>.layui-tab-item").height(document.documentElement.clientHeight - 60);
+
+	var Globle={
+		wishId:null
+	};
+
+	Date.prototype.toDateInputValue = (function () {
+		var local = new Date(this);
+		local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+		return local.toJSON().slice(0, 10);
+	});
+
+	function viewActivityDetial(wishId){//仅该活动所在社区的负责人展示二维码TODO
+		$("#listView").hide();
+		Globle.wishId=wishId;
+		Feng.loadHtml($("#detialView"),"/pages/wish/wish_detial.html",function(){
+			$("#detialView").fadeIn(200);
+		});
+	}
+	function backListView(){
+		$("#listView").show();
+		$("#detialView").hide();
+	}
+
+	layui.use(['form','table', 'admin', 'ax',"layer","element","flow","laydate","dict"], function () {
+		//查看活动详情
+		$("#listView").click(function(event){
+			if(event.target.className.indexOf("l-activity-item")>=0){
+				viewActivityDetial(event.target.id);
+			}
+		});
+		//tab切换事件
+		layui.element.on('tab(mainTab)', function(data){
+			$("#detialView").hide();
+			$("#listView").show();
+			var selector="#listView>.layui-tab-item:eq("+data.index+")";
+			var tabItem=$(selector);
+			//if(tabItem.children().length==0){//初始化流加载容器|切换刷新
+			tabItem.empty();//刷新需要删除原来的
+				var state=tabItem.attr("d-state");
+				var url="/wish/list";
+				if(data.index!=0){
+					url="/wish/listOfUser";//仅获取当前登录用户的相关心愿
+				}
+				layui.flow.load({//进行中
+					elem: selector //流加载容器
+					,isAuto:true
+					,scrollElem: selector //滚动条所在元素，一般不用填，此处只是演示需要。
+					,done: function(page, next){ //执行下一页的回调
+						$request({
+							url: url+"?limit=10&page="+page,
+							async: true,
+							data: {
+								status:state
+							},
+							dataType: "json",
+							success: function (response) {
+								if(response.code==0){
+									var lis = [];
+									var data=response.data;
+									for(var i=0;i<data.length;i++){
+										//判断是否已存在该
+										layui.laytpl($("#activityItemTmp").html()).render(data[i], function(html){
+											lis.push(html);
+										});
+									}
+									next(lis.join(''), page*10 < response.count); //假设总页数为 10
+								}
+							}
+						});
+					}
+				});
+			//}
+		});
+		if(Feng.getUrlParam("frommine")!=null){
+			layui.element.tabChange('mainTab', "1");
+		}else{
+			layui.element.tabChange('mainTab', '0');//默认切换到第一项
+		}
+	});
+</script>
+@}

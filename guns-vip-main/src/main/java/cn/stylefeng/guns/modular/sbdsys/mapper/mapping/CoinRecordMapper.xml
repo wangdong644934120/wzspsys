@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.CoinRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.CoinRecord">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="change_type" property="changeType" />
+        <result column="change_desc" property="changeDesc" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", user_id AS "userId", change_type AS "changeType", change_desc AS "changeDesc", create_time AS "createTime", update_time AS "updateTime"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.CoinRecordResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.CoinRecordParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_coin_record where 1 = 1
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.CoinRecordResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.CoinRecordParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_coin_record where 1 = 1
+    </select>
+
+</mapper>

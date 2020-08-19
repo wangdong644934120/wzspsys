@@ -1,0 +1,95 @@
+@layout("/common/_container.html",{js:["/assets//mine/mine.js"]}){
+
+<style>
+    .coin_record_item {
+        display: block;
+        width: 100%;
+        height: 100px;
+    }
+
+    .coin_record_item .coin_record_item_img {
+        width:24%;
+        height:80px;
+        margin-top:10px;
+        float:left;
+    }
+    .coin_record_item .coin_record_item_img img {
+        width:60px;
+        height:60px;
+        border-radius: 50%;
+    }
+
+    .coin_record_item .coin_record_item_info {
+        width:50%;
+        height:80px;
+        float:left;
+        font-size:12px;
+    }
+    .coin_record_item .coin_record_item_info .coin_record_store {
+        font-size: 10px
+    }
+
+    .coin_record_item .coin_record_sale_cost {
+        width:18%;
+        height:80px;
+        float:left;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 20px 10px;
+    }
+
+    .coin_in {
+        color: #E29629;
+    }
+
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+
+                </div>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd>
+                            <div class="coin_record_item">
+                                <div class="coin_record_item_img">
+                                    <img src="http://172.16.1.23:8000/images/a.jpg"/>
+                                </div>
+                                <div class="coin_record_item_info">
+                                    <div class="coin_record_store">威海百货大楼</div>
+                                    <div class="coin_record_goods_title">ANTA背包</div>
+                                    <div class="coin_record_time">09-04 10：40</div>
+                                </div>
+                                <div class="coin_record_sale_cost">
+                                    - 140
+                                </div>
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <div class="coin_record_item">
+                                <div class="coin_record_item_img">
+                                    <img src="http://172.16.1.23:8000/images/a.jpg"/>
+                                </div>
+                                <div class="coin_record_item_info">
+                                    <div class="coin_record_store">蒿泊汇成社区</div>
+                                    <div class="coin_record_goods_title">党课教育</div>
+                                    <div class="coin_record_time">09-04 10：40</div>
+                                </div>
+                                <div class="coin_record_sale_cost coin_in">
+                                    + 60
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@}

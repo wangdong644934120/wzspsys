@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.PartyBranchPersonMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.PartyBranchPerson">
+        <id column="id" property="id" />
+        <result column="branch" property="branch" />
+        <result column="person" property="person" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        person.id AS "id", person.branch AS "branch", person.person AS "person" , userr.name as name, userr.phone as phone
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.PartyBranchPersonResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.PartyBranchPersonParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_party_branch_person person , sys_user userr where person.person = userr.user_id
+        <if test="paramCondition.branch != null ">
+            and branch  =#{paramCondition.branch}
+        </if>
+        <if test="paramCondition.name != null ">
+            and userr.name  like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.PartyBranchPersonResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.PartyBranchPersonParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_party_branch_person person , sys_user userr where person.person = userr.user_id
+        <if test="paramCondition.branch != null ">
+            and branch  =#{paramCondition.branch}
+        </if>
+        <if test="paramCondition.name != null ">
+            and userr.name  like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+    </select>
+
+    <select id="getByUserId" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.PartyBranchPersonResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.PartyBranchPersonParam">
+        select
+        *
+        from sbd_party_branch_person  where person = #{paramCondition.person}
+    </select>
+
+
+    <delete id="deleteBranchPerson" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.PartyBranchPersonParam" >
+        delete from sbd_party_branch_person  where person = #{paramCondition.person}
+    </delete>
+</mapper>

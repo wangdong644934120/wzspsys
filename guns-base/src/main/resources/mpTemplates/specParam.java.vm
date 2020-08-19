@@ -1,0 +1,28 @@
+package ${package.EntitySpecParams};
+
+import lombok.Data;
+import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
+import java.util.Date;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import ${package.Entity}.${entity};
+
+/**
+ * <p>
+ * $!{table.comment}
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+public class ${entity}Param extends ${entity} implements Serializable, BaseValidatingParam {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public String checkParam() {
+        return null;
+    }
+
+}

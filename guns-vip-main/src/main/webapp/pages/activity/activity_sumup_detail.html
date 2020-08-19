@@ -1,0 +1,114 @@
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+<style>
+    .show-pics {
+        display: block;
+        width: 100%;
+    }
+
+    .show-pics .img {
+        width: 100%;
+        margin-top: 3px;
+    }
+</style>
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card">
+
+                        <div class="layui-form-item" id="suggestion_content">
+
+                        </div>
+
+                        <div class="layui-form-item">
+                            <span id="show-pics" class="show-pics" >
+
+                            </span>
+                        </div>
+                        <div class="layui-form-item">
+                            <p class="suggestion-item-date" id="suggestion_date">
+
+                            </p>
+                        </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+    // var activityId = IndexGlobal.getUrlParam("activityId")
+
+    var activityId = Globle.activityId
+
+    $(function(){
+        initSuggestion()
+
+    })
+
+    function initSuggestion(){
+        $.get(
+            Feng.ctxPath + "/activity/getActivitySumUp",
+            {r:Math.random(), activityId:activityId},
+            function(res){
+                var count = 0;
+                if (res.code == 200){
+
+                    setSuggestion(res.data.detail);
+                    initImage(res.data.sumUpId);
+                }
+            },
+            "json"
+        )
+    }
+
+
+    function setSuggestion(data){
+
+        if (data.content != ""){
+            $("#suggestion_content").html(data.content)
+            $("#suggestion_date").html(data.createDate)
+        }
+
+
+
+
+    }
+
+
+    function initImage(objId){
+        $.get(
+            Feng.ctxPath + "/myfile/selectFileWith",
+            {r:Math.random(), objId:objId},
+            function(res){
+                var count = 0;
+                if (res.code == 200){
+                   count = res.data.count;
+                   console.log(res);
+
+                   setImage(res.data.list);
+                }
+            },
+            "json"
+        )
+    }
+
+
+    function setImage(data){
+        var html = "";
+        if (data != ""){
+            $.each(data, function(i, n){
+                html += "<div>"
+
+                html += "<img src='data:image/jpeg;base64,"+n.imgBase64+"' class='img'/>";
+                html += "</div>"
+            })
+        }
+
+        $("#show-pics").html(html)
+    }
+</script>
+

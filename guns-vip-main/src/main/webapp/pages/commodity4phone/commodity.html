@@ -1,0 +1,83 @@
+@layout("/common/_container.html",{js:["/assets/commodity4phone/commodity.js","/assets/common/libs/qrcode.min.js"]}){
+
+<script type="text/javascript" src="/assets/commodity4phone/commodity.js"></script>
+<script type="text/javascript" src="/assets/common/libs/qrcode.min.js"></script>
+<link rel="stylesheet" href="/assets/commodity4phone/commodity.css" media="all"/>
+<style>
+    .layui-flow-more {
+        margin: 1px;
+        padding: 1px;
+    }
+    .layui-flow-more a cite{
+        background-color: white;
+    }
+</style>
+<div class="layui-body-header">
+    <span class="layui-body-header-title">商户手机端-商城</span>
+</div>
+
+<div id="publishBtn" class="l-publish-btn" style="display: none">
+    <i class="layui-icon layui-icon-add-1"></i>
+</div>
+
+<div id="editBtn" class="l-publish-btn" style="display: none;">
+    <i class="layui-icon layui-icon-add-1"></i>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-col-md12">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card" style="background-color: #F1F1F1">
+                    <div class="layui-tab layui-tab-brief layadmin-latestData titleTab" lay-filter="mainTab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this" id="shoppingMall">商城</li>
+                            <li id="exchanging">待兑换商品</li>
+                            <li id="exchanged">已兑换商品</li>
+                        </ul>
+                        <div id="listView" class="layui-tab-content commodity">
+                            <div id="activityList" class="layui-tab-item layui-show" style="background-color: #F1F1F1">
+                            </div>
+                            <div class="layui-tab-item">
+                                <ul class="flow-default" id="LAY_demo1"></ul>
+                            </div>
+                            <div class="layui-tab-item">
+                                <table id="LAY-index-topCar2d"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--详情-->
+                    <div id="detailView" class="l-pop-view layui-card-body commodity" style="padding: 0;margin:0">
+                    </div>
+                    <!--兑换记录-->
+                    <div id="exchangeView" class="l-pop-view layui-card-body commodity" style="padding: 10px 0px 0px 0px">
+                    </div>
+                    <!--发布-->
+                    <div id="publishView" class="l-pop-view layui-card-body commodity">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="commodityItemTmpDiv" style="display: none"></div>
+    <div id="exchangingRecordTmpDiv" style="display: none"></div>
+</div>
+<!--兑换记录模板-->
+<script id="exchangeRecordTmp" type="text/html">
+    <hr>
+    <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 l-commodity-item">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" style="text-align: center;">
+            <div style="color: #555555">
+                兑换时间：{{d.exchangeTime}}
+            </div>
+            <div class="caller-iconset">
+                兑换人：{{d.exchanger}}
+            </div>
+            <div class="caller-iconset">
+                联系方式：{{d.exchangerPhone}}
+            </div>
+        </div>
+    </div>
+</script>
+<!--待兑换、已兑换商品模板-->
+@}

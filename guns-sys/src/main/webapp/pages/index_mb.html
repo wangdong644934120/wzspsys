@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="format-detection" content="telephone=yes"/>
+    <link href="${ctxPath}/assets/expand/images/favicon.ico" rel="icon">
+    <title>${systemName}</title>
+    <link rel="stylesheet" href="${ctxPath}/assets/common/libs/layui/css/layui.css"/>
+    <link rel="stylesheet" href="${ctxPath}/assets/common/module/admin.css"/>
+    <link rel="stylesheet" href="${ctxPath}/assets/expand/iconfont/iconfont.css"/>
+    <link rel="stylesheet" href="${ctxPath}/assets/common/css/index-mb.css"/>
+</head>
+
+<body class="layui-layout-body">
+
+    <!--头部导航-->
+    <div id="headerBar" class="l-header-bar" style="position: absolute;top: 0px;height: 45px;line-height:45px;right: 0;left: 0;background: #E32019;">
+        <div id="indexBackBtn" class="layui-col-xs2 layui-col-sm2 layui-col-md2 text-left">
+            <i class="layui-icon layui-icon-left back-btn"></i>
+        </div>
+        <div id="indexTitleName" class="layui-col-xs8 layui-col-sm8 layui-col-md8 text-left">
+            <img src="/images/l-title-hxzh.png" class="l-title-name">
+            <span class="l-title-pagename">商品详情</span>
+        </div>
+        <div class="layui-col-xs2 layui-col-sm2 layui-col-md2 text-right">
+            <img src="/images/l-title-jf.png" class="l-title-score-icon">
+            <a id="indexScore" class="l-title-score">0</a>
+        </div>
+    </div>
+    <!-- 侧边栏 -->
+    <div class="layui-side" style="display: none;">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="admin-side-nav" style="margin-top: 15px;">
+                @for(menu in menus) {
+                @if(tool.isEmpty(menu.children)){
+                <li class="layui-nav-item">
+                    <a lay-href="${menu.url}"><i class="${menu.icon}"></i>&emsp;<cite>${menu.name}</cite></a>
+                </li>
+                @}else{
+                <li class="layui-nav-item">
+                    <a><i class="${menu.icon}"></i>&emsp;<cite>${menu.name}</cite></a>
+                    <dl class="layui-nav-child">
+                        @for(subMenu in menu.children){
+                        @if(tool.isEmpty(subMenu.children)){
+                        <dd><a lay-href="${subMenu.url}">${subMenu.name}</a></dd>
+                        @}else{
+                        <dd>
+                            <a>${subMenu.name}</a>
+                            <dl class="layui-nav-child">
+                                @for(subSubMenu in subMenu.children){
+                                @if(tool.isEmpty(subSubMenu.children)){
+                                <dd><a lay-href="${subSubMenu.url}">${subSubMenu.name}</a></dd>
+                                @}else{
+                                <dd>
+                                    <a>${subSubMenu.name}</a>
+                                    <dl class="layui-nav-child">
+                                        @for(subSubSubMenu in subSubMenu.children){
+                                        <dd><a lay-href="${subSubSubMenu.url}">${subSubSubMenu.name}</a></dd>
+                                        @}
+                                    </dl>
+                                </dd>
+                                @}
+                                @}
+                            </dl>
+                        </dd>
+                        @}
+                        @}
+                    </dl>
+                </li>
+                @}
+                @}
+            </ul>
+        </div>
+    </div>
+    <!-- 主体部分 -->
+    <div id="container" class="layui-body index-body" style="-webkit-overflow-scrolling: touch;overflow-y: scroll;overflow-x: hidden;position: absolute;bottom: 58px;top: 44px;right: 0;left: 0;">
+
+    </div>
+
+    <!-- 底部 -->
+    <div class="layui-footer index-footer" style="position: absolute;bottom: 0;height: 55px;right: 0;left: 0;text-align: center;background: #FFFFFF;z-index: 999;">
+        <ul id="bottomMenu" class="layui-row layui-col-space10 l-bottom-menu">
+            <li class="l-check">
+                <i d-url="/ref/mainPage/mainPage.html" class="extend-icon extend-icon-zhuye"></i>
+                <p>主页</p>
+            </li>
+            <li>
+                <i d-url="/ref/activity/activity.html" class="extend-icon extend-icon-huodong"></i>
+                <p>活动</p>
+            </li>
+            <li class="func-btn">
+                <a id="scanBtn" class="l-scan-btn"></a>
+                <p style="margin-top: 2px;">扫一扫</p>
+            </li>
+            <li>
+                <i d-url="/ref/wish/wish.html" class="extend-icon extend-icon-xinyuan"></i>
+                <p>微心愿</p>
+            </li>
+            <li>
+                <i d-url="/ref/mine/mine.html" class="extend-icon extend-icon-wode"></i>
+                <p>我的</p>
+            </li>
+        </ul>
+    </div>
+    <div id="bottomChildMenu" class="bottom-child-menu">
+    </div>
+
+<!-- 加载动画，移除位置在common.js中 -->
+@include("/common/loading.html"){}
+
+@/* 加入contextPath属性和session超时的配置 */
+<script type="text/javascript">
+    var Feng = {
+        ctxPath: "",
+        addCtx: function (ctx) {
+            if (this.ctxPath === "") {
+                this.ctxPath = ctx;
+            }
+        }
+    };
+    Feng.addCtx("${ctxPath}");
+</script>
+<script type="text/javascript" src="${ctxPath}/assets/common/libs/layui/layui.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/js/common.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/js/commonUtils.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/libs/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+
+<script>
+    var mPowerMenuMap={};
+    var scanCallback=null;
+    var admin = null;
+    var routerArray=[];
+    var IndexGlobal={
+        qrcode:null,
+        userInfo:[],
+        _urlParam:null,
+        stepArray:[],//返回回调缓存
+        setUrlParam:function(params){
+            this._urlParam=params;
+        },
+        getUrlParam:function(name){
+            if(this._urlParam==null||this._urlParam==""){
+                return null;
+            }
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = this._urlParam.match(reg);
+            if (r != null) {
+                return decodeURI(r[2]);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    var loadUserInfo = function() {
+        $.get(
+            Feng.ctxPath + "mine/getUserInfo",
+            {r:Math.random()},
+            function (res) {
+                if (res.code == 200){
+                    IndexGlobal.userInfo = res.data
+                }
+            },
+            'json'
+        )
+    }
+
+    function refreshScore(){
+        //获取积分信息
+        $request({
+            url: "/mine/getAccountInfo",
+            async: true,
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                if (response.code == 200) {
+                    var data = response.data;
+                    $("#indexScore").html(data.userinfo.score);
+                }
+            }
+        });
+    }
+
+    var openTabView=function(url,ignorePowerOrUrlname,urlname){
+        var hasPower=true;
+        if(url==null||url==""||mPowerMenuMap[url]==null){
+            hasPower=false;
+        }
+        if(url.indexOf("/mine.html")>=0){
+            hasPower=true;
+            //刷新积分
+            refreshScore();
+        }
+        var pagename=null,ignorePower=false;
+        if (typeof ignorePowerOrUrlname == "string") {
+            pagename=ignorePowerOrUrlname;
+        }else{
+            ignorePower=ignorePowerOrUrlname;
+        }
+        if(urlname!=null){
+            pagename=urlname;
+        }
+        if(pagename==null){
+            if(mPowerMenuMap[url]!=null){
+                pagename=mPowerMenuMap[url].name;
+            }
+        }
+        if(hasPower||ignorePower){
+            loadView(url,false,pagename);
+        }else{
+            Feng.error("您没有访问权限!");
+        }
+    }
+
+    //扫码
+    var openScanView=function(callback){
+        scanCallback=callback;
+        wx.miniProgram.navigateTo({
+            url: '../scanCode/scanCode'
+        });//跳转到小程序调用微信扫一扫页面
+    };
+    //退出登录
+    var logout=function(){
+        layer.confirm('确定退出登录？', {
+            skin: 'layui-layer-admin'
+        }, function () {
+            window.location.href = "${ctxPath}/logout";
+        });
+    };
+
+    var backView=function(){
+        if (routerArray.length > 1) {
+            routerArray.pop();
+            var lastRoute=routerArray.pop();
+            loadView(lastRoute.url,false,lastRoute.name);
+        }
+    }
+    var refreshView=function(){
+        if (routerArray.length > 0) {
+            var lastRoute=routerArray.pop();
+            loadView(lastRoute.url,false,lastRoute.name);
+        }
+    }
+
+    var stepAdd=function(callback){
+        if(callback!=null){
+            IndexGlobal.stepArray.push(callback);
+        }
+    }
+
+    var stepBack=function(){
+        if(IndexGlobal.stepArray.length>0){
+            var callback=IndexGlobal.stepArray.pop();
+            callback();
+        }
+    }
+
+    var stepClear=function(){
+        IndexGlobal.stepArray=[];
+    }
+
+    function loadView(url,isclear,pagename){
+        if(isclear){
+        }else{
+            routerArray.push({
+                url:url,
+                name:pagename
+            });
+        }
+        if(url.indexOf("/ref")>=0){
+            url=url.replace("/ref","/pages");
+        }
+        if(url.indexOf("?")>0){
+            var params = url.substring(url.indexOf("?")+1);
+            IndexGlobal.setUrlParam(params);
+        }else{
+            IndexGlobal.setUrlParam(null);
+        }
+        admin.showLoading("body",1,0.8);
+        Feng.loadHtml($("#container"),Feng.ctxPath+url,function(){
+            var childNodes=document.getElementById("container").childNodes;
+            if(childNodes.length>0){
+                if(childNodes[0].nodeName="#text"){
+                    document.getElementById("container").removeChild(childNodes[0]);
+                }
+                if(childNodes[childNodes.length-1].nodeName="#text"){
+                    document.getElementById("container").removeChild(childNodes[childNodes.length-1]);
+                }
+            }
+            document.getElementById("container").scrollTo(0,0);
+            admin.removeLoading();
+            //修改头部名称
+            var $indexTitleName=$("#indexTitleName");
+            if(url.indexOf("mainPage.html")<0){
+                if(pagename!=null){
+                    $indexTitleName.removeClass("text-left").addClass("text-center");
+                    $indexTitleName.find(".l-title-name").hide();
+                    $indexTitleName.find(".l-title-pagename").show().html(pagename);
+                }else{
+                    //$("#indexTitleName>.l-title-pagename").html("");
+                }
+            }else{
+                if($indexTitleName.hasClass("text-center")){
+                    $indexTitleName.removeClass("text-center").addClass("text-left");
+                    $indexTitleName.find(".l-title-name").show();
+                    $indexTitleName.find(".l-title-pagename").hide();
+                }
+            }
+        });
+    }
+
+    layui.use(['layer', 'element', 'admin'], function () {
+        admin = layui.admin;
+        // 默认加载主页
+        loadView("/pages/mainPage/mainPage.html",false,"主页");
+
+        //遍历出菜单对应关系
+        $(".layui-side a[lay-href]").each(function(){
+            var $this=$(this);
+            mPowerMenuMap[$this.attr("lay-href")]={
+                url:$this.attr("lay-href"),
+                name:$this.html()
+            };
+        });
+
+        //判断是否是小程序环境
+        wx.miniProgram.getEnv(function(res){
+            if (res.miniprogram) {//小程序环境
+                if(window.location.href.indexOf("JSESSIONID")>0){
+                    window.location=window.location.href.substring(0,window.location.href.indexOf("JSESSIONID")-1);
+                }
+            } else {
+
+            }
+        });
+        //监听hash更改，用于小程序向html通信
+        window.addEventListener('hashchange', function(e) {
+            if(e.newURL.indexOf("#")>0){
+                var hashArgs=e.newURL.substr(e.newURL.indexOf("#"));
+                if(hashArgs.indexOf("[")>=0){
+                    var qrcode=hashArgs.substring(hashArgs.indexOf("[")+1,hashArgs.indexOf("]"));//去掉后面的随机数
+                    if (qrcode == "choose_images_finished"){
+                        if(typeof initSuggestionImages === "function"){
+                            initSuggestionImages(Math.random());
+                        }
+                    } else {
+                        //展现活动详情
+                        if(scanCallback==null){
+                            IndexGlobal.qrcode=qrcode;
+                            loadView("/ref/scanResult/scanResult.html",true);
+                        }else{
+                            scanCallback(qrcode);
+                        }
+                    }
+
+                }
+            }
+        }, false);
+
+        //初始化底部菜单（定制）
+        function initBottomMenu(){
+            //判断按钮权限
+            $("#bottomMenu .extend-icon").each(function(){
+                var $this=$(this);
+                if($this.attr("d-url")!=null){
+                    var poweredUrls=new Array();
+                    var definedUrls=$this.attr("d-url").split(",");
+                    for(var i=0;i<definedUrls.length;i++){
+                        if(mPowerMenuMap[definedUrls[i]]!=null){
+                            poweredUrls.push(definedUrls[i]);
+                        }
+                    }
+                    $this.attr("d-url",poweredUrls.join(","));//设置其有权限的菜单url
+                }
+            });
+            //注册菜单点击事件
+            $("#bottomMenu").click(function(event){
+                $("#bottomChildMenu").hide();
+                if(event.target.nodeName==("LI")&&event.target.className!="func-btn"){
+                    var $target=$(event.target);
+                    var $icon=$target.find("i");
+                    if($icon.attr("d-url")!=null){
+                        $(".l-bottom-menu .l-check").removeClass("l-check");
+                        $target.addClass("l-check");
+
+                        var urls=$icon.attr("d-url").split(",");
+                        if(urls.length==1){
+                            openTabView(urls[0]);
+                        }else if(urls.length>1){
+                            //显示二级菜单
+                            var $bottomChildMenu=$("#bottomChildMenu");
+                            $bottomChildMenu.empty();
+                            for(var i=0;i<urls.length;i++){
+                                var menu=mPowerMenuMap[urls[i]];
+                                $bottomChildMenu.append("<div url=\""+menu.url+"\">"+menu.name+"</div>");
+                            }
+                            $bottomChildMenu.slideDown(150).css("left",event.target.offsetLeft+"px");
+                        }else{
+                            Feng.error("您没有访问权限!");
+                        }
+                    }else{
+                        Feng.error("您没有访问权限!");
+                    }
+                }
+            });
+            $("#bottomChildMenu").click(function(event){
+                $(this).hide();
+                openTabView($(event.target).attr("url"));
+            });
+
+            $("#scanBtn").click(function(event){
+                openScanView(null);
+            });
+        }
+
+        initBottomMenu();
+
+        $("#indexBackBtn").click(function (){
+            if(IndexGlobal.stepArray.length>0){
+                var callback=IndexGlobal.stepArray.pop();
+                callback();
+            }else{
+                backView();
+                //更新底部菜单选中状态
+                $("#bottomMenu i").each(function(){
+                    var durl=$(this).attr("d-url");
+                    if(durl.indexOf(routerArray[routerArray.length-1].url)>=0){
+                        $(".l-bottom-menu .l-check").removeClass("l-check");
+                        $(this).parent().addClass("l-check");
+                        return;
+                    }
+                });
+            }
+        });
+        refreshScore();
+        loadUserInfo();
+    });
+</script>
+</body>
+
+</html>

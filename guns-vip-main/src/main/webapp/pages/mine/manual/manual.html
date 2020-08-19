@@ -1,0 +1,260 @@
+@layout("/common/_container.html",{js:["/assets//mine/mine.js"]}){
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md3">
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">通用手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_common_login.html" onclick="toTabView(this)" >
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">用户登录</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/manual/manual_common_double_relation.html" onclick="toTabView(this)"  >
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">党支部双报到</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/manual/manual_common_suggest.html" onclick="toTabView(this)"  >
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">建议反馈</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/manual/manual_common_logout.html" onclick="toTabView(this)"  >
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" onclick="toTabView(this)" ></i>
+                                <span class="user-item-icon-text">退出登录</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">党员操作手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+
+                        <dd  dd-url="/ref/mine/manual/manual_member_activity.html"   onclick="toTabView(this)" >
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">参加活动</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/manual/manual_member_wish.html"   onclick="toTabView(this)" ">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">领取心愿</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/manual/manual_member_market.html"    onclick="toTabView(this)" >
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">商品兑换</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+
+                        <dd dd-url="/ref/mine/manual/manual_member_branch.html"  onclick="toTabView(this)" >
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">我的支部</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+
+                        <dd dd-url="/ref/mine/manual/manual_member_community_relation.html"  onclick="toTabView(this)" >
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">我的报到社区</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">社区管理员手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_community_activity.html"   onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">活动管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/manual/manual_community_wish.html"   onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">微心愿管理</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/manual/manual_community_census.html"    onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">查看数据统计</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">党支部管理员手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_branch_member.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">党组成员管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">党委管理员手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_committee_branch.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">党支部信息</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">总管理员手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_admin_census.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">数据统计</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_admin_suggestion.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">建议反馈列表</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_admin_branch.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">所有支部排行</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_admin_member.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">所有人员排行</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">后台使用手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/mine/manual/manual_manager_branch.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">党组织管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+
+                        <dd  dd-url="/ref/mine/manual/manual_manager_community.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">社区管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+
+                        <dd  dd-url="/ref/mine/manual/manual_manager_market.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">商户管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+
+                        <dd  dd-url="/ref/mine/manual/manual_manager_activity_type.html"  onclick="toTabView(this)">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-shouce-" ></i>
+                                <span class="user-item-icon-text">活动类型管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function toHref(url) {
+        // alert(url)
+        window.top.openTabView(url, true);
+    }
+
+    function toTabView(obj){
+        var url = $(obj).attr("dd-url");
+        // url += "?r="+Math.random();
+
+        toHref(url)
+    }
+
+</script>
+@}

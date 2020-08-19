@@ -1,0 +1,177 @@
+<!--这个页面仅是组件，并不是页面-->
+<style>
+    .l-edit-btn{
+        position: absolute;
+        right: 10px;
+        color: #FF5722;
+    }
+    .l-edit-btn .layui-icon{
+        font-size: 25px;
+    }
+</style>
+<div id="detailPanel" class="layadmin-homepage-panel layadmin-homepage-shadow" style="display: none;">
+    <img class="layadmin-homepage-pad-img" src="/file/{{ d.icon }}" style="width: 100%;height: 240px;">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div>
+                <div class="l-title-tp">
+                    <i class="extend-icon extend-icon-jifen" style="font-size: 12px;">{{ d.score }}</i>
+                </div>
+                <span style="font-size: 18px;margin-left: 5px;vertical-align: middle;">{{ d.title }}</span>
+            </div>
+            <div class="l-title-bt">
+                <span><i class="extend-icon extend-icon-shequ"></i>{{ d.communityName }}</span>
+                <span><i class="extend-icon extend-icon-lianxiren"></i>{{ d.contactUser }}</span>
+                <span><i class="extend-icon extend-icon-shouji"></i><a href="tel:{{ d.contactPhone }}" style="color: #FFFFFF">{{ d.contactPhone }}</a></span>
+            </div>
+            <hr>
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-riqi"></i>{{ d.deadline.substring(0,10) }}</p>
+            {{#  if(d.actionTime != ""){ }}
+            <p class="l-title-txt-p"><i class="layui-icon layui-icon-log"></i>领取时间：{{ d.actionTime.substring(0,10) }}</p>
+            {{#  } }}
+            <!--        {{#  if(d.userName != ""){ }}-->
+            <!--        <li class="list-group-item"><i class="layui-icon layui-icon-username"></i>抢愿人：{{ d.userName }}</li>-->
+            <!--        {{#  } }}-->
+            {{#  if(d.executeTime != null){ if(d.executeTime != ""){ }}
+            <p class="l-title-txt-p"><i class="layui-icon layui-icon-log"></i>执行时间：{{ d.executeTime.substring(0,10) }}</p>
+            {{#  };}; }}
+
+        </div>
+    </div>
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="detialTab">
+            <ul class="layui-tab-title l-mytab-header">
+                <li class="layui-this" lay-id="0" style="color: #000000;">心愿详情</li>
+                {{#  if(d.executeNote != null){ if(d.executeNote != ""){ }}
+                    <li lay-id="1" style="color: #000000;">执行情况</li>
+                {{#  };}; }}
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show" style="min-height: 80px;font-size: 15px;">
+                    <mdall>{{ d.note }}</mdall>
+                </div>
+                {{#  if(d.executeNote != null){ if(d.executeNote != ""){ }}
+                    <div id="activitySumup" class="layui-tab-item" style="min-height: 80px;">
+                        <mdall>{{ d.executeNote }}</mdall>
+                    </div>
+                {{#  };}; }}
+            </div>
+        </div>
+    </div>
+
+    <div id="managerArea" class="layui-card text-center" style="display: none;padding: 10px 20px;">
+        <p class="layadmin-homepage-about"><strong>执行说明<span style="color: red;">*</span></strong></p>
+        <textarea placeholder="请填写执行情况" class="layui-textarea" id="execNote"></textarea>
+    </div>
+
+    <div style="padding: 0 10px 30px 10px;">
+        <button id="actionBtn" d-state="{{ d.status }}" class="layui-btn layui-btn-fluid layui-btn-warm" style="height: 50px;font-size: 16px;">领取心愿</button>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        window.top.stepAdd(function(){
+            backListView();
+        });
+        var detialData=null;
+        var renderView=function(data){
+            layui.laytpl($("#detailPanel").html()).render(data, function(html){
+                $("#detailPanel").html(html);
+            });
+            $("#detailPanel").show();
+
+            if(data.status!=1){
+                //$("#editBtn").hide();
+                $("#actionBtn").addClass("layui-btn-disabled").html("已被抢愿");
+            }
+
+            if(data.actionTime!=null&&data.actionTime!=""){//我已参加该微心愿
+                if(data.status==2){
+                    $("#actionBtn").removeClass("layui-btn-disabled").html("执行心愿");
+                    $("#managerArea").show();
+                }else if(data.status==3){
+                    $("#actionBtn").addClass("layui-btn-disabled").html("已完成待核实");
+                }else if(data.status==4){
+                    $("#actionBtn").addClass("layui-btn-disabled").html("已核实");
+                }
+            }
+
+            //必须页面渲染完之后再绑定
+            $("#actionBtn").click(function(){
+                if(this.className.indexOf("layui-btn-disabled")<0){
+                    if(this.getAttribute("d-state")=="1"){
+                        //领取心愿
+                        $request({
+                            url: "/wish/receive",
+                            async: true,
+                            data: {
+                                wishId:Globle.wishId
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                if(response.code==200){
+                                    layer.open({
+                                        title: '您已领取微心愿'
+                                        ,content: '感谢您领取了我们的微心愿，请尽早联系我社区工作人员实践心愿。<br>联系人：'
+                                            +detialData.contactUser+"<br>联系电话："+detialData.contactPhone
+                                    });
+                                    //刷新页面
+                                    //viewActivityDetial(Globle.wishId);
+                                    window.scrollTo(0,0);
+                                    layui.element.tabChange('mainTab', '1');
+                                }else{
+                                    Feng.error("操作失败!" + response.message + "!");
+                                }
+                            }
+                        });
+                    }else if(this.getAttribute("d-state")=="2"){//执行心愿
+                        var note=$("#execNote").val();
+                        if(note==null||note==""){
+                            Feng.error("请填写执行情况");
+                            return;
+                        }else{
+                            $request({
+                                url: "/wish/execute",//执行心愿
+                                async: true,
+                                data: {
+                                    wishId:Globle.wishId,
+                                    note:note
+                                },
+                                dataType: "json",
+                                success: function (response) {
+                                    if(response.code==200){
+                                        Feng.success("执行心愿成功!");
+                                        //刷新页面
+                                        //viewActivityDetial(Globle.wishId);
+                                        window.scroll(0,0);
+                                        layui.element.tabChange('mainTab', '2');
+                                    }else{
+                                        Feng.error("操作失败!" + response.message + "!");
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                }
+            });
+
+        };
+        //获取心愿详情
+        $request({
+            url: "/wish/detail",
+            async: true,
+            data: {
+                id:Globle.wishId
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.code==200){
+                    detialData=response.data;
+                    renderView(response.data);
+                }
+            }
+        });
+    });
+</script>

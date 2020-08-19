@@ -1,0 +1,93 @@
+@layout("/common/_container.html",{js:["/assets//mine/mine.js"]}){
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">支部内积分排行榜</div>
+                </div>
+                <div class="layui-card-body " >
+                    <table class="layui-table" id="userTable" lay-filter="userTable">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>用户</th>
+                                <th></th>
+                                <th>积分</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb_data">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    layui.use(['table', 'admin', 'ax'], function () {
+        $(function(){
+            initBranchRank();
+        })
+
+        function initBranchRank(){
+            $.post(
+                Feng.ctxPath + "/mine/account_census",
+                {r:Math.random()},
+                function(rs){
+                    if (rs.code == 200){
+                        setRank(rs.data);
+                    }
+                },
+                "json"
+            )
+        }
+    });
+
+
+    layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], function () {
+        // var layer = layui.layer;
+        // var form = layui.form;
+        // var table = layui.table;
+        //
+        // var MgrUser = {
+        //     tableId: "userTable",    //表格id
+        //     condition: {
+        //         name: "",
+        //         deptId: "",
+        //         timeLimit: ""
+        //     }
+        // };
+        //
+        // /**
+        //  * 初始化表格的列
+        //  */
+        // MgrUser.initColumn = function () {
+        //     return [[
+        //         {type: 'checkbox'},
+        //         {field: 'userId', hide: true, sort: true, title: '用户id'},
+        //
+        //         {field: 'name', sort: true, title: '姓名'},
+        //         {field: 'avatar', sort: true, title: '性别'},
+        //         {field: 'rank', sort: true, title: 'rank'},
+        //
+        //     ]];
+        // };
+        //
+        // // 渲染表格
+        // var tableResult = table.render({
+        //     elem: '#' + MgrUser.tableId,
+        //     url: Feng.ctxPath + '/mgr/list',
+        //     page: true,
+        //     height: "full-98",
+        //     cellMinWidth: 100,
+        //     cols: MgrUser.initColumn()
+        // });
+    })
+</script>
+
+@}

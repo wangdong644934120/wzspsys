@@ -1,0 +1,144 @@
+@layout("/common/_container.html",{js:[]}){
+<script src="/assets/mine/mine_branch.js"></script>
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card branch_theme">
+
+                <div class="layui-text branch-info-row">
+                    <div class="user-branch-small-left">
+                        <div class="branch-name">
+                            <p id="branch_name"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">
+
+                         <span sort="asc" class="sort-btn">
+                        党员积分排行 （<b class="red_color" id="list_count">0</b>）
+                            <i class="extend-icon icon-white extend-icon-paixumb" ></i>
+                        </span>
+                        <span class="pull-right">
+                            <button ct="month" class="layui-btn layui-btn-warm layui-btn-normal  layui-btn-sm time-category">月</button>
+                            <button ct="year"  class="layui-btn layui-btn-normal   layui-btn-sm time-category">年</button>
+                            <button ct="score"  class="layui-btn layui-btn-normal   layui-btn-sm time-category">总</button>
+                         </span>
+                    </div>
+
+                </div>
+                <div class="layui-card-body branch-member-info-list" >
+                    <dd class="layuiadmin-card-status" id="dd_data">
+
+                    </dd>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+
+        var branchId = IndexGlobal.userInfo.branchId;
+
+        var sort = "desc";
+        function toAddParty(){
+            var url =  "/ref/mine/branch/branch_add_member.html"
+            window.top.openTabView(url, true);
+        }
+
+        $(function(){
+            initBranchMemberRank("month", sort);
+        })
+
+        $(".time-category").click(function(){
+            $(".layui-btn-warm").removeClass("layui-btn-warm")
+            $(this).addClass("layui-btn-warm");
+            var time = $(this).attr("ct");
+
+            console.log( "sort ::"+sort)
+            initBranchMemberRank(time, sort);
+        })
+
+
+
+        function initBranchMemberRank(time, sort){
+            $.post(
+                Feng.ctxPath + "get/branch_member_rank",
+                {r:Math.random(), branchId: branchId, time:time, sort:sort},
+                function(rs){
+                    if (rs.code == 200){
+
+                        setBranchMemberRank(rs.data.list, time);
+                    }
+                },
+                "json"
+            )
+        }
+
+
+        $(".sort-btn").click(function(){
+            var time = $(".layui-btn-warm").attr("ct");
+            var sort = $(this).attr("sort");
+            if (sort == "desc"){
+                sort = "asc";
+                $(this).attr("sort", "asc");
+            } else {
+                sort = "desc";
+                $(this).attr("sort", "desc");
+            }
+            initBranchMemberRank(time, sort);
+        })
+
+        function setBranchMemberRank(list, time){
+            var html = "";
+            if (null != list) {
+
+                var score = "";
+                var imgUrl = "";
+                $("#list_count").html(list.length)
+                $.each(list, function(i, n){
+
+
+                    if (time == "month"){
+                        score = n.monthScore
+                    } else if(time == "year"){
+                        score = n.yearScore
+
+                    } else if (time == "score"){
+
+                        score = n.score
+
+                    }
+
+                    imgUrl = Feng.ctxPath +"mine/getAvatar?avatar="+n.avatar;
+                    html += '<dl>'; // onclick="toHref(\'mine/account?id='+n.userId+'\')"
+                    html += '    <div class="user-list-div user-list-empty-5">&nbsp;</div>';
+                    // html += '    <div class="user-list-div user-list-logo">&nbsp;<img src="'+imgUrl+'" class="member-avatar"></div>';
+
+                    html += '    <div class="user-list-div user-list-logo">&nbsp;<i class="layui-icon layui-icon-user red_2_color"></i></div>';
+                    html += '    <div class="user-list-div user-list-name">'+n.userName+'&nbsp;</div>';
+                    html += '    <div class="user-list-div user-list-score">'+score+'&nbsp;</div>';
+                    html += '    <div class="user-list-div user-list-empty-10">&nbsp;</div>';
+                    html += '    <div class="clear"></div>';
+                    html += '</dl>';
+
+                })
+            }
+
+            $("#dd_data").html(html)
+        }
+
+</script>
+
+
+@}

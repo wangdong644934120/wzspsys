@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.MineMapper">
+
+    <select id="selectUserRoleInfo"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+            user_id as userId,
+            committee as committeeId,
+            branch as branchId,
+            community as communityId,
+            store as storeId
+        from sbd_user_ext u
+        where u.user_id = #{census.userId}
+    </select>
+
+    <select id="selectUserBranchInfo"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select branch as branchId
+                , b.part_committee as committeeId
+        from sbd_party_branch_person p
+        left join sbd_party_branch b on p.branch = b.id
+         where person = ${census.userId};
+    </select>
+    <!--
+        党员 基本信息
+    -->
+    <select id="selectBaseUserInfo" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MineAccount">
+         select a.userId, a.name, a.phone, a.avatar, a.openId, a.scoreActivity, a.scoreWish, a.coin, b.goodsCount from
+	(
+		select
+			u.user_id as userId, u.name , u.phone, u.avatar, u.openId,
+			 a.score_activity as scoreActivity,
+			 a.score_wish as scoreWish,
+			 a.coin
+		from sys_user u
+		left join sbd_account a on u.user_id = a.id
+		where u.user_id =  #{userId}
+	) a left join
+	(
+		select user_id, count(ex.id) as goodsCount
+		from sbd_exchange_record ex
+		where ex.isExchange = 0 and user_id = #{userId}
+	) b on a.userId = b.user_id
+    </select>
+
+    <!-- 党员 个人 活动积分 -->
+
+
+
+    <select id="selectActivityScore" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select   case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when monthScore is null then 0 else monthScore end as monthScore ,
+        case when yearCount is null then 0 else yearCount end as yearCount,
+
+         case when yearScore is null then 0 else yearScore end as yearScore ,
+        case when c is null then 0 else c end as c ,
+        case when score is null then 0 else score end as score  from (
+            select count(id) as monthCount, sum(score) as monthScore
+                    from sbd_activity_record r where r.user_id = #{census.userId} and left(r.action_time, 7) = #{census.month}
+                ) a
+                join (
+            select count(id) as yearCount, sum(score) as yearScore
+                    from sbd_activity_record r2 where r2.user_id =  #{census.userId} and left(r2.action_time, 4) =  #{census.year}
+                ) b
+                join (
+            select count(id) as c, sum(score) as score
+                from sbd_activity_record r  where r.user_id =  #{census.userId}
+                ) c
+
+
+    </select>
+
+    <!-- 党员 个人 心愿积分 -->
+
+    <select id="selectWishScore"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+            case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when monthScore is null then 0 else monthScore end as monthScore ,
+        case when yearCount is null then 0 else yearCount end as yearCount,
+
+         case when yearScore is null then 0 else yearScore end as yearScore ,
+        case when c is null then 0 else c end as c ,
+        case when score is null then 0 else score end as score
+          from (
+            select count(id) as monthCount, sum(score) as monthScore
+                    from sbd_wish_record r where r.user_id = #{census.userId} and left(r.execute_time, 7) = #{census.month}
+                ) a
+                join (
+            select count(id) as yearCount, sum(score) as yearScore
+                    from sbd_wish_record r2 where r2.user_id =  #{census.userId} and left(r2.execute_time, 4) =  #{census.year}
+                ) b
+                join (
+            select count(id) as c, sum(score) as score
+                from sbd_wish_record r  where r.user_id =  #{census.userId}
+                ) c
+
+
+    </select>
+    <!--
+        用户 按月统计 活动 数据 图表
+    -->
+    <select id="selectUserActivityCensusChartByMonth" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select substring(r.action_time, 6, 2) as month, count(id) as monthCount
+        from sbd_activity_record r
+        where  left(r.action_time, 4) =  #{census.year}
+
+        <if test="census.userId != null and census.userId != ''">
+            and r.user_id = #{census.userId}
+        </if>
+
+
+        group by substring(r.action_time, 6, 2)
+
+        order by substring(r.action_time, 6, 2)
+    </select>
+    <!--
+    用户 按月统计 心愿 数据 图表
+-->
+    <select id="selectUserWishCensusChartByMonth" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select substring(r.execute_time, 6, 2) as month, count(id) as monthCount
+        from sbd_wish_record r
+        where  left(r.execute_time, 4) =  #{census.year}
+
+        <if test="census.userId != null and census.userId != ''">
+            and r.user_id = #{census.userId}
+        </if>
+
+        group by substring(r.execute_time, 6, 2)
+        order by substring(r.execute_time, 6, 2)
+    </select>
+
+
+    <!--
+       社区 基本信息
+   -->
+    <select id="selectBaseCommunityInfo" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MineCommunity">
+       select
+
+            c.name as communityName,
+            c.id as communityId
+
+        from sbd_community c
+
+         where c.id = #{census.communityId}
+    </select>
+
+
+    <!-- 社区 发布 活动积分 -->
+    <select id="selectCommunityActivityScore" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+           case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when monthScore is null then 0 else monthScore end as monthScore ,
+        case when yearCount is null then 0 else yearCount end as yearCount,
+
+         case when yearScore is null then 0 else yearScore end as yearScore ,
+        case when c is null then 0 else c end as c ,
+        case when score is null then 0 else score end as score
+         from (
+            select count(a1.id) as monthCount, sum(type1.score) as monthScore
+                from sbd_activity a1
+                left join sbd_activity_type type1 on a1.activity_type = type1.id
+            where a1.community = #{census.communityId}
+            and left(a1.start_time, 7) = #{census.month}
+            ) a  join (
+            select count(a2.id) as yearCount, sum(type2.score) as yearScore
+                from sbd_activity a2
+                left join sbd_activity_type type2 on a2.activity_type = type2.id
+            where a2.community = #{census.communityId}
+            and left(a2.start_time, 4) = #{census.year}
+            ) b join (
+            select  count(a3.id) as c, sum(type3.score) as score
+                from sbd_activity a3
+                left join sbd_activity_type type3 on a3.activity_type = type3.id
+            where a3.community = #{census.communityId}
+            ) c
+    </select>
+
+
+    <!-- 社区 发布 心愿积分 -->
+    <select id="selectCommunityWishScore" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+           case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when monthScore is null then 0 else monthScore end as monthScore ,
+        case when yearCount is null then 0 else yearCount end as yearCount,
+         case when yearScore is null then 0 else yearScore end as yearScore ,
+        case when c is null then 0 else c end as c ,
+        case when score is null then 0 else score end as score
+         from (
+            select count(a1.id) as monthCount, sum(type1.score) as monthScore
+                from sbd_wish a1
+                left join sbd_activity_type type1 on a1.activity_type = type1.id
+            where a1.community = #{census.communityId}
+            and left(a1.create_time, 7) = #{census.month}
+            ) a  join (
+            select count(a2.id) as yearCount, sum(type2.score) as yearScore
+                from sbd_wish a2
+                left join sbd_activity_type type2 on a2.activity_type = type2.id
+            where a2.community = #{census.communityId}
+            and left(a2.create_time, 4) = #{census.year}
+            ) b join (
+            select  count(a3.id) as c, sum(type3.score) as score
+                from sbd_wish a3
+                left join sbd_activity_type type3 on a3.activity_type = type3.id
+            where a3.community = #{census.communityId}
+            ) c
+    </select>
+
+
+    <!--
+               社区 活动 参与 人数 selectActivityAllCensusPerson
+          -->
+    <select id="selectCommunityActivityCensusPerson"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+         select
+              case when monthCount is null then 0 else monthCount end as monthCount ,
+                case when yearCount is null then 0 else yearCount end as yearCount ,
+                case when c is null then 0 else c end as c
+         from sbd_activity sa
+         left join (
+         select count(a.id) as monthCount, b.community as communityId
+         from sbd_activity_record a
+         inner  join sbd_activity b on a.activity_id = b.id
+         where  b.community =  #{census.communityId}
+         and left(a.action_time, 7) =   #{census.month}
+         group by left(a.action_time, 7)
+        ) a   on sa.community = a.communityId
+        left join (
+         select count(a.id) as yearCount, b.community as communityId
+         from sbd_activity_record a
+         inner  join sbd_activity b on a.activity_id = b.id
+         where  b.community =  #{census.communityId}
+         and left(a.action_time, 4) = #{census.year}
+         group by left(a.action_time, 4)
+         ) b on sa.community = b.communityId
+         left join  (
+         select count(a.id) as c, b.community as communityId
+         from sbd_activity_record a
+         inner  join sbd_activity b on a.activity_id = b.id
+         where  b.community =  #{census.communityId}
+	 ) c on sa.community = c.communityId
+	 where sa.community =  #{census.communityId}
+	 group by sa.community;
+    </select>
+    <!--
+                   社区 心愿 参与 人数 selectActivityAllCensusPerson
+              -->
+    <select id="selectCommunityWishCensusPerson"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+         select
+              case when monthCount is null then 0 else monthCount end as monthCount ,
+                case when yearCount is null then 0 else yearCount end as yearCount ,
+                case when c is null then 0 else c end as c
+         from sbd_wish sa
+         left join (
+         select count(a.id) as monthCount, b.community as communityId
+         from sbd_wish_record a
+         inner  join sbd_wish b on a.wish_id = b.id
+         where  b.community =  #{census.communityId}
+         and left(a.action_time, 7) =   #{census.month}
+         group by left(a.action_time, 7)
+        ) a   on sa.community = a.communityId
+        left join (
+         select count(a.id) as yearCount, b.community as communityId
+         from sbd_wish_record a
+         inner  join sbd_wish b on a.wish_id = b.id
+         where  b.community =  #{census.communityId}
+         and left(a.action_time, 4) = #{census.year}
+         group by left(a.action_time, 4)
+         ) b on sa.community = b.communityId
+         left join  (
+         select count(a.id) as c, b.community as communityId
+         from sbd_wish_record a
+         inner  join sbd_wish b on a.wish_id = b.id
+         where  b.community =  #{census.communityId}
+	 ) c on sa.community = c.communityId
+	 where sa.community =  #{census.communityId}
+	 group by sa.community;
+    </select>
+    <!--
+      社区 按月统计 活动 数据 图表
+  -->
+    <select id="selectCommunityActivityCensusChartByMonth" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select substring(r.start_time, 6, 2) as month, count(id) as monthCount
+        from sbd_activity r
+        where  left(r.start_time, 4) =  #{census.year}
+        and r.community = #{census.communityId}
+        group by substring(r.start_time, 6, 2)
+
+        order by substring(r.start_time, 6, 2)
+    </select>
+    <!--
+    社区 按月统计 心愿 数据 图表
+-->
+    <select id="selectCommunityWishCensusChartByMonth" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select substring(r.create_time,  6, 2) as month, count(id) as monthCount
+        from sbd_wish r
+        where  left(r.create_time, 4) =  #{census.year}
+        and r.community = #{census.communityId}
+        group by substring(r.create_time,  6, 2)
+        order by substring(r.create_time, 7)
+    </select>
+    <!--
+       党支部 基本信息
+   -->
+    <select id="selectBaseBranchInfo" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MineBranch">
+       select
+            b.id as branchId,
+            b.code as branchCode,
+            b.name as branchName,
+            b.phone as branchPhone,
+
+            c.name as committeeName,
+            c.id as committeeId,
+            count(p.id) as personCount
+
+        from sbd_party_branch b
+            left join sbd_party_committee c on b.part_committee = c.id
+            left join sbd_party_branch_person p on p.branch = b.id
+         where b.id = #{census.branchId}
+
+    </select>
+
+    <!-- 党支部 总积分统计 -->
+    <select id="selectBranchScore" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+         select
+
+          case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when monthScore is null then 0 else monthScore end as monthScore ,
+        case when yearCount is null then 0 else yearCount end as yearCount,
+
+         case when yearScore is null then 0 else yearScore end as yearScore ,
+        case when c is null then 0 else c end as c ,
+        case when score is null then 0 else score end as score
+         from (
+            select count(r.id) as monthCount, sum(score) as monthScore
+            from sbd_coin_record r
+		inner join sbd_party_branch_person p
+		where  r.change_type = 0
+		and r.user_id = p.person
+		and p.branch = #{census.branchId}
+		and left(r.create_time, 7) = #{census.month}
+            ) a  join (
+            select count(r.id) as yearCount, sum(score) as yearScore
+            from sbd_coin_record r
+		inner join sbd_party_branch_person p
+		where  r.change_type = 0
+		and r.user_id = p.person
+		and p.branch = #{census.branchId}
+		and left(r.create_time, 4) = #{census.year}
+            ) b join (
+
+            select count(r.id) as c, sum(score) as score
+            from sbd_coin_record r
+		inner join sbd_party_branch_person p
+		where  r.change_type = 0
+		and r.user_id = p.person
+		and p.branch = #{census.branchId}
+            ) c
+    </select>
+    <!--
+          支部 内 党员列表
+      -->
+    <select id="selectBranchMemberList"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+         select userId, avatar, userName, phone, score from (
+            select  u.user_id as userId, u.phone, u.avatar, u.name as userName
+                        from sbd_party_branch_person p
+
+                    left join sys_user u on p.person = u.user_id
+                    where
+                     p.branch =  #{census.branchId}
+             ) a left join (
+                 select r.user_id, sum(score) as score
+                  from sbd_coin_record r
+                  inner join sbd_party_branch_person p on r.user_id = p.person
+                  where  r.change_type = 0
+                  group by user_id
+             ) b on a.userId = b.user_id
+
+
+            order by convert(userName using gbk) asc
+    </select>
+    <!--
+        支部 内 党员排行
+    -->
+    <select id="selectBranchMemberRank" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+
+        select  u.user_id as userId, u.avatar, u.name as userName,
+          case when monthScore is null then 0 else monthScore end as monthScore ,
+        case when yearScore is null then 0 else yearScore end as yearScore ,
+        case when score is null then 0 else score end as score
+
+         from  sys_user u
+        inner join sbd_party_branch_person p
+        left join (
+             select r.user_id, sum(score) as monthScore from sbd_coin_record r
+             inner join sbd_party_branch_person p
+             where r.change_type = 0
+             and r.user_id = p.person and
+             left(r.create_time, 7) = #{census.month}
+             and p.branch = #{census.branchId}
+             group by r.user_id
+        ) a on a.user_id = u.user_id
+
+        left join ( select r.user_id, sum(score) as yearScore from sbd_coin_record r
+            inner join sbd_party_branch_person p
+            where r.change_type = 0
+            and r.user_id = p.person
+            and left(r.create_time, 4) =  #{census.year}
+            and p.branch =  #{census.branchId}
+            group by r.user_id
+        ) b on a.user_id = b.user_id
+
+        left join (
+            select r.user_id, sum(score) as score from sbd_coin_record r
+            inner join sbd_party_branch_person p
+            where r.change_type = 0
+            and r.user_id = p.person
+            and p.branch = #{census.branchId}
+            group by r.user_id
+        ) c on a.user_id = c.user_id
+
+         where u.user_id = p.person and  p.branch =  #{census.branchId}
+
+            order by convert(u.name using gbk) asc
+    </select>
+    <!--
+         支部 按月统计 活动 数据 图表
+     -->
+    <select id="selectBranchActivityCensusChartByMonth" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select substring(r.action_time, 6, 2) as month, count(r.id) as monthCount
+        from sbd_activity_record r
+        inner join sbd_party_branch_person p on p.person = r.user_id
+        where  left(r.action_time, 4) =  #{census.year}
+        and p.branch = #{census.branchId}
+        group by substring(r.action_time, 6, 2)
+        order by substring(r.action_time, 6, 2)
+    </select>
+    <!--
+    支部 按月统计 心愿 数据 图表
+-->
+    <select id="selectBranchWishCensusChartByMonth" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+       select substring(r.execute_time, 6, 2) as month, count(r.id) as monthCount
+        from sbd_wish_record r
+        inner join sbd_party_branch_person p on p.person = r.user_id
+        where  left(r.execute_time, 4) =  #{census.year}
+        and p.branch = #{census.branchId}
+        group by substring(r.execute_time, 6, 2)
+        order by substring(r.execute_time, 6, 2)
+    </select>
+
+    <!--
+           党委 基本信息
+           党委 支部 排行、
+
+     -->
+    <select id="selectBaseCommitteeInfo" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MineCommittee">
+       select
+            c.id as committeeId,
+            c.code as committeeCode,
+            c.name as committeeName,
+            c.phone as committeePhone
+
+        from sbd_party_committee c
+
+         where c.id = #{census.committeeId}
+    </select>
+
+    <select id="selectCommitteeBranchRank"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+    select spb.id as branchId,
+            spb.name as branchName,
+            case when monthScore is null then 0 else monthScore end as monthScore ,
+            case when yearScore is null then 0 else yearScore end as yearScore ,
+            case when score is null then 0 else score end as score
+            from sbd_party_branch spb
+            left join (
+             select p.branch, sum(score) as monthScore
+                            from sbd_coin_record r
+                        inner join sbd_party_branch_person p
+                        where  r.change_type = 0
+                        and r.user_id = p.person
+                         and left(r.create_time, 7) =  #{census.month}
+                    group by  p.branch
+                ) a on a.branch = spb.id
+            left join  (
+                 select p.branch, sum(score) as yearScore
+                    from sbd_coin_record r
+                inner join sbd_party_branch_person p
+                where  r.change_type = 0
+                and r.user_id = p.person
+                and left(r.create_time, 4) =  #{census.year}
+                group by  p.branch
+
+                    ) b on spb.id = b.branch
+            left join (
+             select p.branch, sum(score) as score
+                        from sbd_coin_record r
+                    inner join sbd_party_branch_person p
+                    where  r.change_type = 0
+                    and r.user_id = p.person
+                    group by  p.branch
+            ) c on  spb.id = c.branch
+            where part_committee = #{census.committeeId}
+
+            order by spb.code + 0
+    </select>
+
+
+
+    <!--
+               所有 活动发布 人数 selectActivityAllCensusCommunity
+          -->
+    <select id="selectActivityAllCensusCommunity"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+           case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when yearCount is null then 0 else yearCount end as yearCount ,
+        case when c is null then 0 else c end as c
+         from (
+         select count(id) as monthCount
+         from sbd_activity a
+         where  left(a.start_time, 7) =  #{census.month}
+        ) a  join
+        (
+         select count(id) as yearCount
+         from sbd_activity b
+         where  left(b.start_time, 4) =  #{census.year}
+         ) b join
+         (
+         select count(id) as c
+         from sbd_activity  ) c
+    </select>
+    <!--
+               所有 活动 参与 人数 selectActivityAllCensusPerson
+          -->
+    <select id="selectActivityAllCensusPerson"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+           case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when yearCount is null then 0 else yearCount end as yearCount ,
+        case when c is null then 0 else c end as c
+         from (
+         select count(id) as monthCount
+         from sbd_activity_record a
+         where  left(a.action_time, 7) = #{census.month}
+        ) a  join
+        (
+         select count(id) as yearCount
+         from sbd_activity_record b
+         where  left(b.action_time, 4) =  #{census.year}
+         ) b join
+         (
+         select count(id) as c
+         from sbd_activity_record  ) c
+    </select>
+
+    <!--
+               所有 心愿 发布 人数 selectWishAllCensusCommunity
+          -->
+    <select id="selectWishAllCensusCommunity"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+           case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when yearCount is null then 0 else yearCount end as yearCount ,
+        case when c is null then 0 else c end as c
+         from (
+         select count(id) as monthCount
+         from sbd_wish a
+         where  left(a.create_time, 7) =  #{census.month}
+        ) a  join
+        (
+         select count(id) as yearCount
+         from sbd_wish b
+         where  left(b.create_time, 4) =  #{census.year}
+         ) b join
+         (
+         select count(id) as c
+         from sbd_wish  ) c
+    </select>
+    <!--
+           所有 心愿 参与并完成 人数 selectWishAllCensusPerson
+      -->
+    <select id="selectWishAllCensusPerson"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+          case when monthCount is null then 0 else monthCount end as monthCount ,
+        case when yearCount is null then 0 else yearCount end as yearCount ,
+        case when c is null then 0 else c end as c
+        from (
+         select count(id) as monthCount
+         from sbd_wish_record a
+         where  left(a.execute_time, 7) =  #{census.month}
+        ) a  join
+        (
+         select count(id) as yearCount
+         from sbd_wish_record b
+         where  left(b.execute_time, 4) =  #{census.year}
+         ) b join
+         (
+         select count(id) as c
+         from sbd_wish_record  ) c
+    </select>
+    <!--
+           所有 支部 排行 selectBranchRank
+      -->
+    <select id="selectBranchRank" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+       select spb.name as branchName, spb.id as branchId,
+        case when monthScore is null then 0 else monthScore end as monthScore ,
+        case when yearScore is null then 0 else yearScore end as yearScore ,
+        case when score is null then 0 else score end as score
+            from sbd_party_branch spb
+            left join (
+             select p.branch, sum(score) as monthScore
+                            from sbd_coin_record r
+                        inner join sbd_party_branch_person p
+                        where  r.change_type = 0
+                        and r.user_id = p.person
+                         and left(r.create_time, 7) =  #{census.month}
+                    group by  p.branch
+                ) a on a.branch = spb.id
+            left join  (
+                 select p.branch, sum(score) as yearScore
+                    from sbd_coin_record r
+                inner join sbd_party_branch_person p
+                where  r.change_type = 0
+                and r.user_id = p.person
+                and left(r.create_time, 4) =  #{census.year}
+                group by  p.branch
+
+                    ) b on spb.id = b.branch
+            left join (
+             select p.branch, sum(score) as score
+                        from sbd_coin_record r
+                    inner join sbd_party_branch_person p
+                    where  r.change_type = 0
+                    and r.user_id = p.person
+                    group by  p.branch
+            ) c on  spb.id = c.branch
+        group by spb.id, spb.name
+        order by spb.code + 0
+         limit 20
+    </select>
+
+    <select id="selectBranchRankSingle" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+         select spb.name as branchName, spb.id as branchId,
+               case when score is null then 0 else score end as score
+
+         from sbd_party_branch spb
+        left join (
+                select p.branch, sum(score) as score
+                from sbd_coin_record r
+                inner join sbd_party_branch_person p
+                where  r.change_type = 0
+                and r.user_id = p.person
+                <if test="census.month != null and census.month != ''">
+                    and left(r.create_time, 7) = #{census.month}
+                </if>
+                <if test="census.year != null and census.year != ''">
+                    and left(r.create_time, 4) = #{census.year}
+                </if>
+
+                group by  p.branch
+            ) a on a.branch = spb.id
+          group by spb.id, spb.name
+        <if test="census.orderby != null and census.orderby != ''">
+            order by ${census.orderby}
+        </if>
+    </select>
+    <!--
+          所有 党员 排行 selectMemberRank
+     -->
+    <select id="selectMemberRankSingle"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+            u.user_id as userId,
+            u.avatar,
+            u.name as userName,
+            case when score is null then 0 else score end as score
+        from sys_user u
+        left join (
+             select r.user_id, sum(score) as score from sbd_coin_record r
+             where r.change_type = 0
+
+            <if test="census.month != null and census.month != ''">
+                and left(r.create_time, 7) = #{census.month}
+            </if>
+            <if test="census.year != null and census.year != ''">
+                and left(r.create_time, 4) = #{census.year}
+            </if>
+
+             group by r.user_id
+        ) a on a.user_id = u.user_id
+        <if test="census.orderby != null and census.orderby != ''">
+            order by ${census.orderby}
+        </if>
+    </select>
+
+    <select id="selectMemberRank" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+
+        select  u.user_id as userId, u.avatar, u.name as userName,
+        case when monthScore is null then 0 else monthScore end as monthScore ,
+        case when yearScore is null then 0 else yearScore end as yearScore ,
+        case when score is null then 0 else score end as score
+        from  sys_user u
+        inner join sbd_party_branch_person p
+        left join (
+             select r.user_id, sum(score) as monthScore from sbd_coin_record r
+             inner join sbd_party_branch_person p
+             where r.change_type = 0
+             and r.user_id = p.person and
+             left(r.create_time, 7) = #{census.month}
+
+             group by r.user_id
+        ) a on a.user_id = u.user_id
+
+        left join ( select r.user_id, sum(score) as yearScore from sbd_coin_record r
+            inner join sbd_party_branch_person p
+            where r.change_type = 0
+            and r.user_id = p.person
+            and left(r.create_time, 4) =  #{census.year}
+
+            group by r.user_id
+        ) b on a.user_id = b.user_id
+
+        left join (
+            select r.user_id, sum(score) as score from sbd_coin_record r
+            inner join sbd_party_branch_person p
+            where r.change_type = 0
+            and r.user_id = p.person
+
+            group by r.user_id
+        ) c on a.user_id = c.user_id
+
+         where u.user_id = p.person
+
+
+
+        order by convert(u.name using gbk) asc
+    </select>
+
+    <!--
+        所有支部列表 selectBranchList
+    -->
+    <select id="selectBranchList"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+        spb.id as branchId,
+        spb.name as branchName,
+        spb.phone,
+        case when a.c is null then 0 else  a.c end as c
+        from sbd_party_branch spb
+        left join
+        (
+        select count(p.id) as c, p.branch as branchId
+        from sbd_party_branch_person p
+        group by p.branch
+        ) a on  a.branchId = spb.id
+        where 1 = 1
+        <if test="census.committeeId != null and census.committeeId != ''">
+            and spb.part_committee = #{census.committeeId}
+        </if>
+        order by spb.code + 0
+    </select>
+
+    <select id="selectActivityType" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select count(a.id) as c ,
+                d.code ,
+                d.name
+        from sbd_activity a
+        left join sbd_activity_type t on a.activity_type = t.id
+        left join sys_dict d on t.type2 = d.code
+
+        where 1=1
+        <if test="census.communityId != null and census.communityId != ''">
+            and a.community = #{census.communityId}
+        </if>
+
+        group by a.activity_type
+
+    </select>
+    <select id="selectWishType" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+         select count(a.id) as c ,
+                d.code ,
+                d.name
+        from sbd_wish a
+        left join sbd_activity_type t on a.activity_type = t.id
+        left join sys_dict d on t.type2 = d.code
+        where 1=1
+        <if test="census.communityId != null and census.communityId != ''">
+            and a.community = #{census.communityId}
+        </if>
+
+        group by a.activity_type
+
+    </select>
+
+    <select id="selectUserContactList" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+            u.user_id as userId,
+            u.avatar,
+            u.name as userName,
+            u.phone
+        from sbd_user_ext e
+        left join sys_user u on e.user_id = u.user_id
+
+        where 1=1
+        <if test="census.communityId != null and census.communityId != ''">
+            and e.community = #{census.communityId}
+        </if>
+        <if test="census.branchId != null and census.branchId != ''">
+            and e.branch = #{census.branchId}
+        </if>
+        <if test="census.committeeId != null and census.committeeId != ''">
+            and e.committee = #{census.committeeId}
+        </if>
+        <if test="census.storeId != null and census.storeId != ''">
+            and e.store = #{census.storeId}
+        </if>
+
+        order by convert(u.name using gbk) asc
+    </select>
+
+    <!--
+        双报到数据
+        以支部为基表
+        1 :  N 多个联系人
+          :  N 多个社区
+    -->
+
+    <select id="selectRelationBranch"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+            b.id as branchId,
+            b.name as branchName,
+            part_committee,
+            u.user_id as userId,
+            u.avatar,
+            u.name as userName,
+            u.phone,
+            a.c
+
+        from sbd_party_branch b
+        left join sbd_user_ext ext on ext.branch = b.id
+        left join sys_user u on u.user_id = ext.user_id
+
+        left join
+        (
+        select count(p.id) as c, p.branch as branchId
+        from sbd_party_branch_person p
+        group by p.branch
+        ) a on  a.branchId = b.id
+        order by b.code + 0
+    </select>
+
+    <select id="selectRelationCommunity"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+            c.id as communityId,
+            c.name as communityName,
+            u.user_id as userId,
+            u.avatar,
+            u.name as userName,
+            u.phone
+        from sbd_community c
+        left join sbd_user_ext ext on ext.community = c.id
+        left join sys_user u on u.user_id = ext.user_id
+    </select>
+
+    <select id="selectRelationBranchAndCommunity"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+            branch as branchId,
+            community as communityId
+        from sbd_branch_community
+    </select>
+
+    <select id="selectRelationBranchAndCommunityByBranchId"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.Census">
+        select
+                c.id as communityId,
+                c.name as communityName,
+                u.user_id as userId,
+                u.avatar,
+                u.name as userName,
+                u.phone
+        from sbd_branch_community s
+        left join sbd_community c on s.community = c.id
+        left join sbd_user_ext ext on ext.community = c.id
+        left join sys_user u on u.user_id = ext.user_id
+
+        where s.branch = #{census.branchId}
+    </select>
+</mapper>

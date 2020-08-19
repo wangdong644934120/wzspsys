@@ -1,0 +1,131 @@
+@layout("/common/_container.html",{js:[]}){
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+<style>
+    .show-pics {
+        display: block;
+        width: 100%;
+    }
+
+    .show-pics .img {
+        width: 100%;
+        margin-top: 3px;
+    }
+</style>
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card branch_theme">
+
+                <div class="layui-text branch-info-row">
+                    <div class="user-branch-small-left">
+                        <div class="branch-name">
+                            <p id="branch_name"></p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">建议反馈
+
+                    </div>
+                </div>
+                <div class="layui-card-body user-census-row" >
+                        <input name="id" id="id" type="hidden" value="${info.id}">
+                        <div class="layui-form-item" id="suggestion_content">
+
+                        </div>
+
+                        <div class="layui-form-item">
+                            <span id="show-pics" class="show-pics" >
+
+                            </span>
+                        </div>
+                        <div class="layui-form-item">
+                            <p class="suggestion-item-date" id="suggestion_date">
+
+                            </p>
+                        </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+    var suggestionId = IndexGlobal.getUrlParam("suggestionId")
+    $(function(){
+        initSuggestion()
+        initImage();
+    })
+
+    function initSuggestion(){
+        $.get(
+            Feng.ctxPath + "/suggest/getSuggestionDetail",
+            {r:Math.random(), suggestionId:suggestionId},
+            function(res){
+                var count = 0;
+                if (res.code == 200){
+                    count = res.data.count;
+                    console.log(res);
+
+                    setSuggestion(res.data.info);
+                }
+            },
+            "json"
+        )
+    }
+
+
+    function setSuggestion(data){
+        $("#suggestion_content").html(data.content)
+        $("#suggestion_date").html(data.createDate)
+    }
+
+
+    function initImage(){
+        $.get(
+            Feng.ctxPath + "/myfile/selectFileWith",
+            {r:Math.random(), objId:suggestionId},
+            function(res){
+                var count = 0;
+                if (res.code == 200){
+                   count = res.data.count;
+                   console.log(res);
+
+                   setImage(res.data.list);
+                }
+            },
+            "json"
+        )
+    }
+
+
+    function setImage(data){
+        var html = "";
+        if (data != ""){
+            $.each(data, function(i, n){
+                html += "<div>"
+
+                html += "<img src='data:image/jpeg;base64,"+n.imgBase64+"' class='img'/>";
+                html += "</div>"
+            })
+        }
+
+        $("#show-pics").html(html)
+    }
+</script>
+
+
+@}

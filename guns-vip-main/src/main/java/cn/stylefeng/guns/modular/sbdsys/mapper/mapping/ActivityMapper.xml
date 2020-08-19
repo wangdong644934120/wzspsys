@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.ActivityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.Activity">
+        <id column="id" property="id" />
+        <result column="activity_type" property="activityType" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="address" property="address" />
+        <result column="state" property="state" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="contact_user" property="contactUser" />
+        <result column="contact_phone" property="contactPhone" />
+        <result column="community" property="community" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", activity_type AS "activityType", title AS "title", content AS "content", address AS "address", state AS "state", start_time AS "startTime", end_time AS "endTime", contact_user AS "contactUser", contact_phone AS "contactPhone", community AS "community", create_time AS "createTime", create_user AS "createUser", update_time AS "updateTime", update_user AS "updateUser"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ActivityResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.ActivityParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_activity where 1 = 1
+    </select>
+
+    <select id="selectByPrimaryId" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ActivityResult" parameterType="String">
+        select a.*,t.icon,t.score,c.name as communityName,
+        case when s.id is null then 0 else s.id end as sumupId
+        from sbd_activity a
+        left join sbd_activity_type t on a.activity_type = t.id
+        left join sbd_community c on a.community=c.id
+        left join sbd_activity_sumup s on a.id = s.activity_id
+        where a.id=#{id}
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ActivityResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.ActivityParam">
+        select a.*,t.icon,t.score,c.name as communityName
+        from sbd_activity a
+        left join sbd_activity_type t on a.activity_type = t.id
+        left join sbd_community c on a.community=c.id
+        <where>
+            <if test="paramCondition.state != null and paramCondition.state != 0">
+                and a.state = #{paramCondition.state}
+            </if>
+            <if test="paramCondition.createUser != null and paramCondition.createUser != 0">
+                and a.create_user = #{paramCondition.createUser}
+            </if>
+            <if test="paramCondition.community != null and paramCondition.community != ''">
+                and a.community = #{paramCondition.community}
+            </if>
+            <if test="paramCondition.title != null and paramCondition.title != ''">
+                and a.title = like CONCAT('%', #{paramCondition.title}, '%')
+            </if>
+
+            <if test="paramCondition.communityIds != null and paramCondition.communityIds.size()>0 ">
+                and a.community in
+                <foreach collection="paramCondition.communityIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+<!--获取用户可参与的活动列表-->
+    <select id="getJoinListByUser" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ActivityResult">
+        select a.*,t.icon,t.score,c.name as communityName
+        from sbd_activity a
+        left join sbd_activity_type t on a.activity_type = t.id
+        left join sbd_community c on a.community=c.id
+        left join (select distinct(activity_id) as activity_id from sbd_activity_record where user_id = #{userId}) as tmp
+        on tmp.activity_id = a.id
+        where a.state = 1
+        and tmp.activity_id is null
+        order by create_time desc
+    </select>
+<!--获取用户已参与的活动列表-->
+    <select id="getDoneListByUser" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ActivityResult">
+        select a.*,t.icon,t.score,c.name as communityName,tmp.action_time as actionTime
+        from sbd_activity a
+        left join sbd_activity_type t on a.activity_type = t.id
+        left join sbd_community c on a.community=c.id
+        left join (select distinct(activity_id) as activity_id,action_time from sbd_activity_record where user_id = #{userId}) as tmp
+        on tmp.activity_id = a.id
+        where tmp.activity_id is not null
+        order by create_time desc
+    </select>
+
+
+    <select id="getBranchCommunityIds" resultType="String">
+        select distinct(c.community) from sbd_branch_community c
+        inner join sbd_party_branch_person p
+        on c.branch = p.branch
+        where p.person = #{userId}
+    </select>
+
+
+</mapper>

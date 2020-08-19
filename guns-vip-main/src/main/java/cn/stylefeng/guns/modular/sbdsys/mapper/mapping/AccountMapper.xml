@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.AccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.Account">
+        <id column="id" property="id" />
+        <result column="score_activity" property="scoreActivity" />
+        <result column="score_wish" property="scoreWish" />
+        <result column="coin" property="coin" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", score_activity AS "scoreActivity", score_wish AS "scoreWish", coin AS "coin"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.AccountResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.AccountParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_account where 1 = 1
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.AccountResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.AccountParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_account where 1 = 1
+    </select>
+
+</mapper>

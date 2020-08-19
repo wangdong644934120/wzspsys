@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.ActivitySumUpMapper">
+
+    <!--
+       活动总结 部分
+    -->
+    <insert id="insertActivitySumUp" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.ActivitySumup"  useGeneratedKeys="true" keyProperty="id" >
+         insert into sbd_activity_sumup
+         (content, activity_id,  is_show, create_date, create_user, update_date, update_user, is_del, remark)
+         values
+         (#{activitySumup.content}, #{activitySumup.activityId},  #{activitySumup.isShow}, #{activitySumup.createDate}, #{activitySumup.createUser}, #{activitySumup.updateDate}, #{activitySumup.updateUser}, #{activitySumup.isDel}, #{activitySumup.remark})
+    </insert>
+
+    <update id="updateActivitySumUp" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.ActivitySumup">
+         update sbd_activity_sumup
+            set content = #{activitySumup.content},
+            update_date = #{activitySumup.updateDate},
+            update_user = #{activitySumup.updateUser}
+        where id = #{activitySumup.id}
+    </update>
+
+    <!--
+        一个 activity  对应只有一个 activity sumup
+    -->
+    <select id="selectActivitySumUpExists" resultType="cn.stylefeng.guns.modular.sbdsys.entity.ActivitySumup">
+        select
+        case when  id is null then 0 else id end as id
+        from sbd_activity_sumup
+        where activity_id = #{activitySumup.activityId}
+    </select>
+
+
+    <select id="selectActivityDetailWithSumUp" resultType="cn.stylefeng.guns.modular.sbdsys.entity.ActivitySumup">
+        select
+            a.id as activityId,
+            a.title,
+            case when s.id is null then 0 else s.id end as id,
+            s.content,
+            s.create_user as createUser
+        from sbd_activity a
+        left join sbd_activity_sumup s on s.activity_id = a.id
+        where  a.id = #{activitySumup.activityId}
+
+    </select>
+
+    <select id="selectActivitySumUpDetail"  resultType="cn.stylefeng.guns.modular.sbdsys.entity.ActivitySumup">
+        select
+        s.id,
+        s.content ,
+
+        s.is_show as isShow,
+        s.create_date as createDate,
+        s.create_user as createUser,
+        s.update_date as updateDate,
+        s.update_user as updateUser,
+        s.is_del as isDel,
+        s.remark,
+        a.id as activityId
+        from sbd_activity_sumup s
+        left join sbd_activity a on s.activity_id = a.id
+        where s.is_del = 0
+        <if test="activitySumup.id != null and activitySumup.id != ''">
+            and  s.id = #{activitySumup.id}
+        </if>
+    </select>
+
+
+
+</mapper>

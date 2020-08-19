@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.MyFileMapper">
+
+    <insert id="insertMyFileInfo" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile"   useGeneratedKeys="true" keyProperty="id">
+        insert into sbd_file (
+        file_name,
+        server_name,
+        server_path,
+        image_name,
+        ext,
+        file_size,
+        is_image,
+        width,
+        height,
+        create_date,
+        create_user,
+        hash,
+        temp_id,
+         is_del
+         )
+        values
+        (
+         #{file.fileName},
+        #{file.serverName},
+        #{file.serverPath},
+        #{file.imageName},
+        #{file.ext},
+        #{file.fileSize},
+        #{file.isImage},
+        #{file.width},
+        #{file.height},
+        #{file.createDate},
+        #{file.createUser},
+        #{file.hash},
+        #{file.tempId},
+        #{file.isDel}
+        )
+    </insert>
+
+    <select id="selectMyFile" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        select
+            f.id,
+            f.file_name as fileName,
+            f.server_name as serverName,
+            f.server_path as serverPath,
+            f.image_name as imageName,
+            f.ext,
+            f.file_size as fileSize,
+            f.is_image as isImage,
+            f.width,
+            f.height,
+            f.create_date as createDate,
+            f.create_user as createUser,
+            f.hash,
+            f.temp_id as tempId
+        from sbd_file f
+        where is_del = 0
+
+    </select>
+
+
+    <select id="selectFileHasUploaded" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        select count(f.id) as count from  sbd_file f
+        where f.is_del = 0
+
+        <if test="file.hash != null and file.hash != ''">
+           and f.hash = #{file.hash}
+        </if>
+    </select>
+
+    <select id="selectFileTempIdFromObj" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        select temp_id as tempId from  sbd_file_with f
+        where
+          f.is_del = 0 
+          and
+          f.obj_id = #{file.objId}
+    </select>
+
+    <select id="selectFileTemp" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        select
+        f.id as fid,
+        f.file_name as fileName,
+        f.server_name as serverName,
+        f.server_path as serverPath,
+        f.image_name as imageName,
+        f.ext
+
+        from sbd_file f
+        where 1=1
+        <if test="file.tempId != null and file.tempId != ''">
+            and f.temp_id = #{file.tempId}
+        </if>
+        order by f.create_date asc
+    </select>
+
+    <select id="selectFileWithList" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        select
+        f.id as fid,
+        f.file_name as fileName,
+        f.server_name as serverName,
+        f.server_path as serverPath,
+        f.image_name as imageName,
+        f.ext
+
+        from sbd_file_with w
+        left join sbd_file f on w.fid = f.id and f.is_del = 0
+        where 1=1
+        <if test="file.objId != null and file.objId != ''">
+            and w.obj_id = #{file.objId}
+        </if>
+        order by f.create_date asc
+    </select>
+
+    <select id="selectActivityWithFile" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        select
+        f.file_name as fileName,
+        f.server_name as serverName,
+        f.server_path as serverPath,
+        f.image_name as imageName,
+        f.ext
+        from sbd_suggestion s
+        left join sbd_file_with w on s.id = w.obj_id,
+        left join sdb_file f on s.fid = f.id
+
+        where 1=1
+        <if test="file.hash != null and file.hash != ''">
+            and f.hash = #{file.hash}
+        </if>
+         order by f.create_date asc
+    </select>
+
+    <select id="selectSuggenttionWithFile" resultType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+       select
+        f.file_name as fileName,
+        f.server_name as serverName,
+        f.server_path as serverPath,
+        f.image_name as imageName,
+        f.ext
+        from sbd_suggestion s
+        left join sbd_file_with w on s.id = w.obj_id,
+        left join sbd_file f on s.fid = f.id
+
+        where 1=1
+        <if test="file.hash != null and file.hash != ''">
+            and f.hash = #{file.hash}
+        </if>
+    </select>
+    <delete id="deleteFile" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        update sbd_file
+            set is_del = 1
+            where id = #{file.fid}
+    </delete>
+    <delete id="deleteFileWith" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        delete from sbd_file_with where fid = #{file.fid}
+    </delete>
+
+
+    <insert id="insertFileWith" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile"  useGeneratedKeys="true" keyProperty="id">
+        insert into sbd_file_with ( obj_id, fid, type, temp_id)
+        values
+         ( #{file.objId},#{file.fid},#{file.type},#{file.tempId})
+    </insert>
+
+    <update id="updateFileWith" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile" >
+        update sbd_file_with
+            set obj_id = #{file.objId}
+        where temp_id = #{file.tempId}
+    </update>
+
+    <insert id="insertObjFileWithList" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+         insert into sbd_file_with ( obj_id, fid, type)
+        values
+        ${hash}
+    </insert>
+
+    <delete id="deleteObjFileWith" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.MyFile">
+        delete from sbd_file_with where obj_id = #{file.objId}
+    </delete>
+
+
+
+</mapper>

@@ -1,0 +1,26 @@
+.text-danger {
+    color: #FF5722;
+}
+
+.text-success {
+    color: #5FB878;
+}
+
+.text-waring {
+    color: #FFB800;
+}
+
+.layui-form-label {
+    float: left;
+    display: block;
+    padding: 9px 15px;
+    width: 90px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: right;
+}
+
+.layui-input-block {
+    margin-left: 120px;
+    min-height: 36px;
+}

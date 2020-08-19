@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.CommodityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.Commodity">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="detail" property="detail"/>
+        <result column="pics" property="pics"/>
+        <result column="cost_coin" property="costCoin"/>
+        <result column="total" property="total"/>
+        <result column="surplus" property="surplus"/>
+        <result column="enable" property="enable"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="store_id" property="storeId"/>
+        <result column="note" property="note"/>
+        <result column="linkPerson" property="linkPerson"/>
+        <result column="linkPhone" property="linkPhone"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", name AS "name", detail AS "detail",
+        pics AS "pics", cost_coin AS "costCoin", total AS "total",
+        surplus AS "surplus", enable AS "enable", create_time AS "createTime",
+        create_user AS "createUser", update_time AS "updateTime", update_user AS "updateUser",
+        store_id AS "storeId", note AS "note", linkPerson AS "linkPerson", linkPhone AS "linkPhone"
+    </sql>
+
+    <sql id="Base_Column_List_ext">
+        c.id AS "id", c.name AS "name", c.detail AS "detail", c.pics AS "pics", c.cost_coin AS "costCoin",
+         c.total AS "total", c.surplus AS "surplus", c.enable AS "enable", c.create_time AS "createTime",
+         c.create_user AS "createUser", c.update_time AS "updateTime", c.update_user AS "updateUser",
+         c.store_id AS "storeId",s.name as storeName,s.address as storeAddress,s.phone as storePhone,
+         c.note as note ,c.linkPerson linkPerson,c.linkPhone linkPhone
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.CommodityResult"
+            parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.CommodityParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_commodity c,sbd_store s
+        where 1 = 1 and c.store_id = s.id
+        <if test="paramCondition.name != null ">
+            and name like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+        <if test="paramCondition.storeId != null ">
+            and store_id = #{paramCondition.storeId}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.CommodityResult"
+            parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.CommodityParam">
+        select
+        <include refid="Base_Column_List"/>
+        from sbd_commodity c
+        where 1 = 1
+        <if test="paramCondition.storeId != null and paramCondition.storeId != ''">
+            and c.store_id = #{paramCondition.storeId}
+        </if>
+        <if test="paramCondition.name != null ">
+            and name like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+        <if test="paramCondition.storeId != null ">
+            and store_id = #{paramCondition.storeId}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="customPageList4Phone" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.CommodityResult"
+            parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.CommodityParam">
+        select DISTINCT
+        <include refid="Base_Column_List_ext"/>
+        from sbd_commodity c,sbd_store s,sbd_user_ext e
+        where 1 = 1 and c.store_id = s.id
+        and c.store_id = e.store
+        <if test="paramCondition.storeId != null and paramCondition.storeId != ''">
+            and c.store_id = #{paramCondition.storeId}
+        </if>
+        <if test="paramCondition.name != null ">
+            and c.name like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+        <if test="paramCondition.storeUser != '' and paramCondition.storeUser != null ">
+            and e.user_id = #{paramCondition.storeUser}
+        </if>
+        order by c.create_time desc
+    </select>
+    <select id="customPageList4PartMember" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.CommodityResult"
+            parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.CommodityParam">
+        select
+        <include refid="Base_Column_List_ext"/>
+        from sbd_commodity c,sbd_store s
+        where 1 = 1 and c.store_id = s.id
+        <if test="paramCondition.showAll = null or paramCondition.showAll =='false'">
+            and c.surplus != 0
+            and c.enable= 1
+        </if>
+        order by (c.total-c.surplus) desc , c.create_time
+    </select>
+
+    <select id="getResult" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.CommodityResult"
+            parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.CommodityParam">
+        select
+        <include refid="Base_Column_List_ext"/>
+        from sbd_commodity c,sbd_store s
+        where 1 = 1 and c.store_id = s.id
+        <if test="paramCondition.storeId != null and paramCondition.storeId != ''">
+            and c.store_id = #{paramCondition.storeId}
+        </if>
+        <if test="paramCondition.id != null and paramCondition.id != ''">
+            and c.id = #{paramCondition.id}
+        </if>
+    </select>
+
+</mapper>

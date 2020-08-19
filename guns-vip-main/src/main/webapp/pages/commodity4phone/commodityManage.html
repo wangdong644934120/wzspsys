@@ -1,0 +1,88 @@
+@layout("/common/_container.html",{js:["/assets/commodity4phone/commodityManage.js"]}){
+<script type="text/javascript" src="/assets/commodity4phone/commodityManage.js"></script>
+<link rel="stylesheet" href="/assets/commodity4phone/commodity.css" media="all"/>
+<style>
+    dl {
+        padding: 4px 0px 0px 0px;
+    }
+
+    dt {
+        float: left;
+        text-align: right;
+        width: 100px;
+        /*font-weight: bold;*/
+    }
+
+    dd {
+        width: 400px;
+        text-align: left;
+        /*margin-left: 200px;*/
+    }
+
+    .extend-icon-yiwancheng {
+        color: #AAAAAA;~
+        font-size: 40px;
+        float: right;
+        margin: 20px 20px auto
+    }
+
+    .extend-icon-weiwancheng {
+        color: red;
+        font-size: 40px;
+        float: right;
+        margin: 20px 20px auto
+    }
+</style>
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">商户手机端-我的商城</span>
+</div>
+
+<div id="publishBtn" class="l-publish-btn" style="display: none">
+    <i class="layui-icon layui-icon-add-1"></i>
+</div>
+
+<div id="editBtn" class="l-publish-btn" style="display: none;">
+    <i class="layui-icon layui-icon-add-1"></i>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-col-md12">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card" style="background-color: #F1F1F1">
+                    <div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="mainTab">
+                        <ul class="layui-tab-title titleTab" style="display: none">
+                            <li class="layui-this" id="myCommodityTitle">我的商城</li>
+                        </ul>
+                        <div id="listView" class="layui-tab-content" commodity>
+                            <div id="activityList" class="layui-tab-item layui-show" style="background-color: #F1F1F1">
+                            </div>
+                            <div class="layui-tab-item">
+                                <ul class="flow-default" id="LAY_demo1"></ul>
+                            </div>
+                            <div class="layui-tab-item">
+                                <table id="LAY-index-topCar2d"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--详情-->
+                    <div id="detailView" class="l-pop-view layui-card-body commodity"
+                         style="padding: 0px;margin-bottom: 0px">
+                    </div>
+                    <!--兑换记录-->
+                    <div id="exchangeView" class="l-pop-view layui-card-body commodity"
+                         style="background-color:#F4F4F4;padding: 0px;margin-top: 0px">
+                    </div>
+                    <!--发布-->
+                    <div id="publishView" class="l-pop-view layui-card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="commodityItemTmpDiv" type="text/html"></script>
+<script id="exchangeRecordTmp" type="text/html"></script>
+@}

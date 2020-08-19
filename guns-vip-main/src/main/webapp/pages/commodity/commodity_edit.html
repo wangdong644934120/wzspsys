@@ -1,0 +1,95 @@
+@layout("/common/_container.html",{js:["/assets//commodity/commodity_edit.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">修改</span>
+</div>
+
+<div class="layui-fluid " style="">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form id="commodityForm" lay-filter="commodityForm" class="layui-form model-form" style="max-width: 700px;margin:auto;">
+                <input name="id" type="hidden"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品名称<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="name" name="name" placeholder="请输入商品名称" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品描述<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="detail" name="detail" placeholder="请输入商品描述" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品图片<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="pics" name="pics" placeholder="请输入商品图片" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">花费先锋币<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="costCoin" name="costCoin" placeholder="请输入花费先锋币" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总数量<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="total" name="total" placeholder="请输入总数量" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">剩余数量<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="surplus" name="surplus" placeholder="请输入剩余数量" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否启用，0否<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="enable" name="enable" placeholder="请输入是否启用，0否" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">创建时间<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="createTime" name="createTime" placeholder="请输入创建时间" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">创建人<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="createUser" name="createUser" placeholder="请输入创建人" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">更新时间<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="updateTime" name="updateTime" placeholder="请输入更新时间" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">更新人<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="updateUser" name="updateUser" placeholder="请输入更新人" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商家id<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="storeId" name="storeId" placeholder="请输入商家id" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+                        <button class="layui-btn layui-btn-primary" type="button" id="backupPage">&emsp;返回&emsp;</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@}

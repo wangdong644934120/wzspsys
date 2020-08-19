@@ -1,0 +1,164 @@
+<style>
+    .l-back-btn {
+        position: absolute;
+        left: 12px;
+        top: 50px;
+        color: #585956;
+        font-size: 15px;
+        font-weight: bolder;
+        opacity: 1;
+    }
+
+    #tstart-toolbar-top {
+        top: 0; /*最上*/
+        color: #3E3E3E;
+        right: 0;
+        position: fixed;
+        text-align: left;
+        width: 100%;
+        z-index: 10000;
+        overflow: visible;
+        height: 0px;
+    }
+
+    #tstart-toolbar-top .tstart-left {
+        float: left; /*在左*/
+        margin: 40px 0px 0px 5px;
+        padding: 10px;
+        border: 1px solid silver;
+        border-radius: 8px 8px 8px 8px;
+        background-color: white;
+        width: 8px;
+        opacity: 0.4;
+        height: 20px;
+    }
+
+    .l-back-btn {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+<script>
+    $(window).scroll(function (e) {
+        //页面滑动时显示
+        $("#tstart-toolbar-top").show();
+    });
+    if (Globle.preShow == "mainPage") {
+        $(".l-back-btn").css("top", "15px");
+        $(".tstart-left").css("margin-top", "4px");
+        $("#tstart-toolbar-top").css("margin-top", "0px");
+    }
+    window.top.stepAdd(function () {
+        $(".commodity").hide();
+        $(".layui-tab").show();
+        //当前一个页面打开（实际是show）时，写入Globle中需要后退是显示的id
+        $("#" + Globle.preShow).show();
+        $("#" + Globle.preShow).slideInLeft(200);
+    });
+
+    /**
+     * 返回上一页
+     */
+    function backListView() {
+    }
+</script>
+<!--<div id="tstart-toolbar-top">-->
+<!--    <div class="tstart-left">-->
+<!--        <i onclick="backListView()" class="layui-icon layui-icon-return l-back-btn"></i>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="layadmin-homepage-panel layadmin-homepage-shadow text-center">
+    <div class="layui-card text-center" style="margin: 0;padding: 0">
+        <div class="layui-card-body" style="padding:0">
+            <div class="layadmin-homepage-pad-ver">
+                <div class="layui-carousel" id="test1">
+                    <div carousel-item id="pics">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="padding: 15px">
+            {{# if(d.fromPartMember){ }}
+            <div class="caller-iconset" style="text-align: left">
+                <span style="float:left;font-size: 15px">
+                <img src="/images/money.png" class="moneyImage" style="width: 18px;height: 18px"/>
+                <b style="color: red;">{{d.costCoin}}</b>
+                </span>
+                <span style="float:right;color: #C4C4C4;font-size: 12px">
+                    数量：{{d.surplus}}/{{d.total}}
+                </span>
+            </div>
+            {{# } }}
+            <h4 style="clear:both;text-align: left">
+                <strong>{{d.name}}</strong>
+            </h4>
+            <div style="text-align: left;font-size: 12px">
+                <div>
+                    <span style="color: #C4C4C4">商家</span>&nbsp;&nbsp;{{d.storeName}}
+                </div>
+                <div>
+                    <span style="color: #C4C4C4">地址</span>&nbsp;&nbsp;{{d.storeAddress}}
+                </div>
+            </div>
+        </div>
+        <hr style="margin: 0;height:10px;background-color: #F2F2F2">
+        <div style="margin: 0 15px 0 15px">
+            <div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="detailTab">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" style="padding: 0">商品描述</li>
+                </ul>
+                <div class="layui-tab-content" style="padding: 0">
+                    <div class="layadmin-homepage-pad-hor" style="text-align: left;padding: 10px;font-size: 12px">
+                        {{d.detail}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="margin: 0;height:10px;background-color: #F2F2F2">
+        <div style="margin: 0 15px 0 15px">
+            <div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="exchangeType">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" style="padding: 0">兑换方式</li>
+                </ul>
+                <div class="layui-tab-content" style="padding: 0">
+                    <div style="text-align: left;font-size: 12px;padding: 10px;">
+                        <div>
+                            <span style="color: #C4C4C4">兑换方式</span>&nbsp;&nbsp;{{d.note}}
+                        </div>
+                        <div>
+                            <span style="color: #C4C4C4">联系电话</span>&nbsp;&nbsp;{{d.linkPhone}}
+                        </div>
+                        <div>
+                            <span style="color: #C4C4C4">联&nbsp;&nbsp;系&nbsp;&nbsp;人</span>&nbsp;&nbsp;{{d.linkPerson}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="margin: 0;height:10px;background-color: #F2F2F2">
+        {{# if(d.fromPartMember){ }}
+        <div class="layui-form-item">
+            <button class="layui-btn  layui-btn-fluid" onclick="exchangeCommodity('{{d.id}}')">兑换该商品</button>
+        </div>
+        {{# } }}
+        <ul class="layadmin-homepage-list-group">
+            {{# if(d.fromExchanging){ }}
+            <div class="layui-form-item">
+                <div id="qrcode" style="width: 160px;height: 160px;margin: 10px auto;">
+                </div>
+            </div>
+            {{# } }}
+            {{# if(d.fromExchanged){ }}
+            <div class="layui-form-item">
+                <div class="caller-iconset">消费先锋币：
+                    <img src="/images/money.png" class="moneyImage"/>
+                    <span class="moneySpan">{{d.costCoin}}</span>
+                </div>
+                <div class="caller-iconset">
+                    兑换时间：{{d.exchangeTime}}
+                </div>
+            </div>
+            {{# } }}
+        </ul>
+    </div>
+</div>

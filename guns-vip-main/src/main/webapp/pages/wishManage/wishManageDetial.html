@@ -1,0 +1,135 @@
+<!--这个页面仅是组件，并不是页面-->
+<style>
+    .l-edit-btn{
+        color: #FF5722;
+    }
+    .l-edit-btn .layui-icon{
+        font-size: 25px;vertical-align: middle;
+    }
+</style>
+<div id="detailPanel" class="layadmin-homepage-panel layadmin-homepage-shadow" style="display: none;">
+    <img class="layadmin-homepage-pad-img" src="/file/{{ d.icon }}" style="width: 100%;height: 240px;">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            {{#  if(d.canEdit === 1){ }}
+            <p id="editBtn" class="l-edit-btn"><i class="layui-icon layui-icon-edit"></i>编辑</p>
+            {{#  } }}
+            <div>
+                <div class="l-title-tp">
+                    <i class="extend-icon extend-icon-jifen" style="font-size: 12px;">{{ d.score }}</i>
+                </div>
+                <span style="font-size: 18px;margin-left: 5px;vertical-align: middle;">{{ d.title }}</span>
+            </div>
+            <div class="l-title-bt">
+                <span><i class="extend-icon extend-icon-shequ"></i>{{ d.communityName }}</span>
+                <span><i class="extend-icon extend-icon-lianxiren"></i>{{ d.contactUser }}</span>
+                <span><i class="extend-icon extend-icon-shouji"></i><a href="tel:{{ d.contactPhone }}" style="color: #FFFFFF">{{ d.contactPhone }}</a></span>
+            </div>
+            <hr>
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-riqi"></i>{{ d.deadline.substring(0,10) }}</p>
+            {{#  if(d.actionTime != ""){ }}
+            <p class="l-title-txt-p"><i class="layui-icon layui-icon-log"></i>领取时间：{{ d.actionTime.substring(0,10) }}</p>
+            {{#  } }}
+            {{#  if(d.userName != ""){ }}
+            <p class="l-title-txt-p"><i class="layui-icon layui-icon-username"></i>抢愿人：{{ d.userName }}</p>
+            {{#  } }}
+            {{#  if(d.userPhone != ""){ }}
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-shouji"></i>抢愿人电话：<a href="tel:{{ d.userPhone }}" style="color: #0d10c5">{{ d.userPhone }}</a></p>
+            {{#  } }}
+            {{#  if(d.executeTime != null){ if(d.executeTime != ""){ }}
+            <p class="l-title-txt-p"><i class="layui-icon layui-icon-log"></i>执行时间：{{ d.executeTime.substring(0,10) }}</p>
+            {{#  };}; }}
+
+        </div>
+    </div>
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="detialTab">
+            <ul class="layui-tab-title l-mytab-header">
+                <li class="layui-this" lay-id="0" style="color: #000000;">心愿详情</li>
+                {{#  if(d.executeNote != null){ if(d.executeNote != ""){ }}
+                <li lay-id="1" style="color: #000000;">执行情况</li>
+                {{#  };}; }}
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show" style="min-height: 150px;font-size: 15px;">
+                    <mdall>{{ d.note }}</mdall>
+                </div>
+                {{#  if(d.executeNote != null){ if(d.executeNote != ""){ }}
+                <div id="activitySumup" class="layui-tab-item" style="min-height: 150px;">
+                    <mdall>{{ d.executeNote }}</mdall>
+                </div>
+                {{#  };}; }}
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 0 10px 30px 10px;">
+        <button id="actionBtn" d-state="{{ d.status }}" class="layui-btn layui-btn-fluid layui-btn-warm" style="height: 50px;font-size: 16px;"></button>
+    </div>
+
+</div>
+
+<script>
+    $(function() {
+        window.top.stepAdd(function(){
+            backListView();
+        });
+        var renderView=function(data){
+            layui.laytpl($("#detailPanel").html()).render(data, function(html){
+                $("#detailPanel").html(html);
+            });
+            $("#detailPanel").show();
+
+            if(data.status==1){
+                $("#actionBtn").hide();
+            }else if(data.status==2){
+                $("#actionBtn").addClass("layui-btn-disabled").html("已被抢愿");
+            }else if(data.status==3){
+                $("#actionBtn").html("核实完成");
+            }else if(data.status==4){
+                $("#actionBtn").addClass("layui-btn-disabled").html("心愿已完结");
+                $("#editBtn").hide();
+            }
+
+            //必须页面渲染完之后再绑定
+            $("#actionBtn").click(function(){
+                if(this.className.indexOf("layui-btn-disabled")<0){
+                    //核实心愿
+                    var operation = function () {
+                        var ajax = new layui.ax(Feng.ctxPath + "/wish/confirm", function (data) {
+                            Feng.success("操作成功");
+                            //刷新页面
+                            //viewActivityDetial(Globle.wishId);
+                            window.scrollTo(0,0);
+                            layui.element.tabChange('mainTab', '3');
+                        }, function (data) {
+                            Feng.error("操作失败!" + response.message + "!");
+                        });
+                        ajax.set("wishId", Globle.wishId);
+                        ajax.start();
+                    };
+                    Feng.confirm("是否确认核实该信息?", operation);
+                }
+            });
+
+            $("#editBtn").click(function(){
+                openEditView(Globle.wishId);
+            });
+
+        };
+        //获取心愿详情
+        $request({
+            url: "/wish/detail",
+            async: true,
+            data: {
+                id:Globle.wishId
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.code==200){
+                    renderView(response.data);
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,198 @@
+<!--这个页面仅是组件，并不是页面-->
+<style>
+    .layui-card-body {
+        text-align: center;
+
+    }
+    .detail-scan-logo {
+        margin: 30px auto;
+    }
+    .detail-scan-logo img{
+        width: 80%;
+    }
+    .activity-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 15px auto;
+    }
+
+    .activity-community-name {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+
+    .detail-sign-div {
+        width:80%;
+        margin: 15px auto;
+    }
+
+
+
+    .detail-sign-div {
+
+    }
+    .detail-sign-div .detail-sign-div-desc {
+        text-align:left;
+        font-weight: 700;
+    }
+    .detail-sign-div-desc-title {
+        font-size: 18px;
+    }
+    .detail-sign-div-row  .detail-sign-item {
+        width: 50%;
+        float: left;
+    }
+
+    .mini-scan-image {
+
+    }
+
+    .mini-scan-image img {
+        width: 80%;
+        margin: 12px auto;
+    }
+
+    .qrcode-image {
+    }
+    .qrcode-scan-image {
+        text-align:center;
+        border: 1px solid #efefef;
+        border-radius: 10px;
+    }
+    .qrcode-scan-image img {
+
+        width: 80%;
+        margin: 12px auto;
+    }
+
+    .mini-scan-image-text {
+        font-weight:700
+    }
+
+    .canvan_image_activity {
+        display:block;
+        width:100%;
+    }
+
+    .canvan_image_activity img {
+
+        width:100%;
+    }
+</style>
+
+<div id="canvan_image_activity" class="canvan_image_activity">
+
+</div>
+
+<div id="detailImagePanel" class="layadmin-homepage-panel layadmin-homepage-shadow" style="display: block;">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="detail-scan-logo">
+                <img src="/images/detail-title.png" >
+            </div>
+            <div  class="activity-title">
+                [<span id="detail-activity-title"></span>]
+            </div>
+            <div  class="activity-community-name">
+                ━━━
+                <span id="detail-community-name" ></span>
+                ━━━
+            </div>
+
+            <div class="detail-sign-div">
+                <div class="detail-sign-div-desc">
+                    <div class="detail-sign-div-desc-title">签到流程</div>
+                    <div>
+                        1、扫一扫关注“红心账户”小程序
+                    </div>
+                    <div>
+                        2、点击“红心账户”里的扫一扫，识别签到二维码
+                    </div>
+                </div>
+                <div class="detail-sign-div-row">
+                    <div class="detail-sign-item">
+                        <div class="mini-image">
+                            <div class="mini-scan-image">
+                                <img src="/file/activityType/minigram_img.jpg" />
+                            </div>
+                        </div>
+                        <div class="mini-scan-image-text">红心账户小程序</div>
+                    </div>
+                    <div class="detail-sign-item">
+                        <div class="qrcode-image">
+                            <div id="qrcodeShow" class="qrcode-scan-image"></div>
+                        </div>
+                        <div class="mini-scan-image-text">签到二维码</div>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+
+            <div class="detail-sign-div">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/assets/mine/html2canvas.min.js"></script>
+<script>
+    $(function() {
+
+        var renderView=function(data){
+
+            $("#detail-activity-title").html(data.title);
+
+            $("#detail-community-name").html(data.communityName);
+
+            if(data.qrcode!=null&&data.qrcode!=""){//显示二维码
+                var qrcode=window.location.protocol+"//"+window.location.host+"/wechat#["+data.qrcode+"]";
+                new QRCode($("#qrcodeShow")[0],qrcode);
+            }
+            setTimeout(function(){
+                toSetCanvans()
+            }, 500)
+
+        };
+        //获取活动详情
+        $request({
+            url: "/activity/detail",
+            async: true,
+            data: {
+                id:Globle.activityId
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.code==200){
+                    renderView(response.data)
+                }
+            }
+        });
+
+
+        function toSetCanvans(){
+            //
+            // html2canvas(document.getElementById('detailImagePanel'), {
+            //     onrendered: function(canvas) {
+            //         $("#detailImagePanel").hide();
+            //         var url = canvas.toDataURL();//图片地址
+            //         var html = "<img src='"+url+"'>"
+            //         $('#canvan_image_activity').html(html);
+            //     }
+            // })
+            $("#detailImagePanel").show();
+            html2canvas(document.getElementById('detailImagePanel')).then(function(canvas) {
+                admin.removeLoading();
+                $("#detailImagePanel").hide();
+                var url = canvas.toDataURL();//图片地址
+                var html = "<img src='"+url+"'>"
+                $('#canvan_image_activity').html(html);
+            });
+
+        }
+
+
+    });
+</script>

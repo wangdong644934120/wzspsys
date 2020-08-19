@@ -1,0 +1,33 @@
+
+<div class="layui-col-xs12 layui-col-sm12 layui-col-md12 l-activity-item"
+     style="padding: 0px;margin: 0px 0px 1px 0px;">
+    <div style="text-align: center;background-color:white ;">
+        {{# if(d.isExchange == 1) { }}
+        <i class="extend-icon extend-icon-yiwancheng" style="font-size: 40px"></i>
+        <dl>
+            <dt>兑换时间：</dt>
+            <dd>{{d.exchangeTime}}</dd>
+        </dl>
+        {{# }else{ }}
+        <i class="extend-icon extend-icon-weiwancheng" style="font-size: 40px"></i>
+        <dl>
+            <dt>订单时间：</dt>
+            <dd>{{d.orderTime}}</dd>
+        </dl>
+        {{# } }}
+        <dl>
+            <dt>兑换人：</dt>
+            <dd>{{d.exchanger}}</dd>
+        </dl>
+        <dl>
+            <dt>消费：</dt>
+            <dd style="color: red">
+                <img src="/images/money.png" class="moneyImage"/>{{d.costCoin}}
+            </dd>
+        </dl>
+        <dl>
+            <dt>联系方式：</dt>
+            <dd>{{d.exchangerPhone}}</dd>
+        </dl>
+    </div>
+</div>

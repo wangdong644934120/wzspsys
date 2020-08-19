@@ -1,0 +1,176 @@
+<!--这个页面仅是组件，并不是页面-->
+<style>
+    .l-edit-btn{
+        color: #FF5722;
+    }
+    .l-edit-btn .layui-icon{
+        font-size: 25px;vertical-align: middle;
+    }
+</style>
+<div id="detailPanel" class="layadmin-homepage-panel layadmin-homepage-shadow" style="display: none;">
+    <img class="layadmin-homepage-pad-img" src="/file/{{ d.icon }}" style="width: 100%;height: 240px;">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            {{#  if(d.canEdit === 1){ }}
+            <p id="editBtn" class="l-edit-btn"><i class="layui-icon layui-icon-edit"></i>编辑</p>
+            {{#  } }}
+            <div>
+                <div class="l-title-tp">
+                    <i class="extend-icon extend-icon-jifen" style="font-size: 12px;">{{ d.score }}</i>
+                </div>
+                <span style="font-size: 18px;margin-left: 5px;vertical-align: middle;">{{ d.title }}</span>
+            </div>
+            <div class="l-title-bt">
+                <span><i class="extend-icon extend-icon-shequ"></i>{{ d.communityName }}</span>
+                <span><i class="extend-icon extend-icon-lianxiren"></i>{{ d.contactUser }}</span>
+                <span><i class="extend-icon extend-icon-shouji"></i><a href="tel:{{ d.contactPhone }}" style="color: #FFFFFF">{{ d.contactPhone }}</a></span>
+            </div>
+            <hr>
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-didian"></i>{{ d.address }}</p>
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-riqi"></i>{{ d.startTime.substring(0,16) }} ~ {{ d.endTime.substring(0,16) }}</p>
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-renshu"></i>{{ d.actionCount }}（已参加人数）</p>
+            {{#  if(d.actionTime != ""){ }}
+            <p class="l-title-txt-p"><i class="layui-icon layui-icon-log"></i>参加时间：{{ d.actionTime.substring(0,16) }}</p>
+            {{#  } }}
+        </div>
+    </div>
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="detialTab">
+            <ul class="layui-tab-title l-mytab-header">
+                <li class="layui-this" lay-id="0" style="color: #000000;">活动详情</li>
+                <li lay-id="1" style="color: #000000;">活动总结</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show" style="min-height: 150px;font-size: 15px;">
+                    <mdall>{{ d.content }}</mdall>
+                </div>
+                <div id="activitySumup" class="layui-tab-item" style="min-height: 150px;overflow: hidden;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+    </div>
+</div>
+<div id="managerArea" class="layui-card text-center" style="display: none;padding: 10px;">
+    <p class="layadmin-homepage-about">
+         扫码签到
+        <br />
+        <font color="#dcdcdc">点击生成活动画报</font>
+
+    </p>
+    <div id="qrcode" style="width: 160px;height: 160px;margin: 10px auto;">
+    </div>
+</div>
+
+<div style="padding: 0 10px 30px 10px;">
+    <button id="finishBtn" class="layui-btn layui-btn-fluid layui-btn-warm" style="height: 45px;font-size: 16px;">结束活动</button>
+</div>
+
+
+
+<script>
+    $(function() {
+        window.top.stepAdd(function(){
+            backListView();
+        });
+        var renderView=function(data){
+            layui.laytpl($("#detailPanel").html()).render(data, function(html){
+                $("#detailPanel").html(html);
+            });
+            $("#detailPanel").show();
+
+
+
+
+            if(data.qrcode!=null&&data.qrcode!=""){//显示二维码
+                var qrcode=window.location.protocol+"//"+window.location.host+"/wechat#["+data.qrcode+"]";
+                $("#managerArea").show();
+                var $qrcode=$("#qrcode");
+                new QRCode($qrcode[0], {
+                    width: $qrcode.width(),
+                    height: $qrcode.height()
+                }).makeCode(qrcode);
+
+            }
+            function onActivityFinish(){
+                $("#managerArea").hide();
+                $("#editBtn").hide();
+                //$("#finishBtn").addClass("layui-btn-disabled")
+                $("#finishBtn").html("活动总结");
+            }
+
+            if(data.state==2){//活动结束
+                onActivityFinish();
+                Feng.loadHtml($("#activitySumup"),"/ref/activity/activity_sumup_detail.html");
+            }
+
+            //必须页面渲染完之后再绑定
+            $("#editBtn").click(function(){
+                openEditView(Globle.activityId);
+            });
+
+
+
+            $("#finishBtn").click(function(){
+                if($("#finishBtn").html()=="结束活动"){//打开活动总结
+                    var operation = function () {
+                        var ajax = new layui.ax(Feng.ctxPath + "/activity/editItem", function (data) {
+                            Feng.success("活动结束成功!");
+                            onActivityFinish();
+                        }, function (data) {
+                            Feng.error("活动结束失败!" + data.responseJSON.message + "!");
+                        });
+                        ajax.set({
+                            id:Globle.activityId,
+                            state:2
+                        });
+                        ajax.start();
+                    };
+                    Feng.confirm("确认要结束此活动？该操作无法撤销！", operation);
+                }else{
+                    $("#detialView").hide();
+                    Feng.loadHtml($("#sunmupView"),"/pages/activity/activity_sumup.html",function(){
+                        $("#sunmupView").fadeIn(200);
+                        window.top.stepAdd(function(){
+                            $("#sunmupView").hide();
+                            $("#detialView").show();
+                        });
+                    });
+                }
+
+            });
+
+
+            $("#managerArea").click(function(){
+
+                admin.showLoading("body",1,0.5);
+                $("#detialView").hide();
+
+                Feng.loadHtml($("#sunmupView"),"/pages/activityManage/activityManageDetial2Image.html",function(){
+                    $("#sunmupView").fadeIn(200);
+                    window.top.stepAdd(function(){
+                        $("#sunmupView").hide();
+                        $("#detialView").show();
+                    });
+                });
+            })
+        };
+        //获取活动详情
+        $request({
+            url: "/activity/detail",
+            async: true,
+            data: {
+                id:Globle.activityId
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.code==200){
+                    renderView(response.data);
+                }
+            }
+        });
+
+
+    });
+</script>

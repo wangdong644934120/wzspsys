@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.test.mapper.StudentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.test.entity.Student">
+        <id column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="address" property="address" />
+        <result column="classesid" property="classesid" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        s.id AS "id", s.code AS "code", name AS "name", s.address AS "address", s.classesid AS "classesid" ,d.full_name as "classesname"
+    </sql>
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.test.model.result.StudentResult" parameterType="cn.stylefeng.guns.modular.test.model.params.StudentParam">
+        select
+        <include refid="Base_Column_List"/>
+        from biz_student s, sys_dept  d  where 1 = 1 and s.classesid=d.dept_id
+            <if test="paramCondition.name != null and paramCondition.name != ''">
+                and s.name like CONCAT('%',#{paramCondition.name},'%')
+            </if>
+            <if test="paramCondition.classesid != null and paramCondition.classesid != ''">
+                and s.classesid like CONCAT('%',#{paramCondition.classesid},'%')
+            </if>
+            <if test="paramCondition.id != null and paramCondition.id != ''">
+                and s.id =#{paramCondition.id}
+            </if>
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.test.model.result.StudentResult" parameterType="cn.stylefeng.guns.modular.test.model.params.StudentParam">
+        select
+        <include refid="Base_Column_List"/>
+        from biz_student s,sys_dept  d  where 1 = 1 and s.classesid=d.dept_id
+        <if test="paramCondition.name != null and paramCondition.name != ''">
+            and s.name like CONCAT('%',#{paramCondition.name},'%')
+        </if>
+        <if test="paramCondition.classesid != null and paramCondition.classesid != ''">
+        and s.classesid like CONCAT('%',#{paramCondition.classesid},'%')
+    </if>
+    </select>
+
+
+
+
+
+</mapper>

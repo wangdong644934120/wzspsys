@@ -1,0 +1,53 @@
+@layout("/common/_container.html",{js:["/assets//store/store_add.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">添加</span>
+</div>
+
+<div class="layui-fluid " style="">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form id="storeForm" lay-filter="storeForm" class="layui-form model-form" style="max-width: 700px;margin:auto;">
+                <input name="id" type="hidden"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">编号<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="code" name="code" placeholder="请输入编号" type="text" class="layui-input" lay-verify="required" maxlength="20" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">名称<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="name" name="name" placeholder="请输入名称" type="text" class="layui-input" lay-verify="required" maxlength="20" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">地址<span style="color: red;"></span></label>
+                    <div class="layui-input-block">
+                        <input id="address" name="address" placeholder="请输入地址" type="text" maxlength="50" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话<span style="color: red;"></span></label>
+                    <div class="layui-input-block">
+                        <input id="phone" name="phone" placeholder="请输入电话" type="text" class="layui-input" maxlength="20"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商家简介<span style="color: red;"></span></label>
+                    <div class="layui-input-block">
+                        <input id="detail" name="detail" placeholder="商家简介" type="text" maxlength="200"class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+                        <button class="layui-btn layui-btn-primary" type="button" id="backupPage">&emsp;返回&emsp;</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@}

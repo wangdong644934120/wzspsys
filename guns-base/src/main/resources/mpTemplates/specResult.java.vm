@@ -1,0 +1,22 @@
+package ${package.EntitySpecResult};
+
+import lombok.Data;
+import java.util.Date;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import ${package.Entity}.${entity};
+
+/**
+ * <p>
+ * $!{table.comment}
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+public class ${entity}Result extends ${entity} implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+}

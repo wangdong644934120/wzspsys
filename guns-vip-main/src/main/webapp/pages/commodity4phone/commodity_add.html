@@ -1,0 +1,104 @@
+<!--这个页面仅是组件，并不是页面-->
+<form id="activityForm" lay-filter="activityForm" class="layui-form model-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">活动题目<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">活动类型<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select id="activityType" name="activityType" required  lay-verify="required" lay-search="">
+                <option value="">请选择活动类型</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">活动说明<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea" name="content" required  lay-verify="required"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">起始时间<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="startTime" id="startTimePicker" placeholder="请选择结束时间" type="date" required lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束时间<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="endTime" id="endTimePicker" placeholder="请选择结束时间" type="date" required lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">活动地点<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="address" autocomplete="off" placeholder="请输入活动题目" class="layui-input" required lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">负责人<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="contactUser" autocomplete="off" placeholder="请输入活动题目" class="layui-input" lay-verify="required" required>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系方式<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="contactPhone" autocomplete="off" placeholder="请输入活动题目" class="layui-input" lay-verify="required" required>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="btnSubmit">发布活动</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(function() {
+        //获取项目类型
+        $request({
+            url: "/activityType/listAll",
+            async: true,
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                if(response.code==200){
+                    var data=response.data;
+                    var groupMap={};
+                    for(var i=0;i<data.length;i++){
+                        var group=groupMap[data[i].type2];
+                        if(group==null){
+                            group=$("<optgroup label=\""+data[i].type2+"\"></optgroup>");
+                            groupMap[data[i].type2]=group;
+                        }
+                        group.append("<option value=\""+data[i].id+"\">"+data[i].detail+"</option>");
+                    }
+                    //activityType
+                    for(var key in groupMap){
+                        $("#activityType").append(groupMap[key]);
+                    }
+                    layui.form.render('select');
+                }
+            }
+        });
+        layui.form.on('submit(btnSubmit)', function (data) {
+            debugger;
+            var ajax = new layui.ax(Feng.ctxPath + "/activity/addItem", function (data) {
+                Feng.success("添加成功！");
+                //打开该项目详情
+                viewActivityDetial(data);
+            }, function (data) {
+                Feng.error("添加失败！" + data.responseJSON.message)
+            });
+            ajax.set(data.field);
+            ajax.start();
+            return false;//返回失败，则不会刷新页面
+        });
+    });
+</script>

@@ -1,0 +1,132 @@
+@layout("/common/_container.html",{js:[]}){
+<script src="/assets/mine/mine_branch.js"></script>
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card branch_theme">
+
+                <div class="layui-text branch-info-row">
+                    <div class="user-branch-small-left">
+                        <div class="branch-name">
+                            <p id="branch_name"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">党组成员信息 （<b class="red_color" id="list_count">0</b>）
+                        <!--<button class="layui-btn layui-btn-normal pull-right  layui-btn-sm " onclick="toAddParty()">添加党员</button>-->
+                        <a href="javascript:;toAddParty()" class="pull-right">
+                            <i class="extend-icon extend-icon-tianjiachengyuan blue_1_color" style="font-size:20px"></i>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="layui-card-body branch-member-info-list" >
+
+                    <dd class="layuiadmin-card-status" id="dd_data">
+
+                    </dd>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+        var branchId = IndexGlobal.userInfo.branchId;
+
+
+        function toAddParty(){
+           var url =  "/ref/mine/branch/branch_add_member.html"
+            window.top.openTabView(url, true);
+        }
+
+        $(function(){
+            initBranchMember();
+        })
+
+        function initBranchMember(){
+              $.post(
+                Feng.ctxPath + "/mine/get/branch_member",
+                {r:Math.random(), branchId: branchId},
+                function(rs){
+                    if (rs.code == 200){
+
+                        setBranchMember(rs.data.list);
+                    }
+                },
+                "json"
+            )
+        }
+        function setBranchMember(list){
+            var html = "";
+            if (null != list) {
+                // html += '<dl >';
+                // html += '    <div class="user-list-div user-list-logo">&nbsp;</div>';
+                // html += '    <div class="user-list-div user-list-name">用户</div>';
+                // html += '    <div class="user-list-div user-list-score">积分</div>';
+                // html += '    <div class="user-list-div user-list-phone">电话</div>';
+                // html += '    <div class="clear"></div>';
+                // html += '</dl>';
+                $("#list_count").html(list.length)
+                var imgUrl = "";
+                $.each(list, function(i, n){
+
+
+                    imgUrl = Feng.ctxPath +"mine/getAvatar?avatar="+n.avatar;
+
+                    html += '<dl class="branch-member-list">'; //onclick="toHref(\'mine/account?id='+n.userId+'\')"
+
+                    // html += '    <div class="user-list-div user-list-logo">&nbsp;<img src="'+imgUrl+'" class="member-avatar"></div>';
+
+                    html += '    <div class="user-list-div user-list-empty-8">&nbsp;<i class="layui-icon layui-icon-user red_2_color"></i></div>';
+                    html += '    <div class="user-list-div user-list-name">'+n.userName+'&nbsp;</div>';
+                    html += '    <div class="user-list-div user-list-empty-5">'+n.score+'&nbsp;</div>';
+                    html += '    <div class="user-list-div user-list-empty-10">'+n.phone+'&nbsp;</div>';
+                    // html += '    <div class=" user-list-delete" userId="'+n.userId+'" userName="'+n.userName+'">删除</div>';
+                    // html += '    <div class=" user-list-delete" userId="'+n.userId+'" userName="'+n.userName+'">删除</div>';
+                    html += ' <div class=" user-list-delete" userId="'+n.userId+'" userName="'+n.userName+'"><i class="extend-icon extend-icon-shanchu1 red_3_color"></i></div>'
+                    html += '    <div class="clear"></div>';
+                    html += '</dl>';
+
+                })
+            }
+
+            $("#dd_data").html(html)
+
+
+            $(".user-list-delete").on('click', function(){
+                var id = $(this).attr("userId");
+                var name = $(this).attr("userName");
+
+                var confirmMsg =  "确认要从支部中移除党员["+name+"]信息？"
+                var operation = function () {
+                    $.post(
+                        '/partyBranchPerson/deleteBranchPerson',
+                        {r:Math.random(), person:id},
+                        function(res){
+                            if (res.code == 200) {
+                                Feng.success("删除成功！");
+                                initBranchMember();
+                            }
+                        }
+                    )
+                }
+                Feng.confirm(confirmMsg, operation )
+            })
+
+        }
+
+</script>
+
+
+@}

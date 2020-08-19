@@ -1,0 +1,30 @@
+<div class="layui-col-xs6 layui-col-sm6 layui-col-md4 l-commodity-item layui-col-space0"
+     style="border: 5px solid #f1f1f1;text-align: center;padding: 0;
+     margin-bottom: 0px;"
+     onclick="showDetail('{{d.id}}')">
+    <div id="{{d.id}}" class="commodityItem" style="padding: 0;">
+        <img src="/file/{{d.pics}}" alt="" style="width: 100%;height: 120px;border-radius:5px 5px 0px 0px;z-index: -1">
+        <span class="person-number">{{d.total-d.surplus}}人已兑换</span>
+    </div>
+    <dl style="padding: 1px;background-color: #fff ;border-radius:0px 0px 5px 5px ;">
+        <dd>
+            <div class="storeDiv" >
+                <b style="color: #0C0C0C;">{{d.name}}</b>
+            </div>
+        </dd>
+        <dd>
+            <div class="storeName">
+                <span>{{d.storeName}}</span>
+            </div>
+        </dd>
+        <dd>
+            <div class="cost-coin-div">
+                <img src="/images/money.png" class="moneyImage"/>
+                <span class="moneySpan">{{d.costCoin}}</span>
+            </div>
+        </dd>
+    </dl>
+<!--    <div class=" layui-progress layui-progress" lay-showPercent="yes" style="margin: 15px 10px 0px 10px">-->
+<!--        <div class="layui-progress-bar " lay-percent="{{d.surplus}}/{{d.total}}"></div>-->
+<!--    </div>-->
+</div>

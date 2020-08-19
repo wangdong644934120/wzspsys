@@ -1,0 +1,246 @@
+
+@layout("/common/_container.html",{js:[]}){
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+<div class="layui-fluid ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card branch_theme">
+
+                <div class="layui-text branch-info-row">
+                    <div class="user-branch-small-left">
+                        <div class="branch-name">
+                            <p id="committee_name"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header " >
+<!--                    全区第<b class="red_color" id="branchRank">0</b>名-->
+                    支部积分统计
+                    <span class="pull-right">
+
+                    </span>
+                </div>
+                <div class="layui-card-body user-census-row" >
+                    <ul class="layui-row layui-this">
+                        <li class="layui-col-xs4 month-li">
+                            <p class="user-item-score"><b id="activity_month_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="activity_month_count">14</b>项</p>
+                            <p class="user-item-time">本月</p>
+                        </li>
+                        <li class="layui-col-xs4  year-li">
+                            <p class="user-item-score"><b id="activity_year_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="activity_year_count">14</b>项</p>
+                            <p class="user-item-time">本年</p>
+                        </li>
+                        <li class="layui-col-xs4  total-li">
+                            <p class="user-item-score"><b id="activity_score">160</b>分</p>
+                            <p class="user-item-counts">完成<b id="activity_count">160</b>项</p>
+                            <p class="user-item-time">历史</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">
+
+                         <span sort="asc" class="sort-btn">
+                            党员积分排行
+                            <i class="extend-icon icon-white extend-icon-paixumb" ></i>
+                        </span>
+                        <span class="pull-right">
+                            <button ct="month" class="layui-btn layui-btn-warm layui-btn-normal  layui-btn-sm time-category">月</button>
+                            <button ct="year"  class="layui-btn layui-btn-normal   layui-btn-sm time-category">年</button>
+                            <button ct="score"  class="layui-btn layui-btn-normal   layui-btn-sm time-category">总</button>
+                         </span>
+                    </div>
+                </div>
+                <div class="layui-card-body branch-member-info-list" >
+                    <dd class="layuiadmin-card-status" id="dd_data">
+
+                    </dd>
+                </div>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  onclick="toHref('/ref/mine/admin/all_branch_rank.html')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-ranking" ></i>
+                                <span class="user-item-icon-text">区支部排行榜</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd  onclick="toHref('/ref/mine/admin/all_member_rank.html')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-_huabanfuben" ></i>
+                                <span class="user-item-icon-text">区人员排行榜</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+    //
+    var branchId = IndexGlobal.userInfo.branchId;
+    function toHref(url) {
+        window.top.openTabView(url, true);
+    }
+
+    // window.top.stepAdd(function(){
+    //     var url = "/ref/mine/mine.html"
+    //     toHref(url);
+    // });
+
+        $(function () {
+            initBranch();
+            initBranchScore();
+
+
+            var sort = $(this).attr("sort");
+            initBranchMemberRank("month", sort );
+        })
+
+        function initBranchScore(){
+
+            $.post(
+                Feng.ctxPath + "/mine/get/branch_census",
+                {r:Math.random(), branchId: branchId},
+                function(rs){
+                    if (rs.code == 200){
+                        setBranchScore(rs.data.branchScore)
+                    }
+                },
+                "json"
+            )
+        }
+
+
+
+        function initBranch(){
+            $.post(
+                Feng.ctxPath + "/mine/get/branch_data",
+                {r:Math.random(), branchId: branchId},
+                function(rs){
+                    if (rs.code == 200){
+                        setBranchInfo(rs.data.branchInfo);
+
+                    }
+                },
+                "json"
+            )
+        }
+
+        function setBranchInfo(infoData) {
+            $("#committee_name").html(infoData.committeeName);
+            $("#branch_name").html(infoData.branchName);
+        }
+
+        function setBranchScore(scoreData){
+            $("#activity_month_score").html(scoreData.monthScore);
+            $("#activity_month_count").html(scoreData.monthCount);
+
+
+            $("#activity_year_score").html(scoreData.yearScore);
+            $("#activity_year_count").html(scoreData.yearCount);
+
+
+            $("#activity_score").html(scoreData.score);
+            $("#activity_count").html(scoreData.c);
+
+        }
+
+
+
+
+    $(".sort-btn").click(function(){
+        var time = $(".layui-btn-warm").attr("ct");
+        var sort = $(this).attr("sort");
+        if (sort == "desc"){
+            $(this).attr("sort", "asc");
+        } else {
+            $(this).attr("sort", "desc");
+        }
+        initBranchMemberRank(time, sort);
+    })
+
+
+    $(".time-category").click(function(){
+        $(".layui-btn-warm").removeClass("layui-btn-warm")
+        $(this).addClass("layui-btn-warm");
+
+        var time = $(this).attr("ct");
+
+        initBranch(time);
+
+    })
+    //人员排行
+    function initBranchMemberRank(time, sort){
+        $.post(
+            Feng.ctxPath + "/mine/get/branch_member_rank",
+            {r:Math.random(), branchId: branchId, time:time, sort:sort},
+            function(rs){
+                if (rs.code == 200){
+
+                    setBranchMemberRank(rs.data.list, time);
+                }
+            },
+            "json"
+        )
+    }
+
+    function setBranchMemberRank(list, time){
+        var html = "";
+        if (null != list) {
+
+            var score = "";
+            var imgUrl = "";
+            $("#list_count").html(list.length)
+            $.each(list, function(i, n){
+
+
+                if (time == "month"){
+                    score = n.monthScore
+                } else if(time == "year"){
+                    score = n.yearScore
+
+                } else if (time == "score"){
+
+                    score = n.score
+
+                }
+
+                imgUrl = Feng.ctxPath +"/mine/getAvatar?avatar="+n.avatar;
+                html += '<dl>'; // onclick="toHref(\'mine/account?id='+n.userId+'\')"
+                html += '    <div class="user-list-div user-list-empty-5">&nbsp;</div>';
+                // html += '    <div class="user-list-div user-list-logo">&nbsp;<img src="'+imgUrl+'" class="member-avatar"></div>';
+
+                html += '    <div class="user-list-div user-list-logo">&nbsp;<i class="layui-icon layui-icon-user red_2_color"></i></div>';
+                html += '    <div class="user-list-div user-list-name">'+n.userName+'&nbsp;</div>';
+                html += '    <div class="user-list-div user-list-score">'+score+'&nbsp;</div>';
+                html += '    <div class="user-list-div user-list-empty-10">&nbsp;</div>';
+                html += '    <div class="clear"></div>';
+                html += '</dl>';
+
+            })
+        }
+
+        $("#dd_data").html(html)
+    }
+</script>
+
+
+@}

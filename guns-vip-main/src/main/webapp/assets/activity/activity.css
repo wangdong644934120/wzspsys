@@ -1,0 +1,81 @@
+.l-activity-icon{
+    width: 100%;height: 100px;margin: 5px auto;border-radius: 5px;
+}
+.l-publish-btn{
+    position: fixed;width: 100%;bottom: 55px;background: rgba(0,0,0,0.2);z-index: 99;padding: 10px 0;text-align: center;
+}
+.l-publish-btn .layui-btn{
+    color: #FFFFFF;font-size: 18px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 45px;
+    width: 90%;
+}
+.l-publish-btn:active{background: #FFB800;}
+.l-pop-view{display: none;position: absolute;top: 0;right: 0;left: 0;padding: 0;background: #F2F2F2;}
+
+.l-activity-item{
+    border-bottom: 1px solid #eeeeee;
+    padding: 10px 0;
+    font-family: "Microsoft YaHei";
+    font-size: 16px;
+}
+.l-activity-item>div{
+    pointer-events: none;
+}
+
+.l-activity-item .l-title-tp{
+    vertical-align:baseline;
+}
+
+.l-icon-coin{
+    display: inline-block;
+    background-image: url("/images/icon-coin.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 18px;height: 15px;
+    vertical-align: middle;
+    margin:0 2px;
+}
+
+.layui-tab-item{
+    overflow-y: auto;
+}
+.layui-form-select dl dd, .layui-form-select dl dt{
+    white-space: normal;
+}
+
+.l-title-tp{
+    display: inline-block;width: 35px;height: 18px;line-height:18px;border-radius: 3px;border: 1px solid #F47C7E;color: #F47C7E;text-align: center;vertical-align: middle;
+}
+.l-title-bt{
+    margin-top: 15px;
+}
+.l-title-bt>span{
+    background: #F6BC7B;padding: 0px 5px;margin-right: 3px;display: inline-block;border-radius: 3px;margin-top: 1px;
+    color: #FFFFFF;
+}
+.l-title-bt>span>i{margin-right: 5px;vertical-align: middle;font-size: 14px;}
+.l-title-txt-p{font-size: 15px;}
+.l-title-txt-p>i{margin-right: 5px;color: #FF8900;}
+.l-mytab-header>li{
+    color: #000000;
+    font-size: 16px;
+}
+
+.l-over-icon{
+    display: inline-block;
+    position: absolute;
+    right: 0;top: 5px;width: 45px;height: 45px;
+    background-image: url("/images/l-over-icon.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border-radius: 0 5px 0 0;
+}
+
+.l-activity-tab-title{
+    text-align: center;
+}
+.l-activity-tab-title li{
+    font-size: 16px;
+}

@@ -1,0 +1,181 @@
+<style>
+    .l-back-btn {
+        position: absolute;
+        left: 12px;
+        top: 50px;
+        color: #585956;
+        font-size: 15px;
+        font-weight: bolder;
+        opacity: 1;
+    }
+
+    #tstart-toolbar-top {
+        top: 0; /*最上*/
+        color: #3E3E3E;
+        right: 0;
+        position: fixed;
+        text-align: left;
+        width: 100%;
+        z-index: 10000;
+        overflow: visible;
+        height: 0px;
+    }
+
+    #tstart-toolbar-top .tstart-left {
+        float: left; /*在左*/
+        margin: 40px 0px 0px 5px;
+        padding: 10px;
+        border: 1px solid silver;
+        border-radius: 8px 8px 8px 8px;
+        background-color: white;
+        width: 8px;
+        opacity: 0.4;
+        height: 20px;
+    }
+
+    .l-back-btn {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .title {
+        float: left;
+        width: 30%;
+        text-align: center;
+        font-size: 15px;
+        font-weight: bold;
+        color: #6A6A6A;
+        background-color: white;
+        margin: 10px auto 10px auto;
+    }
+
+    .content {
+        float: right;
+        width: 70%;
+        text-align: left;
+        font-size: 15px;
+        font-weight: bold;
+        color: #6A6A6A;
+        background-color: white;
+        margin: 10px auto 10px auto;
+    }
+</style>
+<script>
+    $(window).scroll(function (e) {
+        //页面滑动时显示
+        $("#tstart-toolbar-top").show();
+    });
+    if (Globle.preShow == "mainPage") {
+        $(".l-back-btn").css("top", "15px");
+        $(".tstart-left").css("margin-top", "4px");
+        $("#tstart-toolbar-top").css("margin-top", "0px");
+    }
+    window.top.stepAdd(function () {
+        $(".commodity").hide();
+        $(".layui-tab").show();
+        //当前一个页面打开（实际是show）时，写入Globle中需要后退是显示的id
+        $("#" + Globle.preShow).show();
+        $("#" + Globle.preShow).slideInLeft(200);
+    });
+
+    /**
+     * 返回上一页
+     */
+    function backListView() {
+    }
+</script>
+<!--<div id="tstart-toolbar-top">-->
+<!--    <div class="tstart-left">-->
+<!--        <i onclick="backListView()" class="layui-icon layui-icon-return l-back-btn"></i>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="layadmin-homepage-panel layadmin-homepage-shadow text-center">
+    {{# if(d.fromExchanging){ }}
+    <div class="layui-form-item" style="background-color:#FFFFFF">
+        <div style="margin-top:40px;width:30%;font-size: 21px;
+        color:#C63934;font-weight: bold;float: left;text-align:left;margin-left: 30px ">
+            兑换二维码
+        </div>
+        <div id="qrcode" style="width: 100px;height: 100px;margin: 10px 50px 10px auto;float:right;">
+        </div>
+    </div>
+    {{# } }}
+    <div class="layui-card text-center" style="margin: 0;padding: 0">
+        <div style="float:left;width: 60%;margin: 20px auto 20px 30px;text-align: left;font-size: 16px;font-weight: bold;">
+            {{d.storeName}}
+        </div>
+        {{# if(d.fromExchanging) { }}
+        <div style="float:right;width: 50px;margin: 20px 30px 20px auto;color:red;font-size: 16px;font-weight: bold">
+            待兑换
+        </div>
+        {{# }else{ }}
+        <div style="float:right;width: 50px;margin: 20px 30px 20px auto;color:#6A6A6A;font-size: 16px;font-weight: bold">
+            已兑换
+        </div>
+        {{# } }}
+        <hr style="background-color: #F2F2F2">
+        <div class="goods_img" id="pics">
+        </div>
+        <div class="goods-info">
+            <div class="goods-title" style="text-align: left">
+                {{d.name}}
+            </div>
+            <div style="color: #8D8D8D;text-align: left">
+                消费先锋币：<img src="/images/money.png" class="moneyImage"/>
+                <span class="moneySpan">{{d.costCoin}}</span>
+            </div>
+        </div>
+        <hr style="margin: 0;height:10px;background-color: #F2F2F2">
+        <div class="title">
+            地址
+        </div>
+        <div class="content">
+            {{d.storeAddress}}
+        </div>
+        <hr>
+        <div class="title">
+            兑换方式
+        </div>
+        <div class="content">
+            {{d.note}}
+        </div>
+        <hr>
+        <div class="title">
+            联系电话
+        </div>
+        <div class="content">
+            {{d.linkPhone}}
+        </div>
+        <hr>
+        <div class="title">
+            联&nbsp;&nbsp;系&nbsp;&nbsp;人
+        </div>
+        <div class="content">
+            {{d.linkPerson}}
+        </div>
+        <hr style="margin: 0;height:10px;background-color: #F2F2F2">
+        {{# if(d.fromExchanged){ }}
+        <div class="title">
+            兑换时间
+        </div>
+        <div class="content">
+            {{d.exchangeTime}}
+        </div>
+        <hr>
+        <div class="title">
+            商品数量
+        </div>
+        <div class="content">
+            1
+        </div>
+        <hr>
+        <div class="title">
+            总计
+        </div>
+        <div class="content">
+            <span class="moneySpan" style="">{{d.costCoin}}</span> &nbsp;&nbsp;个先锋币
+        </div>
+        <hr>
+        {{# } }}
+    </div>
+</div>

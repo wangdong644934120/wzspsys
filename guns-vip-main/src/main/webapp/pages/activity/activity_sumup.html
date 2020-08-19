@@ -1,0 +1,267 @@
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+<script type="text/javascript" src="/assets/mine/mine_census.js"></script>
+
+
+<div class="layui-fluid user-header-card  ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card ">
+
+
+            </div>
+
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">活动总结
+                        <span class="pull-right"><a href="suggestion_list"></a></span>
+                    </div>
+                </div>
+                <div class="layui-card-body user-census-row" >
+                    <form id="suggestionForm" lay-filter="suggestionForm"   class="layui-form" >
+                        <input id="tempId" name="tempId" type="hidden" value="">
+                        <input id="type" name="type"  type="hidden" value="sumup">
+                        <input id="activityId" name="activityId"  type="hidden" value="">
+                        <input id="hasImage" value="" type="hidden"  >
+                        <input id="id" value="0"  type="hidden" >
+                        <input id="text_content" value="" type="hidden" >
+                        <div class="layui-form-item">
+
+                            <textarea id="content" name="content"  lay-verify="required"  placeholder="请输入总结内容" class="layui-textarea" required></textarea>
+
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <span id="uploaded-pics" class="uploaded-pics">
+
+                            </span>
+
+                            <button type="button" class="layui-btn layui-btn-primary upload-btn" id="upload_btn" style="width: 100px; height: 100px">
+                                <i class="extend-icon extend-icon-jiahao" style="font-size: 20px"></i>
+                            </button>
+
+                        </div>
+                        <div class="layui-form-item">
+
+                            <button id="sumupAddBtn"  lay-filter="sumupAddBtn" lay-submit="" class="layui-btn layui-btn-fluid layui-btn-warm" style="height: 50px;font-size: 16px;">保存</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+
+    var activityId = Globle.activityId
+
+    var tempId = getUuid(8, 3);
+
+    $(function(){
+        $("#activityId").val(activityId);
+        $("#tempId").val(tempId)
+        initSumUp();
+
+    })
+
+    wx.miniProgram.getEnv(function(res) {
+        if (res.miniprogram) {//小程序环境
+            ready();
+        }
+    });
+
+
+
+    layui.use(['table', 'upload', 'form', 'ax'], function () {
+        var $ = layui.$;
+        var $ax = layui.ax;
+        var form = layui.form;
+        var upload = layui.upload
+
+        form.on('submit(sumupAddBtn)', function (data) {
+
+            var ajax = new $ax(Feng.ctxPath + "/activity/saveActivitySumUp", function (data) {
+
+                Feng.success("活动总结成功！");
+
+                $("#sunmupView").hide();
+                viewActivityDetial(activityId)
+
+                // var url = '/ref/activityManage/activityManageDetial.html?r='+Math.random();
+                // window.top.openTabView(url, true);
+                //打开该项目详情
+            }, function (data) {
+                Feng.error("保存失败！" + data.responseJSON.message)
+            });
+            ajax.setData(data.field);
+            ajax.start();
+            return false;//返回失败，则不会刷新页面
+        });
+
+        //
+        // upload.render({
+        //     elem: '#upload_btn'
+        //     , url: '/myfile/uploadPicture'
+        //     , exts: 'jpg|png'
+        //     , size: 5000 //限制文件大小，单位 KB
+        //     , data: {tempId: $("#tempId").val(), type:$("#type").val()}
+        //     , done: function (res) {
+        //
+        //         if (res.code == 0){
+        //             var imgPic = " <div class='upload-img'>"
+        //             imgPic += " <div class='upload-img-delete-btn' onclick='deleteUpload(this)' fid='"+res.data.fid+"'>删除</div>";
+        //             imgPic += "<img src='data:image/jpeg;base64,"+res.data.imgBase64+"' style='width:100px;height:100px;'/>";
+        //
+        //             imgPic += "</div>";
+        //
+        //
+        //             $("#uploaded-pics").append(imgPic);
+        //
+        //         } else {
+        //             Feng.error("上传图片失败！" + res.message)
+        //         }
+        //
+        //
+        //         console.log(res)
+        //     }
+        //     ,multiple: true
+        //     ,before: function(obj){
+        //         //预读本地文件示例，不支持ie8
+        //         // obj.preview(function(index, file, result){
+        //         //     $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
+        //         // });
+        //     }
+
+        // });
+
+
+    });
+
+    function initSumUp(){
+        $.get(
+            Feng.ctxPath + "/activity/getActivitySumUp",
+            {r:Math.random(), activityId:activityId},
+            function(res){
+                var count = 0;
+                if (res.code == 200){
+                   setSumUp(res.data)
+                }
+            },
+            "json"
+        )
+    }
+
+    function setSumUp(data){
+        $("#id").val(data.detail.id);
+        $("#content").val(data.detail.content);
+
+        var hasImage = data.hasImage;
+        $("#hasImage").val(hasImage);
+        initImages();
+    }
+
+
+    function initImages(){
+        var hasImage = $("#hasImage").val();
+
+        $("#uploaded-pics").html("");
+       if (hasImage == 1){
+           $.get(
+               Feng.ctxPath + "/myfile/selectFileWith",
+               {r:Math.random(), objId:$("#id").val()},
+               function(res){
+                   var count = 0;
+                   if (res.code == 200){
+                       count = res.data.count;
+                       console.log(res);
+                       setImage(res.data.list);
+                   }
+               },
+               "json"
+           )
+       }
+    }
+
+
+
+    function initSuggestionImages(random){
+        initImages();
+        $.get(
+            Feng.ctxPath + "/myfile/selectTempFile",
+            {r:random, tempId:$("#tempId").val()},
+            function(res){
+                var count = 0;
+                if (res.code == 200){
+                    setImage(res.data.list);
+                }
+            },
+            "json"
+        )
+    }
+
+    function setImage(data){
+        var imgPic = "";
+        if (data != ""){
+
+            $.each(data, function(i, n){
+                imgPic += " <div class='upload-img'>"
+                imgPic += " <div class='upload-img-delete-btn' onclick='deleteUpload(this)' fid='"+n.fid+"'>删除</div>";
+                imgPic += "<img src='data:image/jpeg;base64,"+n.imgBase64+"' style='width:100px;height:100px;'/>";
+
+                imgPic += "</div>";
+
+            })
+        }
+
+        $("#uploaded-pics").append(imgPic);
+    }
+
+    function deleteUpload(obj){
+        $(obj).parent().remove();
+        var fid = $(obj).attr("fid");
+
+        $.post(
+            '/myfile/deletePicture',
+            {r:Math.random(), fid:fid},
+            function(){
+
+            }
+        )
+    }
+
+
+    function ready() {
+        console.log(window.__wxjs_environment === 'miniprogram') // true
+
+        $("#upload_btn").click(function(){
+
+            var tempId = $("#tempId").val()
+            var type = $("#type").val()
+
+            var image = wx.miniProgram.navigateTo({
+                url: '../image/image?tempId='+tempId+"&type="+type+"&userId="+userId+"&hash=#"+Math.random(),
+                success: function(){
+                    console.log('success')
+                },
+                fail: function(){
+                    console.log('fail');
+                },
+                complete:function(){
+                    console.log('complete');
+                }
+            })
+
+            console.log(image)
+
+        })
+
+
+    }
+
+</script>
+

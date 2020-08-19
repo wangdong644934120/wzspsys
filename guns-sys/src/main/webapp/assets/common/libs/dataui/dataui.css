@@ -1,0 +1,220 @@
+/*
+    Document   : ecmap
+    Created on : 2016-6-21, 10:40:35
+    Author     : lichenfeng
+    Description:
+        Purpose of the stylesheet follows.
+*/
+/*@import url("shanxing.css");*/
+root {
+    display: block;
+}
+body{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    font-family: Microsoft YaHei;
+    margin: 0;padding: 0;
+}
+.l_container{
+    position: absolute;top: 0px;bottom: 0px;left: 0px;right: 0px;border:none;overflow: hidden;background-size: 100% 100%;background-image:url(images/l_background_default.jpg);
+}
+.l_screen_border{
+    /*width: 100%;height: 100%;box-sizing: border-box;border-style: solid; border-width: 46px 305px 117px 33px; border-image-source: url("images/l_default_border.png"); border-image-slice: 46 305 117 33 fill; border-image-width: initial; border-image-outset: initial; border-image-repeat: repeat; background: none; pointer-events: none;*/
+}
+.l_super_widget:active{
+    box-shadow:0 0 3px #FFF;
+}
+
+.l_super_widget{
+    position: absolute;width: 400px; height: 300px;background: none;
+    box-sizing: border-box;border-width: 30px;border-color: transparent;border-style: solid;
+    color: #FFF;font-size: 15px;z-index: 1;
+}
+.l_super_widget_bg{
+    border-image-source: url("images/l_widget_border.png"); border-image-slice: 32 37 fill; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial;
+    z-index: 10;
+}
+
+.l_super_widget_bg2{
+    border-image-source: url("images/l_default_border.png"); border-image-slice: 32 37 fill; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial;
+    z-index: 10;
+}
+
+.l_super_widget_bg3{
+    z-index: 10;
+}
+
+.l_widget_title{
+    position: absolute;top: -20px;
+    display: flex; align-items: left; justify-content: left; color: rgb(216, 194, 125); font-weight: normal; font-family: "Microsoft Yahei", Arial, sans-serif; font-size: 20px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+    width: 100%;height: 60px;
+}
+.l_title_backgroud_default{
+    background: url("images/l_default_title.gif") no-repeat; background-size: 80% 100%; image-rendering: -webkit-optimize-contrast;background-position: 175px -12px;
+}
+.l_title_backgroud_none{}
+.l_widget_content{width: 100%;height: 100%;}
+
+.l_widget_state{width: 100%;height: 100%;overflow: auto;}
+.l_widget_statelist{display:flex;align-items:center;}
+.l_widget_statelist_item{margin-left: 15px;}
+.l_widget_state_JF{width: 100%;height: 100%;padding: 5% 0 0;overflow: hidden;}
+.l_widget_content_item{width: 50%;height: 100%;text-align: center;
+                       margin: 5px;
+                       background-color: rgba(42,31,89,0.5);
+}
+.l_widget_content_item div:nth-child(1){font-size: 15px;margin-top: 5px;}
+.l_widget_content_item div:nth-child(2){font-size: 2em;font-weight: 600;}
+.l_widget_lunxun{
+    /*position: absolute;*/
+    width: 100%;overflow:hidden;}
+.baseItem{display: flex;display: -webkit-flex;justify-content:space-around;
+          font: 15px 'trebuchet MS', 'lucida sans';
+          text-shadow: 0 1px 0 rgba(255,255,255,.5);
+          color: #39B2E7;
+          font-weight: 500;
+/*           background-color: rgba(42,31,89,0.5); */
+          margin-bottom: 5px;
+}
+.baseItem:hover{
+    background-color: rgba(107,231,198,0.5);
+    cursor:pointer;
+}
+/*.baseItem div:nth-child(0){width: 150px;}*/
+.baseItem div:nth-child(1){width: 150px;}
+.baseItem div:nth-child(2){width: 180px;}
+.baseItem div:nth-child(3){width: 250px;}
+.l_widget_lunxun ul{ width:100%; height:100px;}
+.l_widget_lunxun li{ list-style:none }
+.l_widget_lunxun li div{ float:left;}
+.weui-badge{display:inline-block;padding:.15em .4em;min-width:8px;border-radius:18px;background-color:#f43530;color:#fff;line-height:1.2;text-align:center;font-size:12px;vertical-align:middle}
+
+.active {
+    cursor:move;
+}
+.active textarea,.model textarea{
+    border:0;
+    background: rgba(255,255,255,0.5);
+    display: block;
+    width: 100%;
+    height:100%;
+    word-break: break-all;
+}
+.active .activeBorder{
+    background-color:rgba(255,255,255,0.6);
+    border-radius: 2px;
+}
+.active .activeBorder{position: absolute;}
+.active .activeBorder:nth-child(5){cursor:nw-resize;}
+.active .activeBorder:nth-child(6){cursor:sw-resize;}
+.active .activeBorder:nth-child(7){cursor:sw-resize;}
+.active .activeBorder:nth-child(8){cursor:nw-resize;}
+.active .activeBorder:nth-child(9){cursor:n-resize;}
+.active .activeBorder:nth-child(10){cursor:n-resize;}
+.active .activeBorder:nth-child(11){cursor:w-resize;}
+.active .activeBorder:nth-child(12){cursor:w-resize;}
+
+
+/****************
+*
+*****************/
+.l_widget_edittext{width: 100%;height: 50%;border-radius: 0px;font-size: 20px;}
+
+
+/*滚动条样式*/
+::-webkit-scrollbar {
+    width:6px;
+    background: #000;
+}
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background:#FFF;
+}
+
+
+/*翻转效果*/
+.flip_in {
+    -webkit-animation-timing-function: ease-out;
+    -webkit-animation-duration: 350ms;
+    animation-timing-function: ease-out;
+    animation-duration: 350ms;
+}
+.flip_out {
+    -webkit-animation-timing-function: ease-in;
+    -webkit-animation-duration: 225ms;
+    animation-timing-function: ease-in;
+    animation-duration: 225ms;
+}
+
+.flip {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateX(0); /* Needed to work around an iOS 3.1 bug that causes listview thumbs to disappear when -webkit-visibility:hidden is used. */
+    backface-visibility: hidden;
+    transform: translateX(0);
+}
+.flip.flip_out {
+    -webkit-transform: rotateY(-90deg) scale(.9);
+    -webkit-animation-name: flipouttoleft;
+    -webkit-animation-duration: 175ms;
+    transform: rotateY(-90deg) scale(.9);
+    animation-name: flipouttoleft;
+    animation-duration: 175ms;
+}
+.flip.flip_in {
+    -webkit-animation-name: flipintoright;
+    -webkit-animation-duration: 225ms;
+    animation-name: flipintoright;
+    animation-duration: 225ms;
+}
+@-webkit-keyframes flipouttoleft {
+    from { -webkit-transform: rotateY(0); }
+    to { -webkit-transform: rotateY(-90deg) scale(.9); }
+}
+@keyframes flipouttoleft {
+    from { transform: rotateY(0); }
+    to { transform: rotateY(-90deg) scale(.9); }
+}
+@-webkit-keyframes flipintoright {
+    from { -webkit-transform: rotateY(90deg) scale(.9); }
+    to { -webkit-transform: rotateY(0); }
+}
+@keyframes flipintoright {
+    from { transform: rotateY(90deg) scale(.9); }
+    to { transform: rotateY(0); }
+}
+.alarmItem{
+    display: flex;
+    display: -webkit-flex;
+    justify-content:space-around;
+    font: 15px 'trebuchet MS', 'lucida sans';
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.alarmItem .info{
+    width: 120px;
+}
+.alarmItem .time{
+    width: 200px;
+}
+#Frame_side{
+    overflow: hidden;
+}
+.opcaty-map{background: url(images/map.png) no-repeat;background-size: 100% 100%;opacity: 0.8;}
+.site_point{display: inline-block;position: absolute;background: #FFD426;border: 1px solid #000000;border-radius: 8px;width: 16px;height: 16px;cursor: pointer;}
+.site_point_check{background: #FFF;border: 2px solid #38AAFF;}
+#site_tip{width: 120px;height: 60px;border: 1px solid #38AAFF;background: #000000;border-radius: 10px;z-index: 99;position: absolute;color: #FFF;line-height: 60px;text-align: center;display: none;}
+
+.l-data-list{
+    margin-top: 10px;height: 30px;line-height: 30px;
+    /*background: rgba(255,255,255,0.2);*/
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+}
+.l-data-list a{display: inline-block;width: 30px;height:30px;margin:0px 10px;background: url(images/icon_persons.png) no-repeat;background-size: 100% 100%;}
+.l-data-list span{display: inline-block;width: 80px;font-weight: normal;text-align: center;font-family: "Microsoft Yahei", Arial, sans-serif; font-size: 18px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+.l-data-list span:nth-child(2){color: #009688;width: 140px;}
+.l-data-list span:nth-child(3){color: #39B2E7;}

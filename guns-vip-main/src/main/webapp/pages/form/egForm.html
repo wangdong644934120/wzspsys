@@ -1,0 +1,103 @@
+@layout("/common/_container.html",{js:[]}){
+
+<style>
+
+    .l-room-item {
+        position: relative;
+        background: rgba(30, 159, 255, 0.5);
+        border: 2px solid #1E9FFF;
+        box-sizing: border-box;
+    }
+    .l-map{
+        width: 600px;height: 300px;margin-left: 0px;border: 1px solid #000000;background-image: url(/file/test/1.svg);
+        background-size: 100% 100%;background-repeat: no-repeat;
+    }
+</style>
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">Guns复杂表单的示例管理</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <button id="btnTest" class="layui-btn icon-btn">
+                        <i class="layui-icon">&#xe615;</i>测试
+                    </button>
+                    <div id="map" class="l-map"></div>
+                    <table class="layui-table" id="egFormTable" lay-filter="egFormTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    layui.use('laytpl', function () {
+        $("#mainArea").height(document.documentElement.clientHeight - 30);
+
+        var DrawMap=function($map){
+            //获取元素的纵坐标
+            var pageX=function(o) {
+                var offset = o.offsetLeft;
+                if (o.offsetParent != null)
+                    offset += arguments.callee(o.offsetParent);
+                return offset;
+            }
+
+            //获取元素的横坐标
+            var pageY=function(o) {
+                var offset = o.offsetTop;
+                if (o.offsetParent != null)
+                    offset += arguments.callee(o.offsetParent);
+                return offset;
+            }
+
+            $map.mousedown(function (event) {
+                $map.empty();
+                var $item = $("<div id=\"roomItem\" class=\"l-room-item\"></div>");
+                $item.attr("state", "start");
+                $item.offset({
+                    top: (event.offsetY),
+                    left: (event.offsetX)
+                }).width(1).height(1);
+                $map.append($item);
+
+            });
+            $map.mousemove(function (event) {
+                var $item = $("#roomItem");
+                if ($item.attr("state") == "start") {
+                    var width = event.clientX - pageX($item[0]);
+                    var height = event.clientY - pageY($item[0]);
+                    $item.width(width).height(height);
+                }
+            });
+
+            $map.mouseup(function (event) {
+                var $item = $("#roomItem");
+                $item.attr("state", "end");
+            });
+
+            this.getItemPosition=function() {
+                var $item = $("#roomItem");
+                return {
+                    x: pageX($item[0]) - pageX($item.parent()[0]),
+                    y: pageX($item[0]) - pageX($item.parent()[0]),
+                    w: $item.width(),
+                    h: $item.height(),
+                    mw:$item.parent().width(),
+                    mh:$item.parent().height()
+                };
+            }
+        }
+
+        var drawMap=new DrawMap($("#map"))
+        $("#btnTest").click(function(){
+            alert(JSON.stringify(drawMap.getItemPosition()));
+        });
+    });
+</script>
+@}

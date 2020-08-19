@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.test.mapper.BooksMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.test.entity.Books">
+        <id column="id" property="id" />
+        <result column="bname" property="bname" />
+        <result column="bauthor" property="bauthor" />
+        <result column="bcompany" property="bcompany" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", bname AS "bname", bauthor AS "bauthor", bcompany AS "bcompany"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.test.model.result.BooksResult" parameterType="cn.stylefeng.guns.modular.test.model.params.BooksParam">
+        select
+        <include refid="Base_Column_List"/>
+        from biz_books where 1 = 1
+        <if test="paramCondition.bname != null and paramCondition.bname != ''">
+            and bname like CONCAT('%',#{paramCondition.bname},'%')
+        </if>
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.test.model.result.BooksResult" parameterType="cn.stylefeng.guns.modular.test.model.params.BooksParam">
+        select
+        <include refid="Base_Column_List"/>
+        from biz_books where 1 = 1
+        <if test="paramCondition.bname != null and paramCondition.bname != ''">
+            and bname like CONCAT('%',#{paramCondition.bname},'%')
+        </if>
+    </select>
+
+</mapper>

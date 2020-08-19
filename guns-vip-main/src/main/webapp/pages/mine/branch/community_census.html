@@ -1,0 +1,221 @@
+@layout("/common/_container.html",{js:["/assets//mine/mine_census.js"]}){
+
+<script type="text/javascript" src="/assets/common/libs/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="/assets/common/libs/echarts/echartsTheme.js"></script>
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">活动数据汇总</div>
+                </div>
+                <div class="layui-card-body user-census-row" >
+                    <ul class="layui-row layui-col-space10 layui-this">
+                        <li class="layui-col-xs4 month-li">
+                            <p class="user-item-score">参与<b id="activity_month_score">160</b>人</p>
+                            <p class="user-item-counts">发布<b id="activity_month_count">14</b>项</p>
+                            <p class="user-item-time">本月</p>
+                        </li>
+                        <li class="layui-col-xs4  year-li">
+                            <p class="user-item-score">参与<b id="activity_year_score">160</b>人</p>
+                            <p class="user-item-counts">发布<b id="activity_year_count">14</b>项</p>
+                            <p class="user-item-time">本年</p>
+                        </li>
+                        <li class="layui-col-xs4  total-li">
+                            <p class="user-item-score">参与<b id="activity_score">160</b>人</p>
+                            <p class="user-item-counts">发布<b id="activity_count">160</b>项</p>
+                            <p class="user-item-time">历史</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">微心愿数据汇总</div>
+                </div>
+                <div class="layui-card-body user-census-row" >
+                    <ul class="layui-row layui-col-space10 layui-this">
+                        <li class="layui-col-xs4 month-li">
+                            <p class="user-item-score">参与<b id="wish_month_score">160</b>人</p>
+                            <p class="user-item-counts">发布<b id="wish_month_count">160</b>项</p>
+                            <p class="user-item-time">本月</p>
+                        </li>
+                        <li class="layui-col-xs4 year-li">
+                            <p class="user-item-score ">参与<b id="wish_year_score">160</b>人</p>
+                            <p class="user-item-counts">发布<b id="wish_year_count">160</b>项</p>
+                            <p class="user-item-time">本年</p>
+                        </li>
+                        <li class="layui-col-xs4 total-li">
+                            <p class="user-item-score ">参与<b id="wish_score">160</b>人</p>
+                            <p class="user-item-counts">发布<b id="wish_count">160</b>项</p>
+                            <p class="user-item-time">历史</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="layui-card chart_row">
+
+                <div class="layui-card-body" >
+                    <div class="layui-col-xs12 layui-col-md12">
+                        <div id="activity_chart" style="height: 300px;margin-top: 20px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-card chart_row ">
+
+                <div class="layui-card-body" >
+                    <div class="layui-col-xs12 layui-col-md12">
+                        <div id="wish_chart" style="height: 300px;margin-top: 20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var communityId = Feng.getUrlParam("communityId");
+    layui.use(['table', 'admin', 'ax'], function () {
+        var $ = layui.$;
+        var table = layui.table;
+        var $ax = layui.ax;
+        var admin = layui.admin;
+
+        $(function () {
+            initCensus();
+
+            initChart();
+        })
+
+        function initCensus(){
+
+            $.post(
+                Feng.ctxPath + "get/community_census",
+                {r:Math.random(), communityId : communityId},
+                function(rs){
+                    if (rs.code == 200){
+
+                        setScore(rs.data);
+                    }
+                },
+                "json"
+            )
+        }
+
+        function setScore(scoreData) {
+            var activityData = scoreData.activity;
+            var wishData = scoreData.wish;
+
+            $("#activity_month_count").html(activityData.monthCount);
+            $("#activity_month_score").html(activityData.monthScore);
+
+            $("#activity_year_count").html(activityData.yearCount);
+            $("#activity_year_score").html(activityData.yearScore);
+
+            $("#activity_count").html(activityData.c);
+            $("#activity_score").html(activityData.score);
+
+            $("#wish_month_count").html(wishData.monthCount);
+            $("#wish_month_score").html(wishData.monthScore);
+
+            $("#wish_year_count").html(wishData.yearCount);
+            $("#wish_year_score").html(wishData.yearScore);
+
+            $("#wish_count").html(wishData.c);
+            $("#wish_score").html(wishData.score);
+        }
+
+
+        function initChart(){
+            $.post(
+                Feng.ctxPath + "get/community_chart",
+                {r:Math.random(), communityId:communityId},
+                function(rs){
+                    if (rs.code == 200){
+
+                        setChart(rs.data);
+                    }
+                },
+                "json"
+            )
+        }
+
+
+        function setChart(chartData){
+            // 渲染销售额图表
+            var myCharts3 = echarts.init(document.getElementById('activity_chart'), myEchartsTheme);
+            var option3 = {
+                title: {
+                    text: '发布活动统计',
+                    textStyle: {
+                        color: '#000',
+                        fontSize: 14
+                    }
+                },
+                tooltip: {},
+                grid: {
+                    left: '0',
+                    right: '0',
+                    bottom: '0',
+                    containLabel: true
+                },
+                xAxis: {
+                    data: ['1月', '2月', '3月', '4月', '6月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                },
+                yAxis: {
+                    minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数。
+                },
+                series: [{
+                    type: 'bar',
+                    data: chartData.activityData,
+                    barMaxWidth: 45
+                }]
+            };
+            myCharts3.setOption(option3);
+
+
+            // 渲染销售额图表
+            var myCharts4 = echarts.init(document.getElementById('wish_chart'), myEchartsTheme);
+            var option4 = {
+                title: {
+                    text: '发布心愿统计',
+                    textStyle: {
+                        color: '#000',
+                        fontSize: 14
+                    }
+                },
+                tooltip: {},
+                grid: {
+                    left: '0',
+                    right: '0',
+                    bottom: '0',
+                    containLabel: true
+                },
+                xAxis: {
+                    data: ['1月', '2月', '3月', '4月', '6月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                },
+                yAxis: {
+                    minInterval: 1, //设置成1保证坐标轴分割刻度显示成整数。
+                },
+                series: [{
+                    type: 'bar',
+                    data: chartData.wishData,
+                    barMaxWidth: 45
+                }]
+            };
+            myCharts4.setOption(option4);
+
+        }
+
+    });
+
+</script>
+
+@}

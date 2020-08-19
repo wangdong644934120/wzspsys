@@ -1,0 +1,148 @@
+<!--这个页面仅是组件，并不是页面-->
+<style>
+    .activity-title {
+        font-size: 20px;
+        line-height: 20px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .activity-community-name {
+        text-align:right;
+        font-size: 20px;
+        padding: 10px;
+
+    }
+
+    .activity-mini-image .detail-mini-title {
+        font-size: 20px
+    }
+
+    .activity-mini-image {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .activity-mini-image img {
+        width:60%;
+        margin: 18px; auto;
+    }
+
+    .activity-mini-image .detail-mini-text {
+        font-size: 14px;
+    }
+
+    .detail-activity-qrcode {
+        margin-top:10px;
+        padding: 10px;
+        text-align:center;
+    }
+
+    .detail-activity-qrcode .qrcode-scan-image {
+
+
+    }
+
+    .detail-activity-qrcode img {
+        width: 60%;
+        margin: 10px auto;
+    }
+
+    .canvan_image_activity {
+        display:block;
+        width:100%;
+    }
+
+    .canvan_image_activity img {
+
+        width:100%;
+    }
+</style>
+
+<div id="canvan_image_activity" class="canvan_image_activity">
+
+</div>
+
+<div id="detailImagePanel" class="layadmin-homepage-panel layadmin-homepage-shadow" style="display: none;">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div id="detail-activity-title" class="activity-title">
+
+            </div>
+            <div id="detail-community-name"  class="activity-community-name">
+
+            </div>
+
+            <div id="detail-mini-image" class="activity-mini-image">
+                <div class="detail-mini-title">签到前请先关注“红心账户”小程序</div>
+                <img src="/file/activityType/minigram_img.jpg" />
+                <div class="detail-mini-text">中共威海市委经济技术开发区工作委员会组织部</div>
+            </div>
+
+            <div id="detail-activity-qrcode" class="detail-activity-qrcode">
+                <div class="qrcode-scan-text">扫码签到</div>
+                <div id="qrcodeShow" class="qrcode-scan-image"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/assets/mine/html2canvas.min.js"></script>
+<script>
+    $(function() {
+
+        var renderView=function(data){
+
+            $("#detail-activity-title").html(data.title);
+
+            $("#detail-community-name").html(" -- "+data.communityName);
+
+            if(data.qrcode!=null&&data.qrcode!=""){//显示二维码
+                new QRCode($("#qrcodeShow")[0],data.qrcode);
+            }
+
+            setTimeout(function(){
+                toSetCanvans()
+            }, 500)
+
+        };
+        //获取活动详情
+        $request({
+            url: "/activity/detail",
+            async: true,
+            data: {
+                id:Globle.activityId
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.code==200){
+                    renderView(response.data)
+                }
+            }
+        });
+
+
+        function toSetCanvans(){
+            //
+            // html2canvas(document.getElementById('detailImagePanel'), {
+            //     onrendered: function(canvas) {
+            //         $("#detailImagePanel").hide();
+            //         var url = canvas.toDataURL();//图片地址
+            //         var html = "<img src='"+url+"'>"
+            //         $('#canvan_image_activity').html(html);
+            //     }
+            // })
+            $("#detailImagePanel").show();
+            html2canvas(document.getElementById('detailImagePanel')).then(function(canvas) {
+                admin.removeLoading();
+                $("#detailImagePanel").hide();
+                var url = canvas.toDataURL();//图片地址
+                var html = "<img src='"+url+"'>"
+                $('#canvan_image_activity').html(html);
+            });
+
+        }
+
+
+    });
+</script>

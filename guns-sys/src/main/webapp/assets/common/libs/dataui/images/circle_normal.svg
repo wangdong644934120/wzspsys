@@ -1,0 +1,7 @@
+<svg style="margin-top: 5px;margin-left: 10px" width="30" height="30" xmlns="http://www.w3.org/2000/svg" >
+    <g style="transform: scale(0.1,0.1);">
+        <ellipse stroke="#000" ry="100" rx="100" id="svg_1" cy="100" cx="100" stroke-width="0" fill="#545e6b"/>
+        <ellipse stroke="#000" ry="82.5" rx="82.5" id="svg_3" cy="100" cx="100" stroke-width="0" fill="#332d4c"/>
+        <ellipse stroke="#000" ry="65" rx="65" id="svg_4" cy="100" cx="100" stroke-width="0" fill="#15C463"/>
+    </g>
+</svg>

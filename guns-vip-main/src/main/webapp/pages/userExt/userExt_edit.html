@@ -1,0 +1,47 @@
+@layout("/common/_container.html",{js:["/assets//userExt/userExt_edit.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">修改</span>
+</div>
+
+<div class="layui-fluid " style="">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form id="userExtForm" lay-filter="userExtForm" class="layui-form model-form" style="max-width: 700px;margin:auto;">
+                <input name="userId" type="hidden"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">党委id<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="committee" name="committee" placeholder="请输入党委id" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">党支部id<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="branch" name="branch" placeholder="请输入党支部id" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">社区id<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="community" name="community" placeholder="请输入社区id" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商家id<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="store" name="store" placeholder="请输入商家id" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+                        <button class="layui-btn layui-btn-primary" type="button" id="backupPage">&emsp;返回&emsp;</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@}

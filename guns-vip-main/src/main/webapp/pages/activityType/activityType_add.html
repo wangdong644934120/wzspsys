@@ -1,0 +1,62 @@
+@layout("/common/_container.html",{js:["/assets//activityType/activityType_add.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">添加</span>
+</div>
+
+<div class="layui-fluid " style="">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form id="activityTypeForm" lay-filter="activityTypeForm" class="layui-form model-form" style="max-width: 700px;margin:auto;">
+                <input name="id" type="hidden"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">活动类型<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <select id="type2" name="type2" required  lay-verify="required" lay-search="">
+                            <option value="">请选择活动类型</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">具体事项<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="detail" name="detail" placeholder="请输入具体事项" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">积分<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="score" name="score" placeholder="请输入积分" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">活动图标</label>
+                    <div>
+                        <input id="icon" name="icon" type="hidden" class="layui-input" />
+                        <img class="layui-upload-img" id="activityTypeIcon" width="64px" height="64px">
+                        <button type="button" class="layui-btn layui-btn-sm picBtn" id="activityButton">
+                            <i class="layui-icon"></i>选择图标（.jpg,.png）
+                        </button>
+<!--                        <div class="layui-upload-list">-->
+<!--                            -->
+<!--                        </div>-->
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注<span style="color: red;"></span></label>
+                    <div class="layui-input-block">
+                        <input id="note" name="note" placeholder="请输入备注" type="text" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+                        <button class="layui-btn layui-btn-primary" type="button" id="backupPage">&emsp;返回&emsp;</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@}

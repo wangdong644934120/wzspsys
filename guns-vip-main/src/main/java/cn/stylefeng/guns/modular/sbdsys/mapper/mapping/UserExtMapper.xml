@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.UserExtMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.UserExt">
+        <id column="user_id" property="userId" />
+        <result column="committee" property="committee" />
+        <result column="branch" property="branch" />
+        <result column="community" property="community" />
+        <result column="store" property="store" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id AS "userId", committee AS "committee", branch AS "branch", community AS "community", store AS "store"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.UserExtResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.UserExtParam">
+        select * from sbd_user_ext ext , sys_user suser
+        where ext.user_id = suser.user_id
+        <if test="paramCondition.baseID != null ">
+            and ${paramCondition.type} =  #{paramCondition.baseID}
+        </if>
+        <if test="paramCondition.name != null ">
+            and name  like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+        <if test="paramCondition.userId != null ">
+            and ext.user_id  = #{paramCondition.userId}
+        </if>
+<!--        <if test="paramCondition.type != null and paramCondition.type == 'community'">-->
+<!--            and community =  #{paramCondition.baseID}-->
+<!--        </if>-->
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.UserExtResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.UserExtParam">
+        select * from sbd_user_ext ext , sys_user suser
+        where ext.user_id = suser.user_id
+        <if test="paramCondition.baseID != null ">
+        and ${paramCondition.type} =  #{paramCondition.baseID}
+        </if>
+        <if test="paramCondition.name != null ">
+            and name  like CONCAT('%', #{paramCondition.name}, '%')
+        </if>
+        <if test="paramCondition.userId != null ">
+            and ext.user_id  = #{paramCondition.userId}
+        </if>
+    </select>
+
+    <select id="getByPhone" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.UserExtResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.UserExtParam">
+        select * from sbd_user_ext ext , sys_user suser
+        where ext.user_id = suser.user_id
+        <if test="paramCondition.phone != null ">
+            and phone  =#{paramCondition.phone}
+        </if>
+    </select>
+
+</mapper>

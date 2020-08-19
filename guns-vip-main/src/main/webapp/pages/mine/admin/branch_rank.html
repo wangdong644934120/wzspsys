@@ -1,0 +1,98 @@
+@layout("/common/_container.html",{js:[]}){
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card branch_big_theme">
+
+                    <div class="layui-text branch-info-row">
+                        <div class="user-committee-left">
+                            <div class="committee-name">
+                                <p id="committee_name"></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+            </div>
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">党支部排行</div>
+                </div>
+                <div class="layui-card-body branch-info-list" >
+                    <dd class="layuiadmin-card-status" id="dd_data">
+
+
+                    </dd>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+    function toHref(url) {
+        window.location.href= Feng.ctxPath + url;
+    }
+
+    function toHrefAlert(url) {
+        alert(url)
+    }
+
+    var date =new Date();
+    var rdm = ""
+
+    var committeeId = IndexGlobal.userInfo.committeeId;
+
+    layui.use(['table', 'admin', 'ax'], function () {
+        $(function(){
+            initBranch();
+        })
+
+        function initBranch() {
+            $.post(
+                Feng.ctxPath + "get/all_branch_rank",
+                {r:Math.random(), committeeId:committeeId},
+                function(rs){
+                    if (rs.code == 200){
+
+                        setBranchList(rs.data.list);
+                    }
+                },
+                "json"
+            )
+        }
+
+        function setBranchList(list){
+            var html = "";
+            if (null != list){
+                $.each(list, function(i, n){
+
+                    html += '<dl onclick="toHref(\'branch?branchId='+n.branchId+'\')">';
+                    html += '    <div class="branch-item-logo-div">';
+                    html += '	<div class="branch-item-logo"></div>';
+                    html += '    </div>';
+                    html += '    <div class="branch-item-info">';
+                    html += '	<p class="branch-item-name">'+n.branchName+'</p>';
+                    html += '	<p class="branch-item-person">';
+                    html += '	    <i class="layui-icon layui-icon-group red_2_color"></i>';
+                    html += '	    <b>积分：'+n.monthScore+'</b>';
+                    html += '	</p>';
+                    html += '    </div>';
+
+                    html += '    <div class="clear_dash"></div>';
+                    html += '</dl>';
+                })
+            }
+            $("#dd_data").html(html);
+        }
+    })
+</script>
+
+
+@}

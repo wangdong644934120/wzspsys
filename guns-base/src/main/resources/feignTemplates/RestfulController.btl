@@ -1,0 +1,110 @@
+package ${controllerPackage};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import share.core.page.PageResult;
+import share.model.request.RequestData;
+import share.model.response.ResultData;
+import ${package.EntitySpecParams}.${entity}Param;
+import ${package.EntitySpecResult}.${entity}Result;
+import ${package.Service}.${table.serviceName};
+import share.scanner.modular.annotation.PostResource;
+import share.scanner.modular.stereotype.ApiResource;
+
+import java.util.List;
+
+/**
+ * ${tool.cleanWhite(table.comment)}控制器
+ *
+ * @author ${author}
+ * @Date ${tool.currentTime()}
+ */
+@RestController
+@ApiResource(name = "${tool.cleanWhite(table.comment)}管理", path = "/${tool.lowerFirst(entity)}")
+public class ${entity}Controller {
+
+    <% var lowerEntity = tool.lowerFirst(entity); %>
+    <% var lowerEntityService = lowerEntity + 'Service'; %>
+
+    @Autowired
+    private ${entity}Service ${lowerEntityService};
+
+    /**
+     * 新增
+     *
+     * @author ${author}
+     * @Date ${date}
+     */
+    @PostResource(name = "添加", path = "/add")
+    public ResultData add(RequestData requestData) {
+        ${entity}Param param = requestData.parse(${entity}Param.class);
+        ${lowerEntityService}.add(param);
+        return ResultData.success();
+    }
+
+    /**
+     * 修改
+     *
+     * @author ${author}
+     * @Date ${date}
+     */
+    @PostResource(name = "修改", path = "/delete")
+    public ResultData update(RequestData requestData) {
+        ${entity}Param param = requestData.parse(${entity}Param.class);
+        ${lowerEntityService}.update(param);
+        return ResultData.success();
+    }
+
+    /**
+     * 删除
+     *
+     * @author ${author}
+     * @Date ${date}
+     */
+    @PostResource(name = "删除", path = "/delete")
+    public ResultData delete(RequestData requestData) {
+        ${entity}Param param = requestData.parse(${entity}Param.class);
+        ${lowerEntityService}.delete(param);
+        return ResultData.success();
+    }
+
+    /**
+     * 查询单条详情
+     *
+     * @author ${author}
+     * @Date ${date}
+     */
+    @PostResource(name = "查询详情", path = "/queryDetail")
+    public ResultData queryDetail(RequestData requestData) {
+        ${entity}Param param = requestData.parse(${entity}Param.class);
+        ${entity}Result result = ${lowerEntityService}.findBySpec(param);
+        return ResultData.success(result);
+    }
+
+    /**
+     * 查询列表
+     *
+     * @author ${author}
+     * @Date ${date}
+     */
+    @PostResource(name = "查询列表", path = "/queryList")
+    public ResultData queryList(RequestData requestData) {
+        ${entity}Param param = requestData.parse(${entity}Param.class);
+        List<${entity}Result> listBySpec = ${lowerEntityService}.findListBySpec(param);
+        return ResultData.success(listBySpec);
+    }
+
+    /**
+     * 分页查询列表
+     *
+     * @author ${author}
+     * @Date ${date}
+     */
+    @PostResource(name = "分页查询列表", path = "/queryListPage")
+    public ResultData queryListPage(RequestData requestData) {
+        ${entity}Param param = requestData.parse(${entity}Param.class);
+        PageResult<${entity}Result> pageBySpec = ${lowerEntityService}.findPageBySpec(param);
+        return ResultData.success(pageBySpec);
+    }
+
+}

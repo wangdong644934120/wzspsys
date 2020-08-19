@@ -1,0 +1,32 @@
+<div class="goods-item" style="background-color: white;margin: 1px 0 10px 0 ;padding: 1px">
+    <div style="font-weight: bold;font-size: 15px;margin: 5px 0 5px 25px">
+        {{# if(d.isExchange==1) { }}
+        <div class="goods-end-time" style="float:left;width: 75%;text-align: left">兑换时间：{{d.exchangeTime}}</div>
+        <div style="float:right;width: 50px;margin-right: 30px;color:#6A6A6A">
+            已兑换
+        </div>
+        {{# }else{ }}
+        <div class="goods-end-time" style="float:left;width: 75%;text-align: left">订单时间：{{d.orderTime}}</div>
+        <div style="float:right;width: 50px;margin-right: 30px;color:red">
+            待兑换
+        </div>
+        {{# } }}
+    </div>
+    <hr style="margin: 0">
+    <div class="goods_img">
+        <img src="/file/{{d.pics}}"
+             onclick="showExchange('{{d.commodityId}}','{{d.isExchange}}','{{d.exchangeTime}}','{{d.id}}')"/>
+    </div>
+    <div class="goods-info">
+        <div class="goods-title"
+             onclick="showExchange('{{d.commodityId}}','{{d.isExchange}}','{{d.exchangeTime}}','{{d.id}}')">
+            {{d.commodityName}}
+        </div>
+        <div style="color: #8D8D8D;">
+        消费先锋币：<img src="/images/money.png" class="moneyImage"/>
+        <span class="moneySpan">{{d.costCoin}}</span>
+        </div>
+        <div class="goods-resource">商家名称：{{d.storeName}}</div>
+        <!--                            <div class="goods-remain">剩余：<b class="count">8</b>件</div>-->
+    </div>
+</div>

@@ -1,0 +1,40 @@
+server:
+  port: 80
+  max-http-header-size: 10240
+
+guns:
+  system-name: 天梯积分
+  welcome-tip: 欢迎使用天梯积分系统
+  swagger-open: true                #是否开启swagger (true/false)
+  kaptcha-open: false               #是否开启登录时验证码 (true/false)
+  spring-session-open: false        #是否开启spring session,如果是多机环境需要开启(true/false)
+  session-invalidate-time: 1800     #session失效时间(只在单机环境下生效，多机环境在SpringSessionConfig类中配置) 单位：秒
+  session-validation-interval: 900  #多久检测一次失效的session(只在单机环境下生效) 单位：秒
+  file-upload-path: E:/UPLOAD_FILE
+  version: 10015
+  appId: wx629ce6fd9aef12f8
+  appSecret: 19b6a12aaa0f791679e8f689b9f42c8b
+beetl:
+  resource-auto-check: true         #热加载beetl模板，开发时候用
+
+spring:
+  profiles:
+    active: @spring.active@
+  mvc:
+    view:
+      prefix: /pages
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+mybatis-plus:
+  typeAliasesPackage: cn.stylefeng.guns.modular.system.model
+  mapper-locations:
+    - classpath*:cn/stylefeng/guns/**/mapping/*.xml
+  refresh-mapper: true
+  configuration:
+    log-impl:
+
+log:
+  path: _app_logs

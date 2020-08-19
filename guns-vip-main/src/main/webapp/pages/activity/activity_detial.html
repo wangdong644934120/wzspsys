@@ -1,0 +1,141 @@
+<!--这个页面仅是组件，并不是页面-->
+<div id="detailPanel" style="display: none" class="layadmin-homepage-panel layadmin-homepage-shadow">
+    <img class="layadmin-homepage-pad-img" src="/file/{{ d.icon }}" style="width: 100%;height: 240px;">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div>
+                <div class="l-title-tp">
+                    <i class="extend-icon extend-icon-jifen" style="font-size: 12px;">{{ d.score }}</i>
+                </div>
+                <span style="font-size: 18px;margin-left: 5px;vertical-align: middle;">{{ d.title }}</span>
+            </div>
+            <div class="l-title-bt">
+                <span><i class="extend-icon extend-icon-shequ"></i>{{ d.communityName }}</span>
+                <span><i class="extend-icon extend-icon-lianxiren"></i>{{ d.contactUser }}</span>
+                <span><i class="extend-icon extend-icon-shouji"></i><a href="tel:{{ d.contactPhone }}" style="color: #FFFFFF">{{ d.contactPhone }}</a></span>
+            </div>
+            <hr>
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-didian"></i>{{ d.address }}</p>
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-riqi"></i>{{ d.startTime.substring(0,16) }} ~ {{ d.endTime.substring(0,16) }}</p>
+            <p class="l-title-txt-p"><i class="extend-icon extend-icon-renshu"></i>{{ d.actionCount }}（已参加人数）</p>
+            {{#  if(d.actionTime != ""){ }}
+            <p class="l-title-txt-p"><i class="layui-icon layui-icon-log"></i>参加时间：{{ d.actionTime.substring(0,16) }}</p>
+            {{#  } }}
+        </div>
+    </div>
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="detialTab">
+            <ul class="layui-tab-title l-mytab-header">
+                <li class="layui-this" lay-id="0" style="color: #000000;">活动详情</li>
+                <li lay-id="1" style="color: #000000;">活动总结</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show" style="min-height: 80px;font-size: 15px;">
+                    <mdall>{{ d.content }}</mdall>
+                </div>
+                <div id="activitySumup" class="layui-tab-item" style="min-height: 80px;overflow: hidden;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding: 0 10px 30px 10px;">
+        <button id="actionBtn" class="layui-btn layui-btn-fluid layui-btn-warm" style="height: 50px;font-size: 16px;">参加活动扫码</button>
+    </div>
+</div>
+<!--<div id="managerArea" class="layui-card text-center" style="display: none;">-->
+<!--    <div id="qrcode" style="width: 160px;height: 160px;margin: 10px auto;">-->
+<!--    </div>-->
+<!--    <p class="layadmin-homepage-about">-->
+<!--        扫码签到-->
+<!--    </p>-->
+<!--    <button id="finishBtn" class="layui-btn layui-btn-fluid">终止活动</button>-->
+<!--</div>-->
+
+<script>
+
+
+    $(function() {
+        window.top.stepAdd(function(){
+            backListView();
+        });
+        var renderView=function(data){
+            layui.laytpl($("#detailPanel").html()).render(data, function(html){
+                $("#detailPanel").html(html);
+            });
+            $("#detailPanel").show();
+
+            if(data.state==2){//活动结束
+                Feng.loadHtml($("#activitySumup"),"/ref/activity/activity_sumup_detail.html?activityId="+Globle.activityId,null);
+                $("#finishBtn").hide();
+                $("#editBtn").hide();
+                $("#actionBtn").addClass("layui-btn-disabled").html("活动已结束");
+            }else{
+                //$("#activitySumup").hide();
+            }
+            if(data.actionTime!=null&&data.actionTime!=""){
+                $("#actionBtn").addClass("layui-btn-disabled").html("已参加该活动");
+            }
+
+            var reqScan=function(){
+                $request({
+                    url: "/activity/scan",
+                    async: false,
+                    data: {
+                        activityId:Globle.activityId
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if(response.code==200){
+                            Feng.success("扫码成功!");
+                            $("#actionBtn").addClass("layui-btn-disabled").html("已参加该活动");
+                        }else{
+                            Feng.error("扫码失败!" + response.message + "!");
+                        }
+                    }
+                });
+            };
+
+            if(Globle.fromScan){//执行扫码动作
+                reqScan();
+            }
+
+            $("#actionBtn").click(function(){
+                if(this.className.indexOf("layui-btn-disabled")<0){
+                    //调用扫码接口
+                    window.top.openScanView(function(qrcode){
+                        if(qrcode.indexOf("ACTIVITY:")==0){
+                            var activityId=qrcode.split(":")[1];
+                            if(activityId==Globle.activityId){
+                                reqScan();
+                            }else{
+                                Feng.error("不是该活动二维码!");
+                            }
+                        }else{
+                            Feng.error("无法识别该二维码!");
+                        }
+                    });
+                }
+            });
+        };
+        //获取活动详情
+        $request({
+            url: "/activity/detail",
+            async: true,
+            data: {
+                id:Globle.activityId
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.code==200){
+                    renderView(response.data);
+                }else{
+                    Feng.error("该活动不存在!");
+                }
+            },
+            error:function(){
+                Feng.error("该活动不存在!");
+                window.top.openTabView('/ref/activity/activity.html');
+            }
+        });
+    });
+</script>

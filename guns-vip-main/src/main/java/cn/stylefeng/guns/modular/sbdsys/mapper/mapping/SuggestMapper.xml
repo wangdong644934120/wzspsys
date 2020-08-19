@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.SuggestMapper">
+
+ <insert id="insertSuggestion" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.Suggestion"  useGeneratedKeys="true" keyProperty="id" >
+     insert into sbd_suggestion
+     (content, is_show, create_date, create_user, update_date, update_user, is_del, remark, status)
+     values
+     (#{suggestion.content}, #{suggestion.isShow}, #{suggestion.createDate}, #{suggestion.createUser}, #{suggestion.updateDate}, #{suggestion.updateUser}, #{suggestion.isDel}, #{suggestion.remark}, #{suggestion.status} )
+ </insert>
+    <select id="selectSuggestionListCount" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Suggestion">
+        select
+           count(s.id) as count
+        from sbd_suggestion s
+        where s.is_del = 0
+
+        <if test="suggestion.createUser != null and suggestion.createUser != ''">
+            and s.create_user = #{suggestion.createUser}
+        </if>
+
+        <if test="suggestion.content != null and suggestion.content != ''">
+            and s.content like '%${suggestion.content }%'
+        </if>
+    </select>
+    <select id="selectSuggestionList" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Suggestion">
+        select
+            s.id,
+            s.content ,
+            s.is_show as isShow,
+            s.create_date as createDate,
+            s.create_user as createUser,
+            s.update_date as updateDate,
+            s.update_user as updateUser,
+            s.is_del as isDel,
+            s.remark,
+            s.status,
+            case when f.count is null then 0 else f.count end as count
+        from sbd_suggestion s
+        left join (
+            select obj_id as objId, count(id) as count
+            from sbd_file_with fw
+            where fw.obj_id in (
+                select CONCAT(id,'') as id from  sbd_suggestion cs
+                where cs.is_del = 0
+
+                <if test="suggestion.createUser != null and suggestion.createUser != ''">
+                    and cs.create_user = #{suggestion.createUser}
+                </if>
+                <if test="suggestion.content != null and suggestion.content != ''">
+                    and cs.content like '%${suggestion.content }%'
+                </if>
+            )
+            group by obj_id
+        ) f on f.objId = s.id
+
+        where s.is_del = 0
+
+        <if test="suggestion.createUser != null and suggestion.createUser != ''">
+            and s.create_user = #{suggestion.createUser}
+        </if>
+        <if test="suggestion.content != null and suggestion.content != ''">
+            and s.content like '%${suggestion.content }%'
+        </if>
+
+        <if test="suggestion.orderby != null and suggestion.orderby != ''">
+            order by ${suggestion.orderby}
+        </if>
+        <if test="suggestion.limit != null and suggestion.limit != ''">
+            limit ${suggestion.limit}
+        </if>
+    </select>
+
+    <select id="selectSuggestionDetail" resultType="cn.stylefeng.guns.modular.sbdsys.entity.Suggestion">
+        select
+            s.id,
+            s.content ,
+
+            s.is_show as isShow,
+            s.create_date as createDate,
+            s.create_user as createUser,
+            s.update_date as updateDate,
+            s.update_user as updateUser,
+            s.is_del as isDel,
+            s.remark,
+            s.status
+        from sbd_suggestion s
+          where s.is_del = 0
+        <if test="suggestion.id != null and suggestion.id != ''">
+          and  s.id = #{suggestion.id}
+        </if>
+    </select>
+
+    <delete id="deleteSuggestion" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.Suggestion">
+        update sbd_suggestion
+            set is_del = 0,
+            update_date = #{suggestion.updateDate},
+            update_user = #{suggestion.userId}
+        where id = #{suggestion.id}
+    </delete>
+
+
+    <update id="updateSuggestionStatus" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.Suggestion">
+         update sbd_suggestion
+            set status = #{suggestion.status}
+        where id = #{suggestion.id}
+    </update>
+
+    <update id="updateSuggestion" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.Suggestion">
+         update sbd_suggestion
+            set content = #{suggestion.content},
+            update_date = #{suggestion.updateDate},
+            update_user = #{suggestion.userId}
+        where id = #{suggestion.id}
+    </update>
+
+    <update id="setSuggestionShow" parameterType="cn.stylefeng.guns.modular.sbdsys.entity.Suggestion">
+        update sbd_suggestion
+            set show = #{suggestion.show}
+        where id = #{suggestion.id}
+    </update>
+</mapper>

@@ -1,0 +1,56 @@
+@layout("/common/_container.html",{js:[]}){
+
+<link rel="stylesheet" href="/assets/activity/activity.css"/>
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">活动</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-col-md12">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div id="detialView" class="l-pop-view layui-card-body" style="display: block;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var Globle = {
+        activityId: null,
+        fromScan: true
+    };
+    //扫兑换码处理功能
+    Globle.dealQRCode = function (id) {
+		var ajax = new layui.ax(Feng.ctxPath + "/exchangeRecord/editItem?id=" + id, function () {
+		    //后台删除id缓存
+		    new QRCodeUtil().qrCodeScaned(id);
+			Feng.success("兑换成功，请到【我的】-【我的商城】中查看兑换商品!");
+            window.top.openTabView('/ref/mainPage/mainPage.html');
+		}, function (data) {
+			Feng.error("兑换失败!" + data.responseJSON.message + "!");
+            window.top.openTabView('/ref/mainPage/mainPage.html');
+		});
+		var rtn = ajax.start();
+    }
+    layui.use(['form', 'admin', 'ax', "layer", "element", "flow", "laytpl"], function () {
+        var qrcode = IndexGlobal.qrcode;
+        if (qrcode.indexOf("ACTIVITY:") == 0) {
+            Globle.activityId = qrcode.split(":")[1];
+            Globle.fromScan = true;
+            Feng.loadHtml($("#detialView"), "/pages/activity/activity_detial.html", function () {
+
+            });
+        } else if (qrcode.indexOf("EXCHANGE:") == 0) {
+            Globle.fromScan = true;
+            Globle.dealQRCode(qrcode.split(":")[1]);
+        }
+    });
+</script>
+@}

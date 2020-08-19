@@ -1,0 +1,428 @@
+@layout("/common/_container.html",{js:[]}){
+
+<script type="text/javascript" src="${ctxPath}/assets/common/libs/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/libs/echarts/echartsTheme.js"></script>
+
+<style>
+    body {
+        font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+    }
+    .l-bar-device{
+        margin: 0;
+    }
+    .l-bar-device>li{
+        /*height: 50px;*/
+        padding: 5px;
+        display: inline-block;
+        box-sizing: border-box;
+        text-align: center;
+        list-style: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    .l-bar-device li .layui-icon {
+        display: inline-block;
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        border-radius: 2px;
+        font-size: 30px;
+        background-color: #f2f2f2;
+        color: #333;
+        -webkit-transition: all .3s;
+    }
+    .layui-icon {
+        font-family: layui-icon!important;
+        font-style: normal;
+        -webkit-font-smoothing: antialiased;
+    }
+    .layadmin-shortcut li cite {
+        position: relative;
+        top: 2px;
+        display: block;
+        color: #666;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    .l-bar-state{
+        margin: 0;
+    }
+
+    .l-bar-state>li{
+        /*height: 50px;*/
+        padding: 5px;
+        display: inline-block;
+        box-sizing: border-box;
+        list-style: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+
+    .layadmin-backlog-body {
+        display: block;
+        padding: 10px 15px;
+        background-color: #f8f8f8;
+        color: #999;
+        border-radius: 2px;
+        transition: all .3s;
+        -webkit-transition: all .3s;
+    }
+    .layadmin-backlog-body:hover {
+        background-color: #f2f2f2;
+        color: #888;
+    }
+    .layadmin-backlog-body p cite {
+        font-style: normal;
+        font-size: 30px;
+        font-weight: 300;
+        color: #009688;
+    }
+    .layui-carousel {
+        position: relative;
+        left: 0;
+        top: 0;
+         background-color: #fff;
+    }
+    .layadmin-backlog-body h3 {
+        padding-bottom: 10px;
+        font-size: 12px;
+    }
+    .layadmin-takerates {
+        padding-top: 5px;
+    }
+    .layui-progress {
+        margin: 50px 0 60px;
+    }
+    .layui-progress-text {
+        position: relative;
+        top: -35px;
+        line-height: 26px;
+        font-size: 26px;
+        color: #666;
+    }
+    .layadmin-takerates .layui-progress-bar {
+        text-align: left;
+    }
+    .layadmin-takerates .layui-progress h3 {
+        position: absolute;
+        right: 0;
+        top: -35px;
+        color: #999;
+        font-size: 14px;
+    }
+    .l-build-glary{
+        width: 100%;
+        height: 100%;
+    }
+    .l-build-list>li{
+        list-style: none;
+        display: inline-block;
+        width: 150px;
+        height: 30px;
+    }
+    .layui-tab-title{
+        height: 25px;
+    }
+    .layui-tab-title li{
+        line-height: 25px;
+    }
+    .layui-tab-title .layui-this::after{height: 25px;}
+</style>
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">项目主页</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">学校信息</div>
+                        <div class="layui-card-body layui-text">
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col width="100">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>学校名称</td>
+                                    <td>
+                                        竹岛小学
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>学校地址</td>
+                                    <td>
+                                        塔山中路11号
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>开放时间</td>
+                                    <td>
+                                        <h5>夏季：17:00:00--20:00:00</h5>
+                                        <br>
+                                        <h5>冬季：17:00:00--19:00:00</h5>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+<!--                        <div class="layui-card-header">各类人员占地-->
+<!--&lt;!&ndash;                            <div class="layui-carousel-ind text-right"><ul><li class=""></li><li class="layui-this"></li></ul></div>&ndash;&gt;-->
+<!--                        </div>-->
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <div class="layui-tab layui-tab-brief layadmin-latestData">
+                                <ul class="layui-tab-title">
+                                    <li class="layui-this">篮球馆</li>
+                                    <li>操场</li>
+                                </ul>
+                                <div class="layui-tab-content">
+                                    <div class="layui-tab-item layui-show">
+                                        <div class="layui-carousel" id="buildGlary">
+                                            <div carousel-item>
+                                                <div><img class="l-build-glary" src="/images/demo_build.jpg"></div>
+                                                <div><img class="l-build-glary" src="/images/demo_build.jpg"></div>
+                                                <div><img class="l-build-glary" src="/images/demo_build.jpg"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-tab-item">
+                                        <div class="layui-carousel" id="buildGlary2">
+                                            <div carousel-item>
+                                                <div><img class="l-build-glary" src="/images/demo_build.jpg"></div>
+                                                <div><img class="l-build-glary" src="/images/demo_build.jpg"></div>
+                                                <div><img class="l-build-glary" src="/images/demo_build.jpg"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">健身记录</div>
+                        <div class="layui-card-body">
+                            <table id="personDataTable"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-body">
+
+                    <div class="layui-tab layui-tab-brief layadmin-latestData">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">月统计</li>
+                            <li>周统计</li>
+                            <li>日统计</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <ul class="layui-row layui-col-space10 l-bar-state">
+                                    <li class="layui-col-xs4">
+                                        <a lay-href="app/content/comment.html" class="layadmin-backlog-body">
+                                            <h3>5月</h3>
+                                            <p><cite>1,506</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a lay-href="app/forum/list.html" class="layadmin-backlog-body">
+                                            <h3>6月</h3>
+                                            <p><cite>1,310</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a lay-href="template/goodslist.html" class="layadmin-backlog-body">
+                                            <h3>7月</h3>
+                                            <p><cite>1,519</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                            <h3>8月</h3>
+                                            <p><cite>1,120</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                            <h3>9月</h3>
+                                            <p><cite>1,333</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                            <h3>10月</h3>
+                                            <p><cite>1,369</cite></p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="layui-tab-item">
+                                <ul class="layui-row layui-col-space10 l-bar-state">
+                                    <li class="layui-col-xs4">
+                                        <a lay-href="app/content/comment.html" class="layadmin-backlog-body">
+                                            <h3>办公室</h3>
+                                            <p><cite>66㎡</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a lay-href="app/forum/list.html" class="layadmin-backlog-body">
+                                            <h3>服务用房</h3>
+                                            <p><cite>12㎡</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a lay-href="template/goodslist.html" class="layadmin-backlog-body">
+                                            <h3>设备用房</h3>
+                                            <p><cite>99㎡</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                            <h3>业务用房</h3>
+                                            <p><cite>20㎡</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs4">
+                                        <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                            <h3>附属用房</h3>
+                                            <p><cite>20㎡</cite></p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="layui-tab-item">
+                                <ul class="layui-row layui-col-space10 l-bar-state">
+                                    <li class="layui-col-xs6">
+                                        <a lay-href="app/content/comment.html" class="layadmin-backlog-body">
+                                            <h3>外租面积</h3>
+                                            <p><cite style="color: #393D49;">6806㎡</cite></p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs6">
+                                        <a lay-href="app/forum/list.html" class="layadmin-backlog-body">
+                                            <h3>外租费用</h3>
+                                            <p><cite style="color: #393D49;">129万元</cite></p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-header">注册记录</div>
+                <div class="layui-card-body">
+                    <table id="levelDataTable"></table>
+                </div>
+            </div>
+
+<!--            <div class="layui-card">-->
+<!--                <div class="layui-card-header">系统消息-->
+<!--                    <i class="layui-icon layui-icon-tips" lay-tips="系统消息" lay-offset="5"></i>-->
+<!--                </div>-->
+<!--                <div class="layui-card-body">-->
+<!--                    <div class="layui-carousel layadmin-carousel layadmin-news" data-autoplay="true" data-anim="fade" lay-filter="news">-->
+<!--                        <div>-->
+<!--                            <div><a href="" target="_blank" class="">2019/08/05：系统维护通知</a></div>-->
+<!--                            <div><a href="" target="_blank" class="">2019/05/05：系统维护通知</a></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    layui.use(['table', 'admin', 'ax',"tree","layer","element",'laypage','carousel'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var element = layui.element;
+        layui.carousel.render({
+            elem: '#buildGlary'
+            ,width: '100%' //设置容器宽度
+            ,height: '185px'
+            ,arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+
+        layui.table.render({
+            elem: '#personDataTable'
+            ,cols: [[
+                {field:'school',  title: '学校'}
+                ,{field:'time', title: '时间'}
+                ,{field:'name',  title: '姓名'}
+                ,{field:'outTime', title: '离开时间'}
+                ,{field:'longTime', title: '健身时长'}
+            ]]
+            ,data:[
+                {'school':'竹岛小学','time':'2019年9月11日 17:11:23','name':'程程','longTime':'1小时12分','outTime':'2019年9月11日 19:11:23'},
+                {'school':'竹岛小学','time':'2019年9月11日 17:04:11','name':'周凯','longTime':'1小时27分','outTime':'2019年9月11日 19:11:23'},
+                {'school':'竹岛小学','time':'2019年9月11日 17:01:02','name':'温天喜','longTime':'1小时33分','outTime':'2019年9月11日 19:11:23'},
+                {'school':'竹岛小学','time':'2019年9月11日 17:00:00','name':'周凯龙','longTime':'56分','outTime':'2019年9月11日 19:11:23'}
+            ]
+            ,page: true
+        });
+
+        layui.table.render({
+            elem: '#levelDataTable'
+            ,cols: [[
+                {field:'school',  title: '学校'}
+                ,{field:'time', title: '注册时间'}
+                ,{field:'name',  title: '注册姓名'}
+                ,{field:'type',  title: '注册方式'}
+            ]]
+            ,data:[
+                {'school':'竹岛小学','time':'2019年9月11日 17:11:23','name':'程程','type':'市民卡'},
+                {'school':'竹岛小学','time':'2019年9月11日 17:04:11','name':'周凯','type':'市民卡'},
+                {'school':'竹岛小学','time':'2019年9月11日 17:01:02','name':'温天喜','type':'市民卡'},
+                {'school':'竹岛小学','time':'2019年9月11日 17:00:00','name':'周凯龙','type':'身份证'},
+            ]
+
+            ,page: true
+        });
+
+        $("#buildGlary").click(function(){
+            layui.admin.putTempData('formOk', false);
+            top.layui.admin.open({
+                type: 2,
+                title: '楼层可视化',
+                area: ['90%', '90%'],
+                content: Feng.ctxPath + '/floor/show?buildingId=' + "001001",
+                end: function () {
+                    //admin.getTempData('formOk') && table.reload(Courtyard.tableId);
+                }
+            });
+        });
+
+        // 窗口大小改变事件
+        window.onresize = function () {
+            //myCharts.resize();
+        };
+
+    });
+</script>
+
+
+@}

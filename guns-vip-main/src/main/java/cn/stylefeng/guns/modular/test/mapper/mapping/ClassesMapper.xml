@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.test.mapper.ClassesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.test.entity.Classes">
+        <id column="id" property="id" />
+        <result column="classname" property="classname" />
+        <result column="teacher" property="teacher" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", classname AS "classname", teacher AS "teacher", create_time AS "createTime"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.test.model.result.ClassesResult" parameterType="cn.stylefeng.guns.modular.test.model.params.ClassesParam">
+        select
+        <include refid="Base_Column_List"/>
+        from biz_classes where 1 = 1
+            <if test="paramCondition.classname != null and paramCondition.classname != ''">
+                and classname like CONCAT('%',#{paramCondition.classname},'%')
+            </if>
+            <if test="paramCondition.teacher != null and paramCondition.teacher != ''">
+                and teacher like CONCAT('%',#{paramCondition.teacher},'%')
+            </if>
+    </select>
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.test.model.result.ClassesResult" parameterType="cn.stylefeng.guns.modular.test.model.params.ClassesParam">
+        select
+        <include refid="Base_Column_List"/>
+        from biz_classes where 1 = 1
+        <if test="paramCondition.classname != null and paramCondition.classname != ''">
+            and classname like CONCAT('%',#{paramCondition.classname},'%')
+        </if>
+        <if test="paramCondition.teacher != null and paramCondition.teacher != ''">
+            and teacher like CONCAT('%',#{paramCondition.teacher},'%')
+        </if>
+    </select>
+
+</mapper>

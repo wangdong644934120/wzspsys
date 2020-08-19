@@ -1,0 +1,31 @@
+@layout("/common/_container.html",{js:["/assets/${context.modularName}/${lowerEntity}/${lowerEntity}_edit.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">修改</span>
+</div>
+
+<div class="layui-fluid " style="">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form id="${lowerEntity}Form" lay-filter="${lowerEntity}Form" class="layui-form model-form" style="max-width: 700px;margin:auto;">
+                <input name="${keyPropertyName}" type="hidden"/>
+                <% for(var i=0 ; i < fieldsNoKey.~size ; i++){ %>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">${fieldsNoKey[i].comment}<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="${fieldsNoKey[i].propertyName}" name="${fieldsNoKey[i].propertyName}" placeholder="请输入${fieldsNoKey[i].comment}" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <% } %>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+                        <button class="layui-btn layui-btn-primary" type="button" id="backupPage">&emsp;返回&emsp;</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@}

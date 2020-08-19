@@ -1,0 +1,49 @@
+@layout("/common/_container.html",{js:["/assets/student/student_add.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">添加</span>
+</div>
+
+<div class="layui-fluid " style="">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form id="studentForm" lay-filter="studentForm" class="layui-form model-form" style="max-width: 700px;margin:auto;">
+                <input name="id" type="hidden"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学生学号<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="code" name="code" placeholder="请输入学生学号" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学生姓名<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="name" name="name" placeholder="请输入学生姓名" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">家庭住址<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="address" name="address" placeholder="请输入家庭住址" type="text" class="layui-input" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">班级<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="classesid" name="classesid" type="hidden">
+                        <input id="classesname" name="classesname" placeholder="请输入部门" type="text" class="layui-input" lay-verify="required" required autocomplete="off"/>
+                    </div>
+
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+                        <button class="layui-btn layui-btn-primary" type="button" id="backupPage">&emsp;返回&emsp;</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@}

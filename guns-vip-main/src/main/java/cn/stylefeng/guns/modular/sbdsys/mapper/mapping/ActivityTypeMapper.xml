@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.sbdsys.mapper.ActivityTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.sbdsys.entity.ActivityType">
+        <id column="id" property="id" />
+        <result column="type1" property="type1" />
+        <result column="type2" property="type2" />
+        <result column="detail" property="detail" />
+        <result column="score" property="score" />
+        <result column="icon" property="icon" />
+        <result column="note" property="note" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS "id", type1 AS "type1", type2 AS "type2", detail AS "detail", score AS "score", icon AS "icon", note AS "note", create_time AS "createTime", create_user AS "createUser", update_time AS "updateTime", update_user AS "updateUser"
+    </sql>
+
+
+    <select id="customList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ActivityTypeResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.ActivityTypeParam">
+        select d1.name as type1,d2.name as type2,a.*
+        from sbd_activity_type as a
+        left join sys_dict d1 on a.type1 = d1.dict_id
+        left join sys_dict d2 on a.type2 = d2.dict_id
+        where 1 = 1
+    </select>
+
+
+    <select id="customPageList" resultType="cn.stylefeng.guns.modular.sbdsys.model.result.ActivityTypeResult" parameterType="cn.stylefeng.guns.modular.sbdsys.model.params.ActivityTypeParam">
+        select at.* , dict1.`name` as type2Name , dict2.`name` as type1Name
+        from sbd_activity_type at , sys_dict dict1 , sys_dict dict2
+        where at.type2 = dict1.dict_id
+        and dict1.parent_id = dict2.dict_id
+        order by dict2.sort , dict1.sort
+    </select>
+
+</mapper>

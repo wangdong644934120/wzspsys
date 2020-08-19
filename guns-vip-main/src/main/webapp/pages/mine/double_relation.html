@@ -1,0 +1,308 @@
+@layout("/common/_container.html",{js:["]}){
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+<script type="text/javascript" src="/assets//mine/mine_committee.js"></script>
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card branch_big_theme">
+
+                    <div class="layui-text branch-info-row">
+                        <div class="user-committee-left">
+                            <div class="committee-name">
+                                <p id="committee_name"></p>
+                            </div>
+                        </div>
+
+                    </div>
+            </div>
+
+            <style>
+
+            </style>
+
+            <div id="dd_data"></div>
+
+            <!--<div class="layui-card">-->
+
+                <!--<div class="double-branch-info-item" >-->
+                    <!--<div class="double-branch-info">-->
+                       <!--<div class="double-branch-item-logo-div-new">-->
+                            <!--<i class="extend-icon extend-icon-icon-test1 red_3_color "></i>-->
+                       <!--</div>-->
+
+                       <!--<div class="double-branch-item-info-new">-->
+                        <!--<div class="double-branch-item-name-new"> 中共威海广安城市投资建设有限公司党支部委员会</div>-->
+                        <!--<div class="double-branch-item-person-new">-->
+                            <!--<i class="extend-icon extend-icon-renshu red_4_color"></i>-->
+                            <!--<b>22</b>人-->
+                        <!--</div>-->
+                       <!--</div>-->
+                        <!--<div class="clear"></div>-->
+                        <!--<div class="double-branch-item-contact-new">-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="line-space-10"></div>-->
+
+                    <!--<div class="clear_line line-space-10"></div>-->
+
+                    <!--<div class="double-branch-community-info">-->
+
+                        <!--<div class="double-branch-item-logo-div-new">-->
+                            <!--<i class="extend-icon extend-icon-icon-test  red_3_color"></i>-->
+                        <!--</div>-->
+                        <!--<div class="double-branch-item-info-new">-->
+                            <!--<div class="double-branch-community-item-name"> 中共威海广安城市投资建设有限公司党支部委员会</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="clear"></div>-->
+                        <!--<div class="double-branch-item-contact-new">-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="clear"></div>-->
+                    <!--</div>-->
+
+                    <!--<div class="line-space-10"></div>-->
+
+                    <!--<div class="clear_line line-space-10"></div>-->
+
+                    <!--<div class="double-branch-community-info">-->
+
+                        <!--<div class="double-branch-item-logo-div-new">-->
+                            <!--<i class="extend-icon extend-icon-icon-test  red_3_color"></i>-->
+                        <!--</div>-->
+                        <!--<div class="double-branch-item-info-new">-->
+                            <!--<div class="double-branch-community-item-name"> 中共威海广安城市投资建设有限公司党支部委员会</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="clear"></div>-->
+                        <!--<div class="double-branch-item-contact-new">-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="clear"></div>-->
+                    <!--</div>-->
+
+                    <!--<div class="line-space-10"></div>-->
+
+                    <!--<div class="clear_line line-space-10"></div>-->
+
+                    <!--<div class="double-branch-community-info">-->
+
+                        <!--<div class="double-branch-item-logo-div-new">-->
+                            <!--<i class="extend-icon extend-icon-icon-test  red_3_color"></i>-->
+                        <!--</div>-->
+                        <!--<div class="double-branch-item-info-new">-->
+                            <!--<div class="double-branch-community-item-name"> 中共威海广安城市投资建设有限公司党支部委员会</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="clear"></div>-->
+                        <!--<div class="double-branch-item-contact-new">-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                            <!--<div class="double-branch-item-person-info-new">-->
+                                <!--<cite>丛君日</cite>-->
+                                <!--<cite>15666266456</cite>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="line-space-10"></div>-->
+                        <!--<div class="clear"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+    function toHref(url) {
+        window.location.href= Feng.ctxPath + url;
+    }
+
+    function toHrefAlert(url) {
+        alert(url)
+    }
+
+    var date =new Date();
+    var rdm = ""
+
+    var committeeId = IndexGlobal.userInfo.committeeId;
+
+    layui.use(['table', 'admin', 'ax'], function () {
+        $(function(){
+             initDouble();
+        })
+
+        function initDouble() {
+            $.post(
+                Feng.ctxPath + "/mine/get/doubleRelation",
+                {r:Math.random()},
+                function(rs){
+                    if (rs.code == 200){
+                        setBranchList(rs.data);
+                    }
+                },
+                "json"
+            )
+        }
+
+        function setBranchList(list){
+            var html = "";
+            if (null != list){
+                $("#list_count").html(list.length)
+                $.each(list, function(i, n){
+
+                    var usrList = n.userList;
+
+                    var childList = n.communityList
+
+                    html += '<div class="layui-card">';
+
+                    html += '                <div class="double-branch-info-item" >';
+                    html += '                    <div class="double-branch-info">';
+                    html += '                       <div class="double-branch-item-logo-div-new">';
+                    html += '                            <i class="extend-icon extend-icon-icon-test1 red_3_color "></i>';
+                    html += '                       </div>';
+
+                    html += '                       <div class="double-branch-item-info-new">';
+                    html += '                        <div class="double-branch-item-name-new"> '+n.branchName+'</div>';
+                    html += '                        <div class="double-branch-item-person-new">';
+                    html += '                            <i class="extend-icon extend-icon-renshu red_4_color"></i>';
+                    html += '                            <span>22</span>人';
+                    html += '                        </div>';
+                    html += '                       </div>';
+                    html += '                        <div class="clear"></div>';
+
+
+                    html += getUserList(usrList);
+
+                    html += getCommunityList(childList)
+
+                    html += '    </div>';
+
+                    html += '    </div>';
+                    html += '    </div>';
+
+
+
+                })
+            }
+
+            console.log(html);
+
+            $("#dd_data").html(html);
+        }
+
+        function getUserList(data){
+            var html = "";
+            if (data != ""){
+                html += '                        <div class="double-branch-item-contact-new">';
+                $.each(data, function(i, n){
+                    html += '                            <div class="double-branch-item-person-info-new">';
+                    html += '<a href="tel:'+n.phone+'">';
+                    html += '                                <cite>'+n.userName+'</cite>';
+                    html += '                                <cite>'+n.phone+'</cite>';
+                    html += '</a>'
+                    html += '                            </div>';
+                })
+                html += "</div>"
+                html += '                    <div class="line-space-10"></div>';
+
+            }
+            return html;
+        }
+
+        function getCommunityUserList(data){
+            var html = "";
+            if (data != ""){
+                html += '                        <div class="double-branch-item-contact-new">';
+                $.each(data, function(i, n){
+                    html += '                            <div class="double-branch-item-person-info-new">';
+                    html += '<a href="tel:'+n.phone+'">';
+                    html += '                                <cite>'+n.userName+'</cite>';
+                    html += '                                <cite>'+n.phone+'</cite>';
+                    html += '</a>'
+                    html += '                            </div>';
+                })
+                html += '                        <div class="clear"></div>';
+                html += '                    </div>';
+            }
+            return html;
+        }
+
+
+        function getCommunityList(data){
+            var html = '';
+            if (data != ""){
+                html += '                    <div class="clear_line line-space-10"></div>';
+                html += '                    <div class="double-branch-community-info">';
+                $.each(data, function(i, n){
+                    var userList = n.userList
+
+                    html += '                        <div class="double-branch-item-logo-div-new">';
+                    html += '                            <i class="extend-icon extend-icon-icon-test  red_3_color"></i>';
+                    html += '                        </div>';
+                    html += '                        <div class="double-branch-item-info-new">';
+                    html += '                            <div class="double-branch-community-item-name"> '+n.communityName+'</div>';
+                    html += '                        </div>';
+                    html += '                        <div class="clear"></div>';
+
+                    html += getCommunityUserList(userList);
+
+                })
+                html += '</div>'
+                html += '                    <div class="line-space-10"></div>';
+            }
+            return html;
+        }
+    })
+</script>
+
+
+@}

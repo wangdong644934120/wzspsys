@@ -1,0 +1,186 @@
+<!--这个页面仅是组件，并不是页面-->
+<style>
+    .l-back-btn{
+        position: absolute;
+        left: 30px;
+        color: #FF5722;
+        font-size: 25px;
+        font-weight: bold;
+    }
+</style>
+<!--<i onclick="backListView()" class="layui-icon layui-icon-return l-back-btn"></i>-->
+<form id="activityForm" lay-filter="activityForm" class="layui-form model-form">
+    <input name="id" type="hidden"/>
+    <input name="state" value="1" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">活动题目<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="title" id="first" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input l-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">活动类型<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select class="l-input" id="activityType" name="activityType" required  lay-verify="required" lay-search="">
+                <option value="">请选择活动类型</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">起始时间<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="startTime" id="startTimePicker" readonly class="layui-input l-input form-control" type="text" placeholder="请选择开始时间" required lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束时间<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="endTime" id="endTimePicker" readonly class="layui-input l-input form-control" type="text" placeholder="请选择结束时间" required lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">活动说明<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea l-input" name="content" required  lay-verify="required"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">活动地点<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" id="three" name="address" autocomplete="off" placeholder="请输入活动地点" class="layui-input l-input" required lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">负责人<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="contactUser" autocomplete="off" placeholder="请输入负责人姓名" class="layui-input l-input" lay-verify="required" required>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系方式<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="contactPhone"  id="last" autocomplete="off" placeholder="请输入联系方式" class="layui-input l-input" lay-verify="required" required>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <button class="layui-btn" lay-submit="" id="btnSubmit" lay-filter="btnSubmit">发布活动</button>
+            <button class="layui-btn layui-btn-sm" lay-submit="" id="btnEdit" lay-filter="btnEdit" style="display: none;">修改活动</button>
+            <button class="layui-btn layui-btn-sm layui-btn-primary" id="btnDelete" lay-filter="btnDelete" style="display: none;">删除活动</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(function() {
+        window.top.stepAdd(function(){
+            backListView();
+        });
+        //获取项目类型
+        $request({
+            url: "/activityType/listAll",
+            async: false,
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                if(response.code==200){
+                    var data=response.data;
+                    var groupMap={};
+                    for(var i=0;i<data.length;i++){
+                        var group=groupMap[data[i].type2];
+                        if(group==null){
+                            group=$("<optgroup label=\""+data[i].type2+"\"></optgroup>");
+                            groupMap[data[i].type2]=group;
+                        }
+                        group.append("<option value=\""+data[i].id+"\">"+data[i].detail+"</option>");
+                    }
+                    //activityType
+                    for(var key in groupMap){
+                        $("#activityType").append(groupMap[key]);
+                    }
+                    layui.form.render('select');
+                }
+            }
+        });
+
+        new Rolldate({
+            el: '#startTimePicker',
+            format: 'YYYY-MM-DD hh:mm',
+            beginYear: 2000,
+            endYear: 2100
+        });
+        new Rolldate({
+            el: '#endTimePicker',
+            format: 'YYYY-MM-DD hh:mm',
+            beginYear: 2000,
+            endYear: 2100
+        })
+
+        if(Globle.activityId!=null){//当前是编辑模式
+            //显示删除按钮
+            $("#btnEdit").show();
+            $("#btnDelete").show();
+            $("#btnSubmit").hide();
+            $request({
+                url: "/activity/detail",
+                async: true,
+                data: {
+                    id:Globle.activityId
+                },
+                dataType: "json",
+                success: function (response) {
+                    if(response.code==200){
+                        layui.form.val('activityForm', response.data);
+                    }
+                }
+            });
+        }
+        layui.form.on('submit(btnEdit)', function (data) {
+            var ajax = new layui.ax(Feng.ctxPath + "/activity/editItem", function (data) {
+                Feng.success("修改成功！");
+                //打开该项目详情
+                viewActivityDetial(Globle.activityId);
+            }, function (data) {
+                Feng.error("修改失败！" + data.responseJSON.message)
+            });
+            ajax.set(data.field);
+            ajax.start();
+            return false;//返回失败，则不会刷新页面
+        });
+
+        layui.form.on('submit(btnSubmit)', function (data) {
+            var ajax = new layui.ax(Feng.ctxPath + "/activity/addItem", function (data) {
+                Feng.success("添加成功！");
+                //打开该项目详情
+                window.top.refreshView();
+            }, function (data) {
+                Feng.error("添加失败！" + data.responseJSON.message)
+            });
+            ajax.set(data.field);
+            ajax.start();
+            return false;//返回失败，则不会刷新页面
+        });
+
+        $("#btnDelete").click(function (data) {
+            var operation = function () {
+                var ajax = new layui.ax(Feng.ctxPath + "/activity/delete", function (data) {
+                    Feng.success("删除成功!");
+                    window.top.refreshView();
+                }, function (data) {
+                    Feng.error("删除失败!" + data.responseJSON.message + "!");
+                });
+                ajax.set("id", Globle.activityId);
+                ajax.start();
+            };
+            Feng.confirm("是否删除?", operation);
+            return false;//返回失败，则不会刷新页面
+        });
+
+        $(".l-input").blur(function(event) {
+            window.scrollTo(0,document.body.scrollTop-1);
+        });
+    });
+</script>

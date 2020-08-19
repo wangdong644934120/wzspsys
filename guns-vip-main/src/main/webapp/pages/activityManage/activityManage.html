@@ -1,0 +1,246 @@
+@layout("/common/_container.html",{js:[]}){
+
+<link rel="stylesheet" href="/assets/activity/activity.css"/>
+<script type="text/javascript" src="/assets/common/libs/qrcode.min.js"></script>
+<script type="text/javascript" src="/assets/common/libs/datePicker/rolldate.js"></script>
+<div class="layui-body-header">
+	<span class="layui-body-header-title">活动管理</span>
+</div>
+
+<div id="publishBtn" class="l-publish-btn">
+	<button type="button" class="layui-btn layui-btn-warm">发布活动</button>
+</div>
+
+<div class="layui-fluid">
+	<div class="layui-col-md12">
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-tab layui-tab-brief layadmin-latestData" lay-filter="mainTab">
+						<ul class="layui-tab-title l-activity-tab-title">
+							<li lay-id="0" class="layui-this">活动列表</li>
+							<li lay-id="1">进行中</li>
+							<li lay-id="2">已完成</li>
+						</ul>
+						<div id="listView" class="layui-tab-content">
+							<div id="activityList" class="layui-tab-item layui-show">
+							</div>
+							<div id="activityListOn" class="layui-tab-item">
+							</div>
+							<div id="activityListEnd" class="layui-tab-item">
+							</div>
+						</div>
+<!--						活动详情-->
+						<div id="detialView" class="l-pop-view layui-card-body">
+						</div>
+<!--						发布活动-->
+						<div id="publishView" class="l-pop-view layui-card-body" style="background: #FFFFFF">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="sunmupView" class="l-pop-view layui-card-body">
+	</div>
+</div>
+
+<script id="activityItemTmp" type="text/html">
+	<div id="{{ d.id }}" class="layui-row l-activity-item">
+		<div class="layui-col-xs5 layui-col-sm5 layui-col-md5 text-center">
+			<img src="/file/{{ d.icon }}" alt="" class="l-activity-icon">
+			{{#  if(d.state === 2){ }}
+			<a class="l-over-icon"></a>
+			{{#  } }}
+		</div>
+		<div class="layui-col-xs7 layui-col-sm7 layui-col-md7" style="padding: 8px 10px;">
+			<div style="font-size: 16px;height: 70px;">
+				<div class="l-title-tp">
+					<i class="extend-icon extend-icon-jifen" style="font-size: 13px;">{{ d.score }}</i>
+				</div>
+				{{ d.title }}
+			</div>
+			<p style="color: #B6BEC2;font-size: 14px;"><i class="extend-icon extend-icon-shequ" style="margin-right: 3px;"></i>{{ d.communityName }}</p>
+		</div>
+	</div>
+</script>
+
+<script>
+	//这是流加载的BUG，必须要指定高度，且over-flow auto
+	$("#listView>.layui-tab-item").height(document.documentElement.clientHeight - 60);
+
+	var Globle={
+		activityId:null,
+		pageSize:10
+	};
+	//
+	// Date.prototype.toDateInputValue = (function () {
+	// 	var local = new Date(this);
+	// 	local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+	// 	return local.toJSON().slice(0, 10);
+	// });
+	// Date.prototype.toDateTimeInputValue = (function () {
+	// 	var local = new Date(this);
+	// 	local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+	// 	return local.toJSON().slice(0, 16);
+	// });
+
+	function backListView(){
+		$("#publishBtn").show();
+		$("#listView").show();
+		$("#publishView").hide();
+		$("#detialView").hide();
+	}
+	function backDetialView(){
+		$("#publishBtn").hide();
+		$("#listView").hide();
+		$("#publishView").hide();
+		$("#detialView").show();
+	}
+
+	function viewActivityDetial(activityId){//仅该活动所在社区的负责人展示二维码TODO
+		$("#publishBtn").hide();
+		$("#listView").hide();
+		$("#publishView").hide();
+		Globle.activityId=activityId;
+		Feng.loadHtml($("#detialView"),"/pages/activityManage/activityManageDetial.html",function(){
+			$("#detialView").fadeIn(200);
+		});
+	}
+
+	//打开添加或编辑view
+	function openEditView(activityId){
+		Globle.activityId=activityId;
+		$("#publishView").load("/pages/activityManage/activityManageEdit.html?123",function(){
+			$("#publishView").fadeIn(200);
+		});
+		$("#listView").hide();
+		$("#detialView").hide();
+		$("#publishBtn").hide();
+	}
+
+	layui.use(['form','table', 'admin', 'ax',"layer","element","flow"], function () {
+		// jQuery.fn.slideInLeft = function (time) {
+		// 	var width = this.width();
+		// 	this.offset({
+		// 		left: width
+		// 	}).width(width).show().animate({
+		// 		left: 0
+		// 	}, time || 300);
+		// };
+		$("#publishBtn").click(function(){
+			openEditView(null);
+		});
+		//查看活动详情
+		$("#listView").click(function(event){
+			if(event.target.className.indexOf("l-activity-item")>=0){
+				viewActivityDetial(event.target.id);
+			}
+		});
+
+		//tab切换事件
+		layui.element.on('tab(mainTab)', function(data){
+			$("#detialView").hide();
+			$("#publishView").hide();
+			$("#listView").show();
+			$("#publishBtn").show();
+			if(data.index==0){
+				$("#activityList").empty();
+				layui.flow.load({
+					elem: '#activityList' //流加载容器
+					,isAuto:true
+					,scrollElem: '#activityList' //滚动条所在元素，一般不用填，此处只是演示需要。
+					,done: function(page, next){ //执行下一页的回调
+						$request({
+							url: "/activity/listOfCommunity?limit="+Globle.pageSize+"&page="+page,
+							async: true,
+							data: {
+								state:0
+							},
+							dataType: "json",
+							success: function (response) {
+								console.log(response);
+								if(response.code==0){
+									var lis = [];
+									var data=response.data;
+									for(var i=0;i<data.length;i++){
+										layui.laytpl($("#activityItemTmp").html()).render(data[i], function(html){
+											lis.push(html);
+										});
+									}
+									//执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+									//pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+									next(lis.join(''), page*Globle.pageSize < response.count); //假设总页数为 10
+								}
+							}
+						});
+					}
+				});
+			}else if(data.index==1){
+				$("#activityListOn").empty();
+				//if($("#activityListOn").children().length==0) {
+					layui.flow.load({//进行中
+						elem: '#activityListOn' //流加载容器
+						, isAuto: true
+						, scrollElem: '#activityListOn' //滚动条所在元素，一般不用填，此处只是演示需要。
+						, done: function (page, next) { //执行下一页的回调
+							$request({
+								url: "/activity/listOfCommunity?limit=" + Globle.pageSize + "&page=" + page,
+								async: true,
+								data: {
+									state: 1
+								},
+								dataType: "json",
+								success: function (response) {
+									if (response.code == 0) {
+										var lis = [];
+										var data = response.data;
+										for (var i = 0; i < data.length; i++) {
+											layui.laytpl($("#activityItemTmp").html()).render(data[i], function (html) {
+												lis.push(html);
+											});
+										}
+										next(lis.join(''), page * Globle.pageSize < response.count); //假设总页数为 10
+									}
+								}
+							});
+						}
+					});
+				//}
+			}else if(data.index==2) {
+				//if ($("#activityListEnd").children().length == 0) {
+				$("#activityListEnd").empty();
+					layui.flow.load({
+						elem: '#activityListEnd' //流加载容器
+						, isAuto: true
+						, scrollElem: '#activityListEnd' //滚动条所在元素，一般不用填，此处只是演示需要。
+						, done: function (page, next) { //执行下一页的回调
+							$request({
+								url: "/activity/listOfCommunity?limit=" + Globle.pageSize + "&page=" + page,
+								async: true,
+								data: {
+									state: 2
+								},
+								dataType: "json",
+								success: function (response) {
+									if (response.code == 0) {
+										var lis = [];
+										var data = response.data;
+										for (var i = 0; i < data.length; i++) {
+											layui.laytpl($("#activityItemTmp").html()).render(data[i], function (html) {
+												lis.push(html);
+											});
+										}
+										next(lis.join(''), page * Globle.pageSize < response.count); //假设总页数为 10
+									}
+								}
+							});
+						}
+					});
+				}
+			//}
+		});
+		layui.element.tabChange('mainTab', '0');//切换到第一项
+	});
+</script>
+@}

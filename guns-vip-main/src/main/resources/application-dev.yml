@@ -1,0 +1,67 @@
+﻿#Oracle配置
+#spring:
+#  datasource:
+#    driverClassName: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@127.0.0.1:1521:guns
+#    username: root
+#    password: root
+#    filters: wall,mergeStat
+#    data-source-name: gunsdb
+
+#SQLServer配置
+#spring:
+#  datasource:
+#    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=guns
+#    username: root
+#    password: root
+#    filters: wall,mergeStat
+#    data-source-name: gunsdb
+
+#PostgreSQL配置
+#spring:
+#  datasource:
+#    driverClassName: org.postgresql.Driver
+#    url: jdbc:postgresql://127.0.0.1:5432/guns
+#    username: root
+#    password: root
+#    filters: wall,mergeStat
+#    data-source-name: gunsdb
+
+# Mysql数据库
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/wzsp?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    username: root
+    password: root
+    filters: wall,mergeStat
+    data-source-name: sbddb
+
+  # 邮件发送配置（改为自己的账号和密码）
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: sn93@qq.com
+    password: xxxpassword
+
+# 多数据源情况的配置
+guns:
+  muti-datasource:
+    open: false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/guns_test_db1?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    username: root
+    password: root
+    data-source-name: otherdb
+
+# 阿里云短信发送配置
+aliyun:
+  sms:
+    accessKeyId: xxxkey
+    accessKeySecret: xxxSecret
+    signName: mySignName
+
+# 邮件发送（改为自己的账号）
+mail:
+  from: 644934120@qq.com

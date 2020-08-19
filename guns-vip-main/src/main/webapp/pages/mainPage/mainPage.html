@@ -1,0 +1,191 @@
+@layout("/common/_container.html",{js:[]}){
+
+<style>
+    .l-list-header{
+        height: 40px;line-height:60px;font-size: 20px;font-weight: bold;padding: 0 20px;
+        font-family: "Microsoft Yahei", Arial, sans-serif;
+        color: #010101;
+        border: none;
+    }
+    .l-list-header i{
+        margin-right: 10px;color: #979797;
+    }
+    .l-activity-item-main{
+        border-bottom: 1px solid #E3E3E3;
+        padding: 10px 5px;
+        font-family: "Microsoft YaHei";
+        font-size: 13px;
+    }
+    .l-activity-item-main i{
+        margin: 0 3px;
+    }
+    .l-wish-item-main{
+        border-bottom: 1px solid #E3E3E3;
+        padding: 10px 5px;
+        font-family: "Microsoft YaHei";
+        font-size: 14px;
+    }
+    .l-none-border{
+        border: none;
+    }
+
+</style>
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">项目主页</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12" id="mainPage">
+            <div class="layui-row">
+                <div class="layui-col-md6">
+                    <div class="layui-carousel" id="titleGalary">
+                        <div carousel-item="">
+                            <div><img style="width: 100%;height: 100%;" src="/images/title_bg_1.jpg"></div>
+                            <div><img style="width: 100%;height: 100%;" src="/images/title_bg_2.jpg"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div onclick="window.top.openTabView('/ref/activity/activity.html');" class="layui-card" style="box-shadow:none;">
+                        <div class="layui-card-header l-list-header">最新活动
+                            <i class="layui-icon layui-icon-right layui-layout-right" lay-offset="5"></i>
+                        </div>
+                        <div class="layui-card-body">
+                            <div id="activityList">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6" style="margin-top: 15px;">
+                    <div onclick="window.top.openTabView('/ref/wish/wish.html');" class="layui-card" style="box-shadow:none;">
+                        <div class="layui-card-header l-list-header">
+                            <span>微心愿</span>
+                            <i class="layui-icon layui-icon-right layui-layout-right" lay-offset="5"></i>
+                        </div>
+                        <div class="layui-card-body">
+                            <div id="wishList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="noticeItemTmp" type="text/html">
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">{{ d.createTime.substring(0,10) }}：{{ d.title }}</h2>
+        <div class="layui-colla-content">
+            {{ d.content }}
+        </div>
+    </div>
+</script>
+
+<script id="activityItemTmp" type="text/html">
+    <div id="{{ d.id }}" class="layui-row l-activity-item-main">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+            <p style="font-size: 17px;color: #101010;">{{ d.title }}</p>
+            <div style="color: #BBC3C6;margin-top: 5px;">
+                <i class="extend-icon extend-icon-fabu"></i><span>{{ d.communityName }}</span>
+                <i class="extend-icon extend-icon-zuobiao"></i><span>{{ d.address }}</span>
+                <i class="extend-icon extend-icon-jinbi" style="font-size: 12px;"></i><span>{{ d.score }}</span>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="wishItemTmp" type="text/html">
+    <div id="{{ d.id }}" class="layui-row l-wish-item-main">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+            <p style="font-size: 17px;color: #282828;">{{ d.title }}</p>
+            <div style="color: #BBC3C6;margin-top: 5px;">
+                <span style="background: #F8F8F8;padding: 3px;margin-right: 20px;">{{ d.communityName }}</span>
+                <i class="extend-icon extend-icon-jinbi" style="font-size: 13px;"></i><span>{{ d.score }}</span>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    Globle={};
+    layui.use(['table', 'admin', 'ax', "tree", "layer", "element", 'laypage','laytpl','carousel'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var element = layui.element;
+        //轮播
+        layui.carousel.render({
+            elem: '#titleGalary'
+            ,interval: 5000
+            ,width:"100%"
+            ,height: '165px'
+        });
+        // 获取最新的三个活动
+        $request({
+            url: "/activity/getJoinListByUser?limit=3&page=0",
+            async: true,
+            data: null,
+            dataType: "json",
+            success: function (response) {
+                if (response.code == 0) {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        layui.laytpl($("#activityItemTmp").html()).render(data[i], function (html) {
+                            $("#activityList").append(html);
+                        });
+                    }
+                    $("#activityList div:last-child").addClass("l-none-border");
+                }
+            }
+        });
+
+        $request({
+            url: "/wish/list?limit=3&page=0",
+            async: true,
+            data: {
+                status:1
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.code == 0) {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        layui.laytpl($("#wishItemTmp").html()).render(data[i], function (html) {
+                            $("#wishList").append(html);
+                        });
+                    }
+                    $("#wishList div:last-child").addClass("l-none-border");
+                }
+            }
+        });
+        //获取消息列表
+        // $request({
+        //     url: "/notice/noticeList",
+        //     async: true,
+        //     data: null,
+        //     dataType: "json",
+        //     success: function (response) {
+        //         //console.log(response);
+        //         if(response.code==200){
+        //             var data=response.data;
+        //             for(var i=0;i<data.length;i++){
+        //                 layui.laytpl($("#noticeItemTmp").html()).render(data[i], function(html){
+        //                     $("#systemNotice").append(html);
+        //                 });
+        //             }
+        //             $("#systemNotice .layui-colla-content:first").addClass("layui-show");
+        //             element.render('collapse');
+        //         }
+        //
+        //     }
+        // });
+
+    });
+
+
+</script>
+
+
+@}

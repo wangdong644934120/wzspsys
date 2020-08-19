@@ -1,0 +1,149 @@
+@layout("/common/_container.html",{js:["/assets//mine/mine_account.js"]}){
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card red_theme ">
+
+                <div class="layui-text user-info-row">
+                    <div class="user-info-left">
+                        <div class="user-info-head" id="imgHead">
+                            <img id="user_avatar" src="/system/previewAvatar" >
+                        </div><input class="layui-upload-file" type="file" accept="" name="file">
+
+                    </div>
+                    <div class="user-info-left user-info-item">
+                        <p id="user_phone"></p>
+                        <p> 党员</p>
+                    </div>
+                </div>
+                <div class="layui-text user-item-row ">
+
+                    <div class="">
+                        <ul class="layui-row layui-col-space10 layui-this">
+                            <li class="layui-col-xs4">
+                                <a lay-href="app/content/comment" class="layadmin-backlog-body">
+                                    <div class="user-item-logo">
+                                        <img src="/images/user-item-coin.png" />
+                                    </div>
+                                    <div class="user-item-info-text">
+                                        <p><cite id="user_coin">0</cite></p>
+                                        <i>先锋币</i>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="layui-col-xs4">
+                                <a lay-href="app/forum/list" class="layadmin-backlog-body">
+
+                                    <div class="user-item-logo">
+                                        <img src="/images/user-item-score.png" />
+                                    </div>
+                                    <div class="user-item-info-text">
+                                        <p><cite id="user_score">0</cite></p>
+                                        <i>积分</i>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="layui-col-xs4">
+                                <a lay-href="template/goodslist" class="layadmin-backlog-body">
+
+                                    <div class="user-item-logo">
+                                        <img src="/images/user-item-goods.png" />
+                                    </div>
+                                    <div class="user-item-info-text">
+                                        <p><cite id="user_goods">0</cite></p>
+                                        <i>商品</i>
+                                    </div>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="line-space" >
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  onclick="toHref('mine/myCommodity')">
+                            <div>
+                                <img src="/images/user-item-goods-car.png" class="user-item-icon"/>
+                                <span class="user-item-icon-text">待换商品</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>
+                            </div>
+                        </dd>
+                        <dd  onclick="toHref('mine/myFav')">
+                            <div>
+                                <img src="/images/user-item-goods-car.png" class="user-item-icon"/>
+                                <span class="user-item-icon-text">兑换记录</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd onclick="toHref('mine/myBranch')">
+                            <div>
+                                <img src="/images/user-item-branch-rank.png" class="user-item-icon"/>
+                                <span class="user-item-icon-text">支部排行</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd onclick="toHref('mine/myCoinRecord')">
+
+                            <div>
+                                <img src="/images/user-item-account-list.png" class="user-item-icon"/>
+                                <span class="user-item-icon-text">我的账单</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd onclick="toHref('mine/myCensus')">
+
+                            <div>
+                                <img src="/images/user-item-census.png" class="user-item-icon"/>
+                                <span class="user-item-icon-text">数据统计</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd onclick="toScan()">
+
+                            <div >
+                                <i class="layui-icon layui-icon-app"></i>
+                                <span>扫一扫</span>
+
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    var base_url = "http://172.16.1.31/";
+    function toHref(url) {
+        window.location.href= base_url + url;
+    }
+
+    function toHrefAlert(url) {
+        alert(url)
+    }
+
+    var date =new Date();
+    var rdm = "";
+
+</script>
+
+
+@}

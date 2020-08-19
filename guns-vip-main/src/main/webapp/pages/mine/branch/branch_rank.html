@@ -1,0 +1,133 @@
+@layout("/common/_container.html",{js:[]}){
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+<script src="/assets/mine/mine_committee.js"></script>
+
+<div class="layui-fluid user-header-card ">
+    <div class="layui-row layui-col-space15 ">
+        <div class="layui-col-sm12 layui-col-md3 ">
+            <div class="layui-card branch_big_theme">
+
+                    <div class="layui-text branch-info-row">
+                        <div class="user-committee-left">
+                            <div class="committee-name">
+                                <p id="committee_name"></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+            </div>
+            <div class="layui-card">
+
+                <div class="layui-card-header " >
+                    <div class="layui-text user-census-row-title">
+                        <span sort="asc" class="sort-btn">
+                        党支部排行
+                            <i class="extend-icon icon-white extend-icon-paixumb" ></i>
+                        </span>
+                        <span class="pull-right">
+                            <button ct="month" class="layui-btn layui-btn-warm layui-btn-normal  layui-btn-sm time-category">月</button>
+                            <button ct="year"  class="layui-btn layui-btn-normal   layui-btn-sm time-category">年</button>
+                            <button ct="score"  class="layui-btn layui-btn-normal   layui-btn-sm time-category">总</button>
+                         </span>
+                    </div>
+                </div>
+                <div class="layui-card-body branch-info-list" >
+                    <dd class="layuiadmin-card-status" id="dd_data">
+
+
+                    </dd>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/common/libs/weixin/jweixin-1.3.2.js"></script>
+<script>
+    function toHref(url) {
+        window.location.href= Feng.ctxPath + url;
+    }
+
+    var sort = "desc";
+
+    var date =new Date();
+    var rdm = ""
+
+    var committeeId = Feng.getUrlParam("committeeId");
+
+    layui.use(['table', 'admin', 'ax'], function () {
+        $(function(){
+            initBranch("month", sort);
+        })
+
+
+        $(".time-category").click(function(){
+            $(".layui-btn-warm").removeClass("layui-btn-warm")
+            $(this).addClass("layui-btn-warm");
+
+            var time = $(this).attr("ct");
+
+            initBranch(time, sort);
+        })
+
+        $(".sort-btn").click(function(){
+            var time = $(".layui-btn-warm").attr("ct");
+
+            if (sort == "desc"){
+                sort = "asc";
+            } else {
+                sort = "desc";
+            }
+            initBranch(time, sort);
+        })
+
+        function initBranch(time, sort) {
+            $.post(
+                Feng.ctxPath + "get/all_branch_rank",
+                {r:Math.random(), committeeId:committeeId, time:time, sort:sort},
+                function(rs){
+                    if (rs.code == 200){
+
+                        setBranchList(rs.data.list);
+                    }
+                },
+                "json"
+            )
+        }
+
+        function setBranchList(list){
+            var html = "";
+            if (null != list){
+                var score = "";
+                $.each(list, function(i, n){
+
+                    score = n.score
+
+
+
+                    html += '<dl onclick="toHref(\'committee_branch?branchId='+n.branchId+'\')">';
+                    html += '    <div class="branch-item-logo-div">';
+                    // html += '	<div class="branch-item-logo"></div>';
+                    html += '    <div class="user-list-div user-list-logo">&nbsp;<i class="extend-icon extend-icon-weibiaoti--2 red_2_color"></i></div>';
+                    html += '    </div>';
+                    html += '    <div class="branch-item-info">';
+                    html += '	<p class="branch-item-name">'+n.branchName+'</p>';
+                    html += '	<p class="branch-item-person">';
+                    html += '	    <i class="extend-icon extend-icon-_huabanfuben red_2_color"></i>';
+                    html += '	    <b>积分：'+score+'</b>';
+                    html += '	</p>';
+                    html += '    </div>';
+
+                    html += '    <div class="clear_dash"></div>';
+                    html += '</dl>';
+                })
+            }
+            $("#dd_data").html(html);
+        }
+    })
+</script>
+
+
+@}

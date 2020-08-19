@@ -1,0 +1,118 @@
+@layout("/common/_container.html",{js:["/assets//mine/mine.js"]}){
+
+<link type="text/css" rel="stylesheet" href="/assets/mine/mine.css"/>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md3">
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">党员操作手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/activityManage/activityManage.html"  onclick="toHref('/ref/activityManage/activityManage.html', '活动管理')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-huodongguanli" ></i>
+                                <span class="user-item-icon-text">参加活动</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/wishManage/wishManage.html"  onclick="toHref('/ref/wishManage/wishManage.html', '微心愿管理')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-guanli" ></i>
+                                <span class="user-item-icon-text">抢取心愿</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/community/community_census.html"   onclick="toTabView(this, '数据报表')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-tongji" ></i>
+                                <span class="user-item-icon-text">商品兑换</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">社区管理员手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/activityManage/activityManage.html"  onclick="toHref('/ref/activityManage/activityManage.html', '活动管理')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-huodongguanli" ></i>
+                                <span class="user-item-icon-text">活动管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/wishManage/wishManage.html"  onclick="toHref('/ref/wishManage/wishManage.html', '微心愿管理')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-guanli" ></i>
+                                <span class="user-item-icon-text">微心愿管理</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                        <dd dd-url="/ref/mine/community/community_census.html"   onclick="toTabView(this, '数据报表')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-tongji" ></i>
+                                <span class="user-item-icon-text">查看数据统计</span>
+                                <i class="layui-icon layui-icon-right line-right  user-item-right-arrow"></i>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">党支部管理员手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/activityManage/activityManage.html"  onclick="toHref('/ref/activityManage/activityManage.html', '活动管理')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-huodongguanli" ></i>
+                                <span class="user-item-icon-text">党组成员管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">党委管理员手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/activityManage/activityManage.html"  onclick="toHref('/ref/activityManage/activityManage.html', '活动管理')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-huodongguanli" ></i>
+                                <span class="user-item-icon-text">党组成员管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="layui-card  mine-hidden-div" >
+                <dd class="layui-card-header">总管理员手册</dd>
+                <div class="layui-card-body">
+                    <dl class="layuiadmin-card-status">
+                        <dd  dd-url="/ref/activityManage/activityManage.html"  onclick="toHref('/ref/activityManage/activityManage.html', '活动管理')">
+                            <div>
+                                <i class="user-item-icon extend-icon extend-icon-huodongguanli" ></i>
+                                <span class="user-item-icon-text">党组成员管理</span>
+                                <i class="layui-icon layui-icon-right line-right user-item-right-arrow"></i>
+                                <!--                                <span class="layui-badge line-right user-item-tips" id="user_goods_buy">0</span>-->
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@}
