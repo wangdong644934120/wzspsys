@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>威之膳品-大屏展示</title>
+    <!-- 引入 echarts.js -->
+    <script src="/assets/libs/echarts/echarts.min.js"></script>
+    <script src="/assets/libs/jquery/jquery-3.2.1.min.js"></script>
+    <style>
+                .xiaoshoue_30{
+                    width: 49.3%;
+                    height:210px;
+                    float: left;
+                    margin:4px 5px 4px 0px;
+                }
+
+                .xiaoshoue_12{
+                    width: 49.3%;
+                    height:210px;
+                    float: left;
+                    margin:4px 0px 4px 5px;
+                }
+
+                .spxiaoshoue{
+                    width: 29%;
+                    height:400px;
+                    float: left;
+                    margin:4px 5px 4px 0px;
+                }
+
+                .spshuliang{
+                   width: 29%;
+                   height:400px;
+                   float: left;
+                   margin:4px 5px 4px 5px;
+                }
+                .zongxiaoshoue{
+                   width: 262px;
+                   height:196px;
+                   float: left;
+                   background: #11183c;
+                   margin:4px 5px 4px 5px;
+                }
+                .kehushu{
+                   width: 262px;
+                   height:196px;
+                   float: left;
+                   background: #11183c;
+                   margin:4px 0px 4px 5px;
+                }
+
+                .xinzengkehu{
+                   width: 262px;
+                   height:196px;
+                   float: left;
+                   background: #11183c;
+                   margin:4px 5px 4px 5px;
+                }
+                .zhanghuyue{
+                   width: 262px;
+                   height:196px;
+                   float: left;
+                   background: #11183c;
+                   margin:4px 0px 4px 5px;
+                }
+            </style>
+</head>
+<body>
+<div style="padding:0px 5px 0px 5px;">
+    <div style="wigth:98.3%;height:30px;background: #11183c;margin:0px 5px 4px 0px;">
+        <span style="position:relative;left: 635px;color: #ffffff;"><strong>威之膳品</strong></span>
+        <span id="time" style="float: right;color: #ffffff;"></span>
+    </div>
+
+
+    <div>
+        <div id="xiaoshoue_30" class="xiaoshoue_30"></div>
+        <div id="xiaoshoue_12" class="xiaoshoue_12"></div>
+    </div>
+
+    <div>
+        <!--        <div>-->
+        <div id="spxiaoshoue" class="spxiaoshoue"></div>
+        <div id="spshuliang" class="spshuliang"></div>
+        <!--        </div>-->
+
+        <div style="float: left;">
+
+
+            <div style="float: left;">
+                <div id="zongxiaoshoue" class="zongxiaoshoue">
+                    <div style="margin-left:15px;">
+                        <div style="font-size:19px;color: #FFCC00;margin-top:8px;"><strong>威之膳品销售总额</strong></div>
+                        <div style="margin-top:25px;">
+                            <span id="jine" class="jine" style="font-size: 70px;color: #ffffff;"></span>&nbsp;
+                            <span style="color: #ffffff;">元</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="kehushu" class="kehushu">
+                    <div style="margin-left:15px;">
+                        <div style="font-size:19px;color: #FFCC00;margin-top:8px;"><strong>客户总数</strong></div>
+                        <div style="margin-top:25px;">
+                            <span id="kehu" class="kehu" style="font-size: 70px;color: #ffffff;"></span>&nbsp;
+                            <span style="color: #ffffff;">人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div>
+                <div id="xinzengkehu" class="xinzengkehu">
+                    <div style="margin-left:15px;">
+                        <div style="font-size:19px;color: #FFCC00;margin-top:8px;"><strong>本月新增客户数</strong></div>
+                        <div style="margin-top:25px;">
+                            <span id="xinkehu" class="xinkehu" style="font-size: 70px;color: #ffffff;"></span>&nbsp;
+                            <span style="color: #ffffff;">人</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="zhanghuyue" class="zhanghuyue">
+                    <div style="margin-left:15px;">
+                        <div style="font-size:19px;color: #FFCC00;margin-top:8px;"><strong>客户账户总余额</strong></div>
+                        <div style="margin-top:25px;">&nbsp;
+                            <span id="kehuyue" class="kehuyue" style="font-size: 70px;color: #ffffff;"></span>&nbsp;
+                            <span style="color: #ffffff;">元</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/assets/common/layui/layui.js"></script>
+<script type="text/javascript" src="/assets/common/mychart/mychart.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/mychart/mychart2.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/mychart/mychart3.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/mychart/mychart4.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/mychart/zongxiaoshoue.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/mychart/kehuzongshu.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/mychart/xinzengkehu.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/mychart/kehuyue.js"></script>
+<script type="text/javascript">
+                           //页面加载开始执行
+                    window.onload = function() {
+                            //获取元素id
+                            var show = document.getElementById("time");
+                            //设置定时器1s执行一次
+                            setInterval(function() {
+                                var time = new Date();   // 程序计时的月从0开始取值后+1
+                                var m = time.getMonth() + 1;
+                                var t = time.getFullYear() + "-" + m + "-"
+                                    + time.getDate() + " " + time.getHours() + ":"
+                                    + time.getMinutes() + ":" + time.getSeconds();
+                                show.innerHTML = t;
+                            }, 1000);
+                        };
+</script>
+<script language="JavaScript">
+setTimeout(function(){location.reload()},8640000); //指定24小时刷新一次
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
